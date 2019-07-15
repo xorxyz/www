@@ -1,0 +1,5 @@
+items:
+  - name: Home
+    route: /
+  - name: Blog
+    route: /blog

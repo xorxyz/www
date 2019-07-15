@@ -1,0 +1,13 @@
+sites:
+  -
+    name: Twitter
+    src: /images/social/twitter.svg
+    url: https://twitter.com/xorxyz
+  -
+    name: Github
+    src: /images/social/github.svg
+    url: https://github.com/xorxyz
+  -
+    name: RSS
+    src: /images/social/feed.svg
+    url: https://www.xor.xyz/rss
