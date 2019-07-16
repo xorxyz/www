@@ -2,30 +2,15 @@ extends /templates/layouts/default.pug
     
 block content
 
-  section.pv4
+  section.blog-post
     .container
       h2.f2 Game
-      ul.list.pl0
+      ul.list.pl0.lh-copy
         li
-          a(href="/game/characters") Characters
-
-  section
-    .container
-      ul.flex.flex-wrap.pl0.list.w-100.justify-between
-        each post in routes.blog.slice(1)
-          li.w-33
-            article.flex.flex-column.ba.b--light-gray.bw1.w-100.mb2
-              .flex.bg-blue.h4
-                img(src="#" alt="article image")
-              .flex.pa3.flex-column
-                content.flex-auto
-                  a(href="#")
-                    h3.mt0.fw4 #{ post.title }
-                  p.f6 #{ post.blurb }
-
-                footer.flex.flex-row
-                  author.flex-auto
-                    small #{ post.author }
-                  date
-                    small #{ post.date }
-
+          a(href="/game/story") Story
+        li
+          a(href="/game/paths") Paths
+        li
+          a(href="/game/machines") Hypermachines
+        li
+          a(href="/game/world") World

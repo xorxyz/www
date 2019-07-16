@@ -8,8 +8,8 @@ nav#navbar.absolute.w-100.flex.justify-center.pv2.white(role="navigation")
 
     ul.menu.list.dn.flex-ns.items-center.ma0.tr.f7-l.f7
       each item in navbar.items
-        li.pl4.tr.item
-          a.bsn.white.link(href=item.route aria-haspopup=item.subitems)
+        li.pl4.tr
+          a.white(href=item.route aria-haspopup=item.subitems)
             | #{ item.name }
 
     label#navbar-button.flex.justify-center.items-center.dn-ns.w1.h1.pa1.mh2.tc.bg-black.br0.ba.bw05.b--white.white.pointer(
