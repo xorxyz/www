@@ -1,0 +1,18 @@
+extends /templates/layouts/default.pug
+
+block content
+  section.blog-post
+    .container
+      article
+        header
+          h2 #{ post.data.title }
+
+        content
+          | !{ post.content }
+
+        footer.mt4.pt2.pb4
+
+          ul.tags
+            for tag in post.data.tags
+              li
+                a(href="#") #{ tag }
