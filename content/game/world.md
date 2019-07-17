@@ -1,5 +1,5 @@
 ---
-title: World
+title: The Game World
 date: 2019-07-15
 author: jonathan@diagonal.sh
 category: Game
@@ -7,19 +7,31 @@ tags:
   - Game
 ---
 
-## Meatspace ("the Substrate")
+### `Undefined Island
+
+<img src="/images/illustrations/map.png" />
+
+### The City & the Mountain
+
+The City is the network where players start.
+The Mountain is the network in which dungeons instances are 
+created.
+
+- Players can go to [the tavern](#tavern) to find quests.
+- The general [store](#store) is where players can sell their goods and buy supplies for their adventures.
+- The [palace](#palace) hosts special events.
+- Every path has a [Guild Hall](#guildhalls) with a tutor NPC.
+
+
+---
+
+
+### Physical space ("the Substrate")
 
 - hypermachines ("rigs", "ships", "boxes")
 - physical environment
 
-## Cyberspace
-
-- software libraries ("spells")
-- virtual routers ("gateways")
-- virtual devices ("equipment")
-- files & images ("items")
-
-## Dreamspace ("the dream")
+### Dreamspace ("the Dream")
 
 A pseudo-virtual world with that is heavily influenced by dreams.
 
@@ -28,30 +40,10 @@ A pseudo-virtual world with that is heavily influenced by dreams.
 - dreams
 - places
 
-<img src="/images/illustrations/map.png" />
+### Cyberspace 
 
-### The City
+- software libraries ("spells")
+- virtual routers ("gateways")
+- virtual devices ("equipment")
+- files & images ("items")
 
-The City is the network where players start.
-
-#### Tavern
-
-The tavern is where players can enroll in quests.
-
-#### General Store
-
-The general store is where players can buy supplies.
-
-#### Palace
-
-The palace hosts special events.
-
-#### The Guild Halls
-
-Each path has a Tutor NPC who resides in the guild's hall. 
-
-
-### The Mountain
-
-The Mountain is the network in which dungeons instances are 
-created.

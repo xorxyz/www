@@ -9,13 +9,15 @@ tags:
 
 ### Paths
 
-Every character starts out as an outsider.
+Then around level 5, characters can join one of four paths. Each path gives them both advantages and disadvantages.
 
-Then around level 5, they can join one of four paths, which gives them bonuses and maluses.
-
-#### 1. Hunter
-
-<img alt="Cowboy hat & riffle" src="/images/illustrations/hunter.png" class="w4"/>
+<div class="tc">
+  <img
+    alt="Cowboy hat & riffle" 
+    class="w5"
+    src="/images/illustrations/hunter.png"/>
+  <h4 class="f2 mt0">Hunters</h4>
+</div>
 
 - Items:
   - 🔫 Hunting Riffles
@@ -26,9 +28,15 @@ Then around level 5, they can join one of four paths, which gives them bonuses a
 - Special abilities: Firewalls and sandboxes 
 - Unique binary: tcpdump 
 
-#### 2. Wizard
+---
 
-<img alt="Wizard hat & staff" src="/images/illustrations/wizard.png" class="w4"/>
+<div class="tc">
+  <img
+    alt="Wizard hat & staff" 
+    class="w5"
+    src="/images/illustrations/wizard.png"/>
+  <h4 class="f2 mt0">Wizards</h4>
+</div>
 
 - Items:
   - 🔮 Magic Staves
@@ -39,9 +47,15 @@ Then around level 5, they can join one of four paths, which gives them bonuses a
 - Special abilities: Editors and runtimes 
 - Unique binary: git 
 
-#### 3. Engineer 
+---
 
-<img alt="Construction hat & wrenches" src="/images/illustrations/engineer.png" class="w4"/>
+<div class="tc">
+  <img
+    alt="Construction hat & wrenches" 
+    class="w5"
+    src="/images/illustrations/engineer.png"/>
+  <h4 class="f2 mt0">Engineers</h4>
+</div>
 
 - Items:
   - 🔧 Giant Tools
@@ -52,9 +66,15 @@ Then around level 5, they can join one of four paths, which gives them bonuses a
 - Special abilities: Infrastructure and device drivers 
 - Unique binary: bash 
 
-#### 4. Rogue
+---
 
-<img alt="Hood & playing cards" src="/images/illustrations/rogue.png" class="w4"/>
+<div class="tc">
+  <img
+    alt="Hood & playing cards" 
+    class="w5"
+    src="/images/illustrations/rogue.png"/>
+  <h4 class="f2 mt0">Rogues</h4>
+</div>
 
 - Items:
   - 🃏 Playing Cards
