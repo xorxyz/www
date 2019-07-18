@@ -2,7 +2,7 @@
 title: Paths
 date: 2019-07-15
 author: jonathan@diagonal.sh
-category: Game
+category: Mechanics
 tags:
   - Game
 ---
@@ -11,7 +11,7 @@ tags:
 
 Then around level 5, characters can join one of four paths. Each path gives them both advantages and disadvantages.
 
-<div class="tc">
+<div class="tl">
   <img
     alt="Cowboy hat & riffle" 
     class="w5"
@@ -30,7 +30,7 @@ Then around level 5, characters can join one of four paths. Each path gives them
 
 ---
 
-<div class="tc">
+<div class="tl">
   <img
     alt="Wizard hat & staff" 
     class="w5"
@@ -49,7 +49,7 @@ Then around level 5, characters can join one of four paths. Each path gives them
 
 ---
 
-<div class="tc">
+<div class="tl">
   <img
     alt="Construction hat & wrenches" 
     class="w5"
@@ -68,7 +68,7 @@ Then around level 5, characters can join one of four paths. Each path gives them
 
 ---
 
-<div class="tc">
+<div class="tl">
   <img
     alt="Hood & playing cards" 
     class="w5"

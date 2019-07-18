@@ -1,8 +1,8 @@
 ---
-title: Hypermachines
+title: Machines
 date: 2019-07-15
 author: jonathan@diagonal.sh
-category: Game
+category: Mechanics
 tags:
   - Game
 ---
@@ -13,4 +13,4 @@ Players need to ensure their machine is able to support their virtual projection
 
 Hypermachines can host an OS stack and have I/O devices connected to them.
 
-Characters can have up to three hypermachines at a given time.
+Characters can have up to three machines at a given time.

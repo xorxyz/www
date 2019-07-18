@@ -2,9 +2,9 @@
 title: About
 date: 2019-07-15
 author: jonathan@diagonal.sh
-category: Meta
+category: Game
 tags:
-  - Meta
+  - Game
 ---
 
 `xor` is an open world, multiplayer online computer security puzzle  game.
