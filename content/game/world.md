@@ -7,6 +7,8 @@ tags:
   - Game
 ---
 
+The game world is structured like a security conference
+
 ### `Undefined Island
 
 <img src="/images/illustrations/map.png" />
