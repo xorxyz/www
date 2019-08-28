@@ -1,39 +1,32 @@
-
-> I would totally play MMORPGs if they brought me value in real life.
+this is a work in progress.
 
 ## why
 
-one of the difficulties with learning how to hack is that
-you're not supposed to hack each other.
-
 having a sandbox or a lab to practice is the best thing you can do if you want to get better.
-
-most infosec professionals have their own lab.
 
 but when you manage systems for a living, you don't have time to manage your lab when you go back home, you want to just use it.
 
 what if your lab was managed for you? 
+
 what if it provided you with a stream of relevant and fun challenges?
 
-
-1. impact your career and your bottom line
-  - serve as an online presence to communicate competency
-  - help bring new clients to your security business
-2. helps you get better and learn more
+1. helps you get better and learn more
   - focused on principles
   - well-paced challenges
   - helps build T-shaped skills
   - timeless
+2. help you meet new people
+  - help connect with other local hackers
+  - help connect with other local companies
 3. engaging and fun
   - short challenges
   - engrossing storytelling
   - cool universe
   - great mechanics
   - encouraging lateral thinking
-4. help you meet new people
-  - help connect with other local hackers
-  - help connect with other local companies
-
+4. impact your career and your bottom line
+  - serve as an online presence to communicate competency
+  - help bring new clients to your security business
 
 ## what
 
@@ -47,6 +40,8 @@ immersive sim:
   - reactivity
 2. agency
 3. lateral thinking
+
+> I would totally play MMORPGs if they brought me value in real life.
 
 ## how
 
