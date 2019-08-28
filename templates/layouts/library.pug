@@ -1,0 +1,18 @@
+extends /templates/layouts/layout.pug
+
+block body  
+  include /templates/components/navbar.pug
+
+  main.flex.flex-row.justify-center
+    nav.dn.flex-ns.w-30-ns.pa3
+      .container.bg-black.br2
+        ul.list.pa2.lh-copy
+          each d in dir.filter(f => f !== 'index.md')
+            li
+              a.link.pointer #{ d.replace('.md', '') }
+    article.flex.flex-auto
+      .container
+        h2 #{ meta.title }
+        |!{ content }
+
+  include /templates/components/footer.pug

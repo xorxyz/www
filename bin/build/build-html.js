@@ -11,7 +11,9 @@ const { DIR, MONTHS } = require('./constants.js')
 const pugOpts = {
   basedir: path.join(__dirname, '../..'),
   filters: {},
-  globals: [ formatDate ]
+  globals: [ 
+    formatDate
+  ]
 }
 
 var renderer = new marked.Renderer()
@@ -25,15 +27,16 @@ function buildHTML (data) {
   var pageFiles = DIR['content']
   var filepaths = listFilesRecursive(pageFiles)
 
-  filepaths.forEach(filepath => {
-    if (path.dirname(filepath)[0] === '_') return
+  filepaths
+    .forEach(({ filepath, dirIndex }) => {
+      if (path.dirname(filepath)[0] === '_') return
 
-    var html = generatePage(filepath, data)
-    var dest = getDestination(filepath)
+      var html = generatePage(filepath, data)
+      var dest = getDestination(filepath)
 
-    mkdirp.sync(path.dirname(dest))
-    fs.writeFileSync(dest, html)
-  })
+      mkdirp.sync(path.dirname(dest))
+      fs.writeFileSync(dest, html)
+    })
 }
 
 function generatePage (filepath, data) {
@@ -48,6 +51,7 @@ function generatePage (filepath, data) {
   var opts = Object.assign({}, pugOpts, { filename: filepath })
   var locals = Object.assign({}, data, {
     formatDate,
+    dir: fs.readdirSync(path.dirname(filepath)),
     meta: frontmatter.data,
     content: marked(frontmatter.content, { renderer })
   })
@@ -57,57 +61,6 @@ function generatePage (filepath, data) {
 
   return html
 }
-
-// function generateRoute (data, templateSrc) {
-//   var dirName = path.dirname(templateSrc).split('/').slice(-1)[0]
-//   var paramName = path.basename(templateSrc, '.pug').split('').slice(1).join('')
-//   var contentDir = path.join(__dirname, '../..', 'content', dirName)
-
-//   var filenames = fs.readdirSync(contentDir)
-//   var filepaths = filenames.map(filename => path.join(contentDir, filename))
-
-//   if (!data.routes[dirName]) {
-//     data.routes[dirName] = []
-//   }
-
-//   var folder = data.routes[dirName]
-//   var pages = filepaths.map(toPage)
-
-//   // do this first, we need all pages in the data object
-//   pages.forEach(page => folder.push(page.item))
-//   pages.forEach(page => {
-//     generatePage(templateSrc, page.dest, page.locals, data)
-//     appendToFeed(page)
-//   })
-// }
-
-// function toPage (filepath) {
-//   var content = fs.readFileSync(filepath, 'utf8')
-
-//   var frontmatter = matter(content)
-//   var itemData = frontmatter.data
-
-//   return {
-//     filepath,
-//     dest: getDestination(filepath),
-//     locals: {
-//       post: {
-//         data: itemData,
-//         content: marked(frontmatter.content, { renderer })
-//       }
-//     },
-//     item: {
-//       slug: path.basename(filepath, path.extname(filepath)),
-//       title: itemData.title,
-//       date: formatDate(itemData.date),
-//       author: itemData.author,
-//       category: itemData.category,
-//       tags: itemData.tags,
-//       blurb: itemData.blurb,
-//       alt: itemData.alt
-//     }
-//   }
-// }
 
 function appendToFeed ({ filepath, item }) {
   if (path.basename(path.dirname(filepath)) === 'news') {
@@ -120,34 +73,6 @@ function appendToFeed ({ filepath, item }) {
     }))
   }
 }
-
-// function generatePage (src, dest, locals = {}, data) {
-//   var file = fs.readFileSync(src, 'utf8')
-//   var html = compilePug(src, file, locals, data)
-
-//   if (!dest) {
-//     dest = getDestination(src)
-//   }
-
-//   mkdirp.sync(path.dirname(dest))
-//   fs.writeFileSync(dest, html)
-// }
-
-// function compilePug (filename, content, locals, data) {
-//   if (!content) content = ''
-//   if (!locals) locals = {}
-//   if (!data) data = {}
-
-//   var opts = Object.assign({}, pugOpts, {
-//     filename
-//   })
-
-//   var env = Object.assign(locals, data, {
-//     formatDate
-//   })
-
-//   return pug.compile(content, opts)(env)
-// }
 
 function getDestination (src) {
   var subdir = path

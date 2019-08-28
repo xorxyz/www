@@ -1,9 +1,5 @@
-<section>
 
-> i would totally play MMORPGs if they brought me value in real life
-
-</section>
-<section>
+> I would totally play MMORPGs if they brought me value in real life.
 
 ## why
 
@@ -19,10 +15,6 @@ but when you manage systems for a living, you don't have time to manage your lab
 what if your lab was managed for you? 
 what if it provided you with a stream of relevant and fun challenges?
 
-</section>
-<section>
-
-## how
 
 1. impact your career and your bottom line
   - serve as an online presence to communicate competency
@@ -42,18 +34,12 @@ what if it provided you with a stream of relevant and fun challenges?
   - help connect with other local hackers
   - help connect with other local companies
 
-</section>
-<section>
 
 ## what
 
-1. a gamified computer security training platform
-2. a sandbox mmorpg filled with computer security puzzles
+a gamified computer security training platform.
 
-</section>
-<section>
-
-## sandbox mmorpg/immersive sims
+immersive sim:
 
 1. systems-driven interactive gameplay
   - emergence
@@ -62,10 +48,9 @@ what if it provided you with a stream of relevant and fun challenges?
 2. agency
 3. lateral thinking
 
-</section>
-<section>
+## how
 
-## components
+components:
 
 - a real-world simulation you can run tests against
   - clocks
@@ -83,27 +68,3 @@ what if it provided you with a stream of relevant and fun challenges?
 - a curated technology kit
   - package manager with versioning
   - exploit database
-
-</section>
-<section>
-
-## pricing
-
-### free
-
-everyone has access to the whole game for free forever.
-
-### premium
-
-97$/season or 360$/year. no refunds.
-
-premium gives you access to:
-
-- the level editor
-- tournaments
-- private team networks
-- backstage content
-- a badge in your profile
-- cheaper merch!
-
-</section>
