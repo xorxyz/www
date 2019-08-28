@@ -5,7 +5,7 @@ var copyAssets = require('./build/copy-assets.js')
 var loadData = require('./build/load-data.js')
 var buildHTML = require('./build/build-html.js')
 var buildCSS = require('./build/build-css.js')
-var feed = require('./build/build-feed.js')
+var feed = require('./build/feed.js')
 
 if (require.main === module) {
   build()
@@ -18,7 +18,7 @@ function build () {
 
   recreateDist()
   copyAssets()
-  buildHTML(data, feed)
+  buildHTML(data)
   buildCSS()
 
   feed.build()

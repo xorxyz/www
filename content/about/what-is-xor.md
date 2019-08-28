@@ -1,100 +1,15 @@
+what is xor
 
-> i would totally play MMORPGs if they brought me value in real life
-
----
-
-## why
-
-one of the difficulties with learning how to hack is that
-you're not supposed to hack each other.
-
-having a sandbox or a lab to practice is the best thing you can do if you want to get better.
-
-most infosec professionals have their own lab.
-
-but when you manage systems for a living, you don't have time to manage your lab when you go back home, you want to just use it.
-
-what if your lab was managed for you? 
-what if it provided you with a stream of relevant and fun challenges?
-
----
-
-## how
-
-1. impact your career and your bottom line
-  - serve as an online presence to communicate competency
-  - help bring new clients to your security business
-2. helps you get better and learn more
-  - focused on principles
-  - well-paced challenges
-  - helps build T-shaped skills
-  - timeless
-3. engaging and fun
-  - short challenges
-  - engrossing storytelling
-  - cool universe
-  - great mechanics
-  - encouraging lateral thinking
-4. help you meet new people
-  - help connect with other local hackers
-  - help connect with other local companies
-
----
-
-## what
-
-1. a gamified computer security training platform
-2. a sandbox mmorpg filled with computer security puzzles
-
----
-
-## sandbox mmorpg/immersive sims
-
-1. systems-driven interactive gameplay
-  - emergence
-  - consistency
-  - reactivity
-2. agency
-3. lateral thinking
-
----
-
-## components
-
-- a real-world simulation you can run tests against
-  - clocks
-  - NPCs
-  - sensors
-  - services
-- an emulation cloud
-  - a system for automating deployment, scaling, and management of emulated hardware
-  - containerized qemu
-  - overlay network
-  - nfs
-- a tool set for level creators
-  - a scenario editor
-  - a chatbot framework
-- a curated technology kit
-  - package manager with versioning
-  - exploit database
-
----
-
-## pricing
-
-### free
-
-everyone has access to the whole game for free forever.
-
-### premium
-
-97$/season or 360$/year. no refunds.
-
-premium gives you access to:
-
-- the level editor
-- tournaments
-- private team networks
-- backstage content
-- a badge in your profile
-- cheaper merch!
+- learn by doing
+- geeking out is a thing you do
+- "Role-playing games provide a natural role-switching mechanism, which may help children experience different roles such as question-asker and question-answerer in group interaction. In addition, role-playing games enable children to play very different roles in games than in real life, which may enhance their competencies in problem solving (Hammer, 2007)"
+- safe environment for players to experiment and explore without worrying about social risks such as failure
+- collaborative learning
+- design guidelines and frameworks for technology-enhanced learning environments that foster epistemic curiosity in science education
+- four aspects of an ideal curiosity-evoking environment
+  1. a role-playing game to encourage exploration of science concepts by allowing children to switch amongst the different roles in science exploration
+  2. a virtual peer that models and scaffolds exploratory and collaborative hands-on learning in the role-playing game in ways that trigger increased curiosity on the part of the players
+  3. a multimodal sensing system that automatically recognizes players learning states and conveys them to the virtual peer
+  4. a set of curiosity-evoking virtual toys that allow real and virtual peers to play together
+- interactive fiction
+  - almost exclusively dialogue and narrative-based games

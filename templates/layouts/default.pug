@@ -2,5 +2,8 @@ extends /templates/layouts/layout.pug
 
 block body  
   include /templates/components/navbar.pug
-  include /templates/components/content.pug
+
+  main.flex.flex-column
+    |!{ content }
+
   include /templates/components/footer.pug

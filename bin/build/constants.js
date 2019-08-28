@@ -5,7 +5,8 @@ module.exports = {
     'dist', 
     'templates/pages', 
     'style', 
-    'public'
+    'public',
+    'content'
   ]),
   MONTHS: [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',

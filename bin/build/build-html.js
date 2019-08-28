@@ -5,6 +5,8 @@ var pug = require('pug')
 var matter = require('gray-matter')
 var marked = require('marked')
 
+var feed = require('./feed')
+
 const { DIR, MONTHS } = require('./constants.js')
 const pugOpts = {
   basedir: path.join(__dirname, '../..'),
@@ -14,110 +16,138 @@ const pugOpts = {
 
 var renderer = new marked.Renderer()
 
+renderer.image = createCustomRenderImageFn(renderer.image)
+renderer.hr = createCustomRenderHRFn(renderer.hr)
+
 module.exports = buildHTML
 
-function buildHTML (data, feed) {
-  var dynamicRoutes = []
-  var pageFiles = DIR['templates/pages']
-  var pages = listFilesRecursive(pageFiles).filter(page => {
-    if (path.basename(page, '.pug')[0] === '_') {
-      dynamicRoutes.push(page)
+function buildHTML (data) {
+  var pageFiles = DIR['content']
+  var filepaths = listFilesRecursive(pageFiles)
 
-      return false
-    }
+  filepaths.forEach(filepath => {
+    if (path.dirname(filepath)[0] === '_') return
 
-    return true
-  })
-
-  renderer.image = createCustomRenderImageFn(renderer.image)
-  data.routes = {}
-
-  pages.forEach(page => {
-    generatePage(page, null, null, data)
-  })
-
-  dynamicRoutes.forEach(src => generateRoute(data, src))
-
-  console.log(data.routes)
-}
-
-function generateRoute (data, templateSrc) {
-  var dirName = path.dirname(templateSrc).split('/').slice(-1)[0]
-  var paramName = path.basename(templateSrc, '.pug').split('').slice(1).join('')
-  var contentDir = path.join(__dirname, '../..', 'content', dirName)
-
-  mkdirp.sync(contentDir)
-
-  var filenames = fs.readdirSync(contentDir)
-  var filepaths = filenames.map(filename => path.join(contentDir, filename))
-
-  if (!data.routes[dirName]) {
-    data.routes[dirName] = []
-  }
-
-  filepaths.forEach(filepath => {
-    var content = fs.readFileSync(filepath, 'utf8')
+    var html = generatePage(filepath, data)
     var dest = getDestination(filepath)
-    var frontmatter = matter(content)
-    var locals = {
-      post: {
-        data: frontmatter.data,
-        content: marked(frontmatter.content, { renderer })
-      }
-    }
 
-    generatePage(templateSrc, dest, locals, data)
-
-    if (path.basename(path.dirname(filepath)) === 'news') {
-      var item = {
-        slug: path.basename(filepath, path.extname(filepath)),
-        title: data.title,
-        date: formatDate(data.date),
-        author: data.author,
-        category: data.category,
-        tags: data.tags,
-        blurb: data.blurb,
-        alt: data.alt
-      }
-
-      feed.addItem(Object.assign({}, item, {
-        content,
-        updated: new Date(item.updated || item.date),
-        date: new Date(item.date),
-        description: item.blurb,
-        link: 'https://xor.xyz/news/' + item.slug
-      }))
-    }
+    mkdirp.sync(path.dirname(dest))
+    fs.writeFileSync(dest, html)
   })
 }
 
-function generatePage (src, dest, locals = {}, data) {
-  var file = fs.readFileSync(src, 'utf8')
-  var html = compilePug(src, file, locals, data)
+function generatePage (filepath, data) {
+  var content = fs.readFileSync(filepath, 'utf8')
+  var frontmatter = matter(content)
+  var templateSrc = path.join(
+    __dirname,
+    '../../templates/layouts', 
+    (frontmatter.data.template || 'default') + '.pug'
+  )
+  var template = fs.readFileSync(templateSrc, 'utf8')
+  var opts = Object.assign({}, pugOpts, { filename: filepath })
+  var locals = Object.assign({}, data, {
+    formatDate,
+    meta: frontmatter.data,
+    content: marked(frontmatter.content, { renderer })
+  })
 
-  if (!dest) {
-    dest = getDestination(src)
+  var compileHtml = pug.compile(template, opts)
+  var html = compileHtml(locals)
+
+  return html
+}
+
+// function generateRoute (data, templateSrc) {
+//   var dirName = path.dirname(templateSrc).split('/').slice(-1)[0]
+//   var paramName = path.basename(templateSrc, '.pug').split('').slice(1).join('')
+//   var contentDir = path.join(__dirname, '../..', 'content', dirName)
+
+//   var filenames = fs.readdirSync(contentDir)
+//   var filepaths = filenames.map(filename => path.join(contentDir, filename))
+
+//   if (!data.routes[dirName]) {
+//     data.routes[dirName] = []
+//   }
+
+//   var folder = data.routes[dirName]
+//   var pages = filepaths.map(toPage)
+
+//   // do this first, we need all pages in the data object
+//   pages.forEach(page => folder.push(page.item))
+//   pages.forEach(page => {
+//     generatePage(templateSrc, page.dest, page.locals, data)
+//     appendToFeed(page)
+//   })
+// }
+
+// function toPage (filepath) {
+//   var content = fs.readFileSync(filepath, 'utf8')
+
+//   var frontmatter = matter(content)
+//   var itemData = frontmatter.data
+
+//   return {
+//     filepath,
+//     dest: getDestination(filepath),
+//     locals: {
+//       post: {
+//         data: itemData,
+//         content: marked(frontmatter.content, { renderer })
+//       }
+//     },
+//     item: {
+//       slug: path.basename(filepath, path.extname(filepath)),
+//       title: itemData.title,
+//       date: formatDate(itemData.date),
+//       author: itemData.author,
+//       category: itemData.category,
+//       tags: itemData.tags,
+//       blurb: itemData.blurb,
+//       alt: itemData.alt
+//     }
+//   }
+// }
+
+function appendToFeed ({ filepath, item }) {
+  if (path.basename(path.dirname(filepath)) === 'news') {
+    feed.addItem(Object.assign({}, item, {
+      content,
+      updated: new Date(item.updated || item.date),
+      date: new Date(item.date),
+      description: item.blurb,
+      link: 'https://xor.xyz/news/' + item.slug
+    }))
   }
-
-  mkdirp.sync(path.dirname(dest))
-  fs.writeFileSync(dest, html)
 }
 
-function compilePug (filename, content, locals, data) {
-  if (!content) content = ''
-  if (!locals) locals = {}
-  if (!data) data = {}
+// function generatePage (src, dest, locals = {}, data) {
+//   var file = fs.readFileSync(src, 'utf8')
+//   var html = compilePug(src, file, locals, data)
 
-  var opts = Object.assign({}, pugOpts, {
-    filename
-  })
+//   if (!dest) {
+//     dest = getDestination(src)
+//   }
 
-  var env = Object.assign(locals, data, {
-    formatDate
-  })
+//   mkdirp.sync(path.dirname(dest))
+//   fs.writeFileSync(dest, html)
+// }
 
-  return pug.compile(content, opts)(env)
-}
+// function compilePug (filename, content, locals, data) {
+//   if (!content) content = ''
+//   if (!locals) locals = {}
+//   if (!data) data = {}
+
+//   var opts = Object.assign({}, pugOpts, {
+//     filename
+//   })
+
+//   var env = Object.assign(locals, data, {
+//     formatDate
+//   })
+
+//   return pug.compile(content, opts)(env)
+// }
 
 function getDestination (src) {
   var subdir = path
@@ -167,5 +197,11 @@ function createCustomRenderImageFn (fn) {
     href = process.env.ASSET_URL + '/images/' + href
 
     return fn.call(renderer, href, title, text)
+  }
+}
+
+function createCustomRenderHRFn (fn) {
+  return function renderHR () {
+    return fn.call(renderer, ...arguments)
   }
 }

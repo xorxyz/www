@@ -1,3 +1,9 @@
 items:
-  - name: Game
-    route: /game
+  - name: About
+    route: /about
+  - name: Pricing
+    route: /pricing
+  - name: Library
+    route: /library
+  - name: Community
+    route: /community

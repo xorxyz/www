@@ -9,7 +9,7 @@ tags:
 
 The game world is structured like a security conference
 
-### `Undefined Island
+### `Undefined` Island
 
 <img src="/images/illustrations/map.png" />
 

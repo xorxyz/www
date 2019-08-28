@@ -1,12 +1,21 @@
-extends /templates/layouts/default.pug
+extends /templates/layouts/game.pug
 
-block content
+block header
   section.bg-purple.white.pv3
-    .container.blog-post
+    .container
       article.tl
         a.white.underline.link(href="/game") Game
         span   /  
         span #{ post.data.title }
+
+block sidebar
+  .pv3(style="min-width: 30ex;")
+    ul.list.lh-copy
+      for route in routes.game
+        li
+          a(href=route.slug) #{ route.title }
+
+block content
   section.blog-post
     .container
       article
