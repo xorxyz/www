@@ -1,6 +1,8 @@
 ## pricing
 
-$99 / season or $350 / year. no refunds.
+$99 / season or $350 / year. 
+
+no refunds.
 
 gives you access to:
 

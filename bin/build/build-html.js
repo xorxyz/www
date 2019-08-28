@@ -28,7 +28,7 @@ function buildHTML (data) {
   var filepaths = listFilesRecursive(pageFiles)
 
   filepaths
-    .forEach(({ filepath, dirIndex }) => {
+    .forEach((filepath) => {
       if (path.dirname(filepath)[0] === '_') return
 
       var html = generatePage(filepath, data)
