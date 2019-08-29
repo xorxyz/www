@@ -51,6 +51,7 @@ function generatePage (filepath, data) {
   var opts = Object.assign({}, pugOpts, { filename: filepath })
   var locals = Object.assign({}, data, {
     formatDate,
+    templateName: template,
     dir: fs.readdirSync(path.dirname(filepath)),
     meta: frontmatter.data,
     content

@@ -1,0 +1,14 @@
+extends /templates/layouts/_layout.pug
+
+block body  
+  include /templates/components/navbar.pug
+
+  section.bg-black.min-vh-50.flex.flex-column.items-center.justify-center
+    h2.f2.white clever sentence
+    h3.f3.white.mt0 something something hacking
+
+  main.w-100.flex.flex-column.items-center.mv3.pv3
+    .container
+      |!{ content }
+
+  include /templates/components/footer.pug

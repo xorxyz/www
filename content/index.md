@@ -1,3 +1,7 @@
+---
+template: landing-page
+---
+
 > ***please note that this is a work in progress.***
 
 ## why

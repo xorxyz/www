@@ -1,34 +1,20 @@
-## pricing
+---
+title: Pricing
+---
 
-no refunds.
+Each package is valid for one season (3 months).
 
-novice 
-27$/season
+**No refunds.**
 
-gives you access to:
+<div class="pricing-table">
 
-- the whole game
-- tournament access
+**Novice**        | **Pro**               | **Competitor**
+---               | ---                   | ---
+C$ 27             | C$ 99                 | C$ 279
+the whole game    | everything in novice  | everything in pro
+tournament access | the level editor      | leagues
+                  | backstage content     | attack/defend labs
+                  | cheaper merch         | private team networks
 
-pro
-99$/season
-
-gives you access to:
-
-- everything in novice
-- the level editor
-- backstage content
-- cheaper merch
-
-competitor
-279$/season
-
-gives you access to:
-
-- everything in pro
-- leagues
-- attack/defend labs
-- private team networks
-
-
+</div>
 
