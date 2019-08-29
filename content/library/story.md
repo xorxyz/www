@@ -33,8 +33,8 @@ Who knows what secrets this new dimension holds?
 - power grids are needed to run data networks, and data networks are needed to operate power grids.
 - backup generators
 - hospital
-- floor is lava
-- 
+- the floor is lava
+- factions
   - walkaways 
   - outcasts
   - solars

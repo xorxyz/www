@@ -1,5 +1,11 @@
-missions
-
+---
+title: Missions
+date: 2019-08-28
+author: jonathan@diagonal.sh
+category: Game
+tags:
+  - Game
+---
 
 - build knowledge from the ground up
 - you can have up to 5 on-going missions at a given time:

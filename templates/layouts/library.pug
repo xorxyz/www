@@ -1,18 +1,15 @@
-extends /templates/layouts/layout.pug
+extends /templates/layouts/_layout.pug
 
 block body  
   include /templates/components/navbar.pug
 
-  main.flex.flex-row.justify-center
-    nav.dn.flex-ns.w-30-ns.pa3
-      .container.bg-black.br2
-        ul.list.pa2.lh-copy
-          each d in dir.filter(f => f !== 'index.md')
-            li
-              a.link.pointer #{ d.replace('.md', '') }
-    article.flex.flex-auto
-      .container
-        h2 #{ meta.title }
-        |!{ content }
+  main.w-100.flex.flex-column.items-center
+    .container.flex.flex-row.justify-center.ph2
+      div.mv3.dn.flex-ns(style="min-width: 33%")
+        include /templates/components/sidebar.pug
+      div.flex.flex-auto(style="min-width:512px")
+        .container
+          h2 #{ meta.title }
+          |!{ content }
 
   include /templates/components/footer.pug

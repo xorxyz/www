@@ -1,8 +1,8 @@
 ---
-title: Inventory
+title: Team Roles
 date: 2019-08-28
 author: jonathan@diagonal.sh
-category: Game
+category: Mechanics
 tags:
   - Game
 ---

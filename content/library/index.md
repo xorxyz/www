@@ -1,6 +1,12 @@
 ---
 title: Library
-template: library
+date: 2019-08-28
+author: jonathan@diagonal.sh
+category: Game
+tags:
+  - Game
 ---
 
-hello world
+Something something library
+
+---

@@ -8,6 +8,7 @@ var marked = require('marked')
 var feed = require('./feed')
 
 const { DIR, MONTHS } = require('./constants.js')
+const TEMPLATES_DIR = path.join(__dirname, '../../templates/layouts')
 const pugOpts = {
   basedir: path.join(__dirname, '../..'),
   filters: {},
@@ -40,26 +41,41 @@ function buildHTML (data) {
 }
 
 function generatePage (filepath, data) {
-  var content = fs.readFileSync(filepath, 'utf8')
-  var frontmatter = matter(content)
-  var templateSrc = path.join(
-    __dirname,
-    '../../templates/layouts', 
-    (frontmatter.data.template || 'default') + '.pug'
-  )
-  var template = fs.readFileSync(templateSrc, 'utf8')
+  var markdownText = fs.readFileSync(filepath, 'utf8')
+  var frontmatter = matter(markdownText)
+  var content = marked(frontmatter.content, { renderer })
+  var template = frontmatter.data.template || getTemplate(filepath)
+  var templateSrc = path.join(TEMPLATES_DIR, template + '.pug')
+
+  var templateText = fs.readFileSync(templateSrc, 'utf8')
   var opts = Object.assign({}, pugOpts, { filename: filepath })
   var locals = Object.assign({}, data, {
     formatDate,
     dir: fs.readdirSync(path.dirname(filepath)),
     meta: frontmatter.data,
-    content: marked(frontmatter.content, { renderer })
+    content
   })
 
-  var compileHtml = pug.compile(template, opts)
-  var html = compileHtml(locals)
+  var html = pug.compile(templateText, opts)(locals)
 
   return html
+}
+
+function getContentDir (filepath) {
+  var dirs = filepath.split('/')
+  var index = dirs.findIndex(d => d === 'content') + 1
+
+  return dirs[index]
+}
+
+function getTemplate (filepath) {
+  var dirname = getContentDir(filepath)
+
+  var templateSrc = path.join(TEMPLATES_DIR, dirname + '.pug')
+
+  return fs.existsSync(templateSrc, 'utf8')
+    ? dirname
+    : 'default'
 }
 
 function appendToFeed ({ filepath, item }) {
