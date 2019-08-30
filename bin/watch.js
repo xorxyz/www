@@ -6,8 +6,9 @@ var build = require('./build')
 runBuild()
 
 var b = budo('./src/index.js', {
-  live: true,
+  live: false,
   port: 8000,
+  pushstate: true,
   dir: path.join(__dirname, '../dist'),
   watchGlob: ['!dist/**', '**/*.{md,pug,styl,yml,png}'],
   staticOptions: {
@@ -24,6 +25,6 @@ function runBuild () {
   try {
     build()
   } catch (err) {
-    console.log(err)
+    console.log('build failed:', err)
   }
 }

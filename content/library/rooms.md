@@ -1,14 +1,10 @@
 ---
 title: Rooms
-date: 2019-08-28
-author: jonathan@diagonal.sh
-category: Game
-tags:
-  - Game
 ---
 
-
-
-visibility system
-  uncover details about the environment
-  first look, 2nd look, 3 look
+- rooms are connected by doors
+- visibility system
+  - uncover details about the environment 
+  - (first look, 2nd look, 3rd look)
+- music & sound effects
+  - default to closed captions 

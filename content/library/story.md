@@ -34,6 +34,7 @@ Who knows what secrets this new dimension holds?
 - backup generators
 - hospital
 - the floor is lava
+- ancient logic machines
 - factions
   - walkaways 
   - outcasts

@@ -1,4 +1,4 @@
-var rimraf = require('rimraf')
+var { execSync } = require('child_process')
 var mkdirp = require('mkdirp')
 
 const { DIR } = require('./constants')
@@ -6,6 +6,6 @@ const { DIR } = require('./constants')
 module.exports = recreateDist
 
 function recreateDist () {
-  rimraf.sync(DIR.dist)
+  execSync(`rm -rf ${DIR.dist}`)
   mkdirp.sync(DIR.dist)
 }

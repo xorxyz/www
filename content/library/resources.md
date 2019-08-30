@@ -1,14 +1,8 @@
 ---
 title: Resources
-date: 2019-08-28
-author: jonathan@diagonal.sh
-category: Game
-tags:
-  - Game
 ---
 
 even a few old 16-bit computers would be enough to get started
-
 
 
 3 ways of getting resources for the badlands:

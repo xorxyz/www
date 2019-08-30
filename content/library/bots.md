@@ -1,10 +1,5 @@
 ---
-title: Actors
-date: 2019-08-28
-author: jonathan@diagonal.sh
-category: Game
-tags:
-  - Game
+title: Bots
 ---
 
 - can be peer or foe

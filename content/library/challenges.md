@@ -7,7 +7,7 @@ tags:
   - Game
 ---
 
-## Categories
+### Categories
 
 - crypto
 - hardware
@@ -16,3 +16,7 @@ tags:
 - sandbox
 - web
 - forensics
+
+### Collection Technique
+
+- Discipline (geoint, humint, masint, osint, sigint)
