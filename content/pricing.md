@@ -2,8 +2,6 @@
 title: Pricing
 ---
 
-
-
 <div class="pricing-table">
 
 **Community**       | **Pro**                  | **Team**
