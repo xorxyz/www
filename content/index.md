@@ -59,10 +59,12 @@ a platform as a service for building computer security labs.
 
 > I would totally play MMORPGs if they brought me value in real life.
 
+Domain-Specific Application Platform as a Service.
+
 ## how
 
-Domain-Specific Application Platform as a Service.
 develop, run, and manage computer security labs without the complexity of building and maintaining the infrastructure.
+
 end to end development and utility computing platform
 removing all the repetitive tasks encountered when creating labs.
 

@@ -2,10 +2,19 @@
 title: Items
 ---
 
+Items are stored in a player's inventory.
 
-### Inventory
 
-### Consummable
 
-### Clonable
+### Bytecode
+
+
+
+### Scripts
+
+
+
+### Text Files
+
+
 

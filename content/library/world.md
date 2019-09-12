@@ -7,7 +7,7 @@ tags:
   - Game
 ---
 
-The game world is structured like a security conference
+The game world is structured like a security conference.
 
 ### `Undefined` Island
 
@@ -23,29 +23,4 @@ created.
 - The general [store](#store) is where players can sell their goods and buy supplies for their adventures.
 - The [palace](#palace) hosts special events.
 - Every path has a [Guild Hall](#guildhalls) with a tutor NPC.
-
-
----
-
-
-### Physical space ("the Substrate")
-
-- hypermachines ("rigs", "ships", "boxes")
-- physical environment
-
-### Dreamspace ("the Dream")
-
-A pseudo-virtual world with that is heavily influenced by dreams.
-
-- entities, beings, souls
-- ghosts, spirits
-- dreams
-- places
-
-### Cyberspace 
-
-- software libraries ("spells")
-- virtual routers ("gateways")
-- virtual devices ("equipment")
-- files & images ("items")
-
+- you can interact with the locals, building relationships and helping one another out

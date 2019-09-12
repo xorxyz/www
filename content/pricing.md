@@ -2,20 +2,20 @@
 title: Pricing
 ---
 
-Each package is valid for one season (3 months).
 
-**No refunds.**
 
 <div class="pricing-table">
 
-**Novice**          | **Pro**                 | **Competitor**
----                 | ---                     | ---
-C$ 27               | C$ 99                   | C$ 279
-&nbsp;              | &nbsp;                  | &nbsp;
-- the whole game    | - everything in novice  | - everything in pro
-- tournament access | - the level editor      | - leagues
-                    | - backstage content     | - attack/defend labs
-                    | - cheaper merch         | - private team networks
+**Community**       | **Pro**                  | **Team**
+---                 | ---                      | ---
+Free                | $ 9/mo                   | C$ 99/mo
+&nbsp;              | &nbsp;                   | &nbsp;
+- the whole game    | - everything in community| - everything in pro
+- tournament access | - the level editor       | - leagues
+                    | - backstage content      | - attack/defend labs
+                    | - cheaper merch          | - private team networks
+
+**No refunds.**
 
 </div>
 

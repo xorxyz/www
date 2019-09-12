@@ -2,80 +2,89 @@
 title: Areas
 ---
 
-### Requirements
+Areas are immersive narrative players can explore.
 
-- Binaries
-- Libraries
-- Items
-- Devices
+- Genre (detective? exploration? heist? escape?)
+- Setting (homelab? coffee shop? data center? office?)
+
+
+### World
+
+Integration in the persistent world
+
+  - timeframe
+  - physical location
+  - historical moment
+  - place
 
 
 ### Rooms & Doors
 
 An area is made up of a graph of [rooms](rooms).
+Rooms are the nodes and doors are the edges.
 
-
-### Immersion
-
-Areas have an immersive narrative to explore.
-
-- Genre (detective? exploration? heist? escape?)
-- Setting (homelab? coffee shop? data center? office?)
-- World
-  - timeframe
-  - physical location
-  - historical moment
-  - place
-- Narrative
-  - roles
-  - friends
-  - foes
-  - conflict
-  - story
-  - goal
-
-authors can choose which song is played in their area
-from the soundtrack of the game.
 
 ### Bots
 
-[bots](bots) spawn in rooms. Players can talk to them. 
+[bots](bots) can be spawned in rooms when a given event is triggered. 
+Bots listen to the room channel and react to certain queries.
 
 
 ### Triggers
 
-A [triggers](triggers) condition that activates an event.
+A [triggers](triggers) is condition that activates an event.
 
 
 ### Events
 
-Narrative device. An item spawns. A bot says something.
+Narrative device that happens in the game world in response to a 
+trigger. An item spawns. A bot says something.
 
 
-### Challenges
+### Tasks
+
+Things that can be accomplished in this area.
 
 #### Searching
 
-- find an item
+- ie: `find an item`
 
 #### Puzzle
 
-- solve this puzzle
+- ie: `figure this out `
 
-#### Task
+#### Action
 
-- do x with y
+- ie: `go to x and do y with the z`
 
+
+### Requirements
+
+Players can only spawn an area in a lab if they
+meet the area's requirements.  
+
+- Knowledge
+  - Ideas
+  - Rumors
+- Files
+  - Binaries
+  - Libraries
+  - ASCII
+  - UTF-8
+  - Punycode
+- Items
+  - Devices
+  - Parts
+  - Consumables
 
 ### Devices
 
-[Devices](devices) can be placed in rooms and networked with each other.
-Some devices can be picked up as items.
+[Devices](devices) can be placed in rooms and networked with each other. Some devices can be picked up as items.
 
 
 ### Link
 
-A link is how devices are connected together.
+A link is how two devices are connected together.
 
 
 ### Services
@@ -86,8 +95,15 @@ A link is how devices are connected together.
 ### Items
 
 [Items](items) can be placed in rooms.
+By default all items stay in the lab when players leave.
+Specific items can be given as a prize when a team completes
+an area.
 
 
+### Music
+
+Music from the [soundtrack](soundtrack) plays based on the 
+current lab state.
 
 
 ---

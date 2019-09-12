@@ -2,6 +2,11 @@
 title: Triggers
 ---
 
+### Simulation-based
+
+eg: An item spawns. A bot says something.
+
+
 ### Device-based
 
 You can hook on to system calls and do a check on it's arguments.

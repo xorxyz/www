@@ -8,8 +8,11 @@ tags:
   - Game
 ---
 
-Around level 5, characters can join one of four paths. 
-Each path gives them both advantages and disadvantages.
+Every character starts as a civilian.
+
+Around level 5, characters can join one of four jobs. 
+Each job gives them both advantages and disadvantages.
+
 
 
 <div class="tl">
