@@ -8,7 +8,7 @@ title: Pricing
 
 **Community**       | **Pro**                  | **Team**
 ---                 | ---                      | ---
-Free                | $ 9/mo                   | C$ 99/mo
+Free                | C$ 9/mo                  | C$ 99/mo
 &nbsp;              | &nbsp;                   | &nbsp;
 - the whole game    | - everything in community| - everything in pro
 - tournament access | - the level editor       | - leagues
