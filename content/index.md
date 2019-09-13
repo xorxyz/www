@@ -1,7 +1,7 @@
 ---
 template: landing-page
 title: "> whoami_"
-subtitle: a platform for making, sharing and playing computer security challenges
+subtitle: xor is a platform for making, sharing and playing computer security challenges
 ---
 
 ## Labs are a great way to learn by doing.
