@@ -4,8 +4,9 @@ block body
   include /templates/components/navbar.pug
 
   section.bg-black.min-vh-50.flex.flex-column.items-center.justify-center
-    h2.f2.white clever sentence
-    h3.f3.white.mt0 run computer security labs without the complexity of maintaining the infrastructure
+    div.flex.flex-column.tc(style="max-width: 32rem;")
+      h2.f2.white #{ meta.title }
+      h3.f3.white.mt0 #{ meta.subtitle }
 
   main.w-100.flex.flex-column.items-center.mv3.pv3
     .container

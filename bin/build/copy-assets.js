@@ -1,3 +1,5 @@
+console.log('Loading asset builder...')
+
 var fse = require('fs-extra')
 var path = require('path')
 

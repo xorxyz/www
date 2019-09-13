@@ -1,86 +1,85 @@
 ---
 template: landing-page
+title: "> whoami_"
+subtitle: a platform for making, sharing and playing computer security challenges
 ---
 
-> ***please note that this is a work in progress.***
+## Labs are a great way to learn by doing.
 
-check out <a href="/notes">the notes</a>.
+Having a sandbox lab to practice is the best thing your security team can do if they want to get better.
 
-## why
+CTF challenges can help them stay on their A-game, promote your company to the security community, and provide reliable, measurable channels to attract new talent.
 
-having a sandbox or a lab to practice is the best thing you can do if you want to get better.
 
-but when you manage systems for a living, you don't have time to manage your lab when you go back home, you want to just use it.
+## What if your lab was a game?
 
-aspects of infrastructure and operations from provisioning and setting up virtual servers, scaling, configuration, security and backups.
+### Engaging and fun
 
-what if your lab was managed for you? 
+- Short challenges
+- Engrossing storytelling
+- Cool universe
+- Great mechanics
+- Encouraging lateral thinking
 
-what if it provided you with a stream of relevant and fun challenges?
+### Helps you and your team get better and learn more
 
-CTF competitions can help your security team stay on its A-game, promote your company and provide reliable, measurable channels to attract new talent.
+- Focused on principles
+- Well-paced challenges
+- Helps build T-shaped skills
 
-1. helps you get better and learn more
-  - focused on principles
-  - well-paced challenges
-  - helps build T-shaped skills
-  - timeless
-2. help you meet new people
-  - help connect with other local hackers
-  - help connect with other local companies
-3. engaging and fun
-  - short challenges
-  - engrossing storytelling
-  - cool universe
-  - great mechanics
-  - encouraging lateral thinking
-4. impact your career and your bottom line
-  - serve as an online presence to communicate competency
-  - help bring new clients to your security business
+### Helps you meet new people
 
-## what
+- Help connect with other local hackers
+- Help connect with other local companies
 
-an open world, multiplayer online computer security puzzle game.
+### Impacts your career and your bottom line
 
-> "A runtime for CTFs"
+- Serve as an online presence to communicate competency
+- Help bring new clients to your security business
 
-immersive sim:
 
-1. systems-driven interactive gameplay
-  - emergence
-  - consistency
-  - reactivity
-2. agency
-3. lateral thinking
+## What I'm working on.
 
-a live environment, where discovery and exploitation of vulnerabilities, as well as securing systems and completing individual challenges, are rewarded.
+> "It's like an interactive runtime for CTFs"
 
-a platform as a service for building computer security labs.
+I'm working on a platform for building computer security labs combined with an open world, multiplayer online computer security puzzle game.
 
-> I would totally play MMORPGs if they brought me value in real life.
+I want to make it easy to create meaningful learning experiences.
 
-Domain-Specific Application Platform as a Service.
+It involves...
 
-## how
 
-develop, run, and manage computer security labs without the complexity of building and maintaining the infrastructure.
+### An emulation cloud
 
-end to end development and utility computing platform
-removing all the repetitive tasks encountered when creating labs.
+An end-to-end development and utility computing platform 
+removing all the repetitive tasks encountered when creating computer security labs.
 
-components:
+Develop, run, and manage computer security labs without the complexity of building and maintaining the infrastructure.
 
-- a real-world simulation you can run tests against
-  - clocks
-  - NPCs
-  - sensors
-  - services
-- an emulation cloud
-  - a system for automating deployment, scaling, and management of emulated hardware
-  - services that provide high-level APIs used to dereference various low-level details of underlying network infrastructure like physical computing resources, location, data partitioning, scaling, security, backup etc.
-- a tool set for level creators
-  - a scenario editor
-  - a chatbot framework
-- a curated technology kit
-  - package manager with versioning
-  - exploit database
+- a system for automating deployment, scaling, and management of emulated hardware
+- services that provide high-level APIs used to dereference various low-level details of underlying network infrastructure like physical computing resources, location, data partitioning, scaling, security, backup etc.
+
+
+### A real-world simulation you can run tests against
+
+A live environment, where discovery and exploitation of vulnerabilities, securing systems and completing individual challenges are rewarded.
+
+- Narrative
+- NPCs
+- Devices
+- Networks
+- Services
+- Sensors
+
+
+### A tool set for level creators
+  
+- a scenario editor
+- a chatbot framework
+
+
+### A curated technology kit
+
+- package manager with versioning
+- custom OS images
+- exploit database

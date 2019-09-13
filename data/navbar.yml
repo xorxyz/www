@@ -1,9 +1,9 @@
 items:
   - name: About
     route: /about
-  - name: Pricing
-    route: /pricing
   - name: Library
     route: /library
   - name: Community
     route: /community
+  - name: Notes
+    route: /notes

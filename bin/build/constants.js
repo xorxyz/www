@@ -1,3 +1,5 @@
+console.log('Loading constants...')
+
 var path = require('path')
 
 module.exports = {

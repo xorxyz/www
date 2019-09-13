@@ -1,3 +1,5 @@
+console.log('Loading environment...')
+
 require('dotenv').config()
 
 var recreateDist = require('./build/mkdir.js')
@@ -14,6 +16,7 @@ if (require.main === module) {
 }
 
 function build () {
+  console.log('Building...')
   var data = loadData()
 
   recreateDist()

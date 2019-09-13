@@ -1,3 +1,5 @@
+console.log('Loading rss feed builder...')
+
 var fs = require('fs')
 var { Feed } = require('feed')
 

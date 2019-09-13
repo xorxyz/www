@@ -21,8 +21,7 @@ three things that audiences want from storytellers:
 
 With a one-hour playtime, escape games don’t have the time to explore an in-depth backstory
 
-The best solution is to reveal backstory through exposition brought to
-light during the action of an ongoing story
+The best solution is to reveal backstory through exposition brought to light during the action of an ongoing story
 
 By exposing the players to the backstory through the challenges, then this content can be delivered in small pieces instead of putting it all into a lengthy pre-game narrative
 

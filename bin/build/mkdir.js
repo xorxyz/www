@@ -1,3 +1,5 @@
+console.log('Loading fs builder...')
+
 var { execSync } = require('child_process')
 var mkdirp = require('mkdirp')
 

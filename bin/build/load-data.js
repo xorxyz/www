@@ -1,3 +1,5 @@
+console.log('Loading data builder...')
+
 var fs = require('fs')
 var path = require('path')
 var yaml = require('yaml')

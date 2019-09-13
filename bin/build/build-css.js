@@ -1,3 +1,5 @@
+console.log('Loading css builder...')
+
 var fs = require('fs')
 var path = require('path')
 var stylus = require('stylus')
