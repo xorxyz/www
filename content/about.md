@@ -9,8 +9,4 @@ tags:
 
 `xor` is an open world, multiplayer online computer security puzzle game.
 
-Players explore a virtual world, taking control of a virtual machines to explore virtual networks and interact with an underlying real-world simulation. Solving puzzles reward players with currency and points, which they can use to upgrade their machines and access different pieces of software.
-
-Every unlocked piece of emulated hardware and software makes 
-itself available in the level editor, which allows players 
-to create puzzles for each other. 
+Players enter a virtual world where they can interact with networking computing devices. Solving puzzles reward them with currency and points, which they can use to access different pieces of software and upgrade their machines. Unlocked pieces of software and emulated hardware are then available in the level editor, which allows players to create puzzles for each other. 
