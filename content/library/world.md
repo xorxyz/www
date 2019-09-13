@@ -7,7 +7,8 @@ tags:
   - Game
 ---
 
-The game world is structured like a security conference.
+2019-09-01: this information is out of date.
+
 
 ### `Undefined` Island
 

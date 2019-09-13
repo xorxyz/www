@@ -13,7 +13,7 @@ CTF challenges can help them stay on their A-game, promote your company to the s
 
 ## What if your lab was a game?
 
-### Engaging and fun
+### It would be engaging and fun
 
 - Short challenges
 - Engrossing storytelling
@@ -21,18 +21,18 @@ CTF challenges can help them stay on their A-game, promote your company to the s
 - Great mechanics
 - Encouraging lateral thinking
 
-### Helps you and your team get better and learn more
+### It would help you and your team get better and learn more
 
 - Focused on principles
 - Well-paced challenges
 - Helps build T-shaped skills
 
-### Helps you meet new people
+### It would help you meet new people
 
 - Help connect with other local hackers
 - Help connect with other local companies
 
-### Impacts your career and your bottom line
+### It would impacts your career and your bottom line
 
 - Serve as an online presence to communicate competency
 - Help bring new clients to your security business
