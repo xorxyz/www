@@ -14,7 +14,6 @@ runBuild()
 var b = budo('./src/index.js', {
   live: true,
   port: PORT,
-  pushstate: true,
   dir: path.join(__dirname, '../dist'),
   watchGlob: ['!dist/**', '**/*.{md,pug,styl,yml,png}'],
   staticOptions: {
