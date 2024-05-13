@@ -1,0 +1,6 @@
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+/rss
+  Content-Type: application/rss+xml; charset=utf-8
+/atom
+  Content-Type: application/atom+xml; charset=utf-8
