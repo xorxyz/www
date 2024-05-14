@@ -1,33 +1,20 @@
-import path from 'path';
-import budo from 'budo';
-import build from './build';
+import * as esbuild from 'esbuild'
+import { buildExceptTS } from './build'
 
-process.env.NODE_ENV = 'development';
+(async function () {
+  let ctx = await esbuild.context({
+    entryPoints: ['src/index.ts'],
+    outfile: 'dist/js/script.js',
+    bundle: true,
+    plugins: [{
+      name: 'buildExceptTS',
+      setup: build => build.onStart(buildExceptTS),
+    }]
+  })
 
-const PORT = 8080;
+  await ctx.watch()
 
-runBuild();
-
-const b = budo('./src/index.js', {
-  live: true,
-  port: PORT,
-  dir: path.join(__dirname, '../dist'),
-  watchGlob: ['!dist/**', "!tmp/**", '!**/_fake.js', '**/*.{md,png,js,ts}'],
-  staticOptions: {
-    extensions: ['html'],
-  },
-}).on('connect', () => {
-  console.log(`Serving site at http://localhost:${PORT}`);
-}).on('watch', () => {
-  runBuild();
-  b.reload();
-});
-
-function runBuild() {
-  try {
-    build();
-  } catch (err) {
-    console.log('Build error:')
-    console.log(err);
-  }
-}
+  const { port } = await ctx.serve({ servedir: 'dist'})
+  
+  console.log(`Serving site at http://localhost:${port}`);
+})()

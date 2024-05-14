@@ -1,35 +1,72 @@
 import { exit } from 'process';
-import fs from 'fs';
+import { writeFile, readFile, readdir, stat } from 'fs/promises';
 import fse from 'fs-extra';
 import path from 'path';
-import * as mkdirp from 'mkdirp';
-import * as rimraf from 'rimraf';
+import { mkdirp } from 'mkdirp';
+import { rimraf } from 'rimraf';
 import * as dotenv from 'dotenv';
 import { Feed } from 'feed';
+import * as esbuild from 'esbuild'
+import { Liquid } from 'liquidjs';
 
 dotenv.config();
 
 const getDirPath = (name: string) =>  path.join(__dirname, "..", name)
 
-export default build;
-
 if (require.main === module) {
-  build();
-  exit();
+  buildAll().then(() => exit());
 }
 
-function build() {
+export async function buildAll() {
   console.log('Building...');
 
-  const feed = createRSSFeed()
+  await recreateDist()
 
-  recreateDist();
-  copyAssets();
-
-  fs.writeFileSync('dist/rss', feed.rss2());
-  fs.writeFileSync('dist/atom', feed.atom1());
+  await Promise.all([buildTs(), buildExceptTS()])
 
   console.log('Done.');
+}
+
+export async function buildExceptTS () {
+  await Promise.all([
+    copyAssets(),
+    buildHtml().then(buildRss),
+  ])
+}
+
+async function buildHtml () {
+  const engine = new Liquid({
+    layouts: getDirPath('src/layouts'),
+    partials: getDirPath('src/partials'),
+    extname: '.html',
+    cache: true,
+  });
+  
+  const pageDir = getDirPath('src/pages')
+  const outDir = getDirPath('dist')
+  const files = await readdir(pageDir, { recursive: true })
+  
+  await Promise.all(files.map(async (filename) => {
+    const filepath = path.join(pageDir, filename)
+
+    if ((await stat(filepath)).isDirectory()) return
+
+    const text = await readFile(filepath, 'utf8')
+    const html = await engine.parseAndRender(text)
+    const dest = path.join(outDir, filename)
+
+    await mkdirp(path.dirname(dest))
+    await writeFile(dest, html)
+  }))
+}
+
+async function buildRss() {
+  const feed = createRSSFeed()
+  
+  await Promise.all([
+    writeFile('dist/rss', feed.rss2()),
+    writeFile('dist/atom', feed.atom1())
+  ])
 }
 
 function createRSSFeed() {
@@ -55,11 +92,20 @@ function createRSSFeed() {
   return feed;
 }
 
-function recreateDist() {
-  rimraf.sync(getDirPath('dist'));
-  mkdirp.sync(getDirPath('dist'));
+async function recreateDist() {
+  await rimraf(getDirPath('dist'));
+  await mkdirp(getDirPath('dist'));
 }
 
-function copyAssets() {
-  fse.copySync(getDirPath('static'), getDirPath('dist'));
+async function copyAssets() {
+  await fse.copy(getDirPath('static'), getDirPath('dist'));
+}
+
+async function buildTs() {
+  await esbuild.build({
+    entryPoints: ['src/index.ts'],
+    bundle: true,
+    minify: true,
+    outfile: path.join(getDirPath('dist'), 'js/script.js'),
+  })
 }
