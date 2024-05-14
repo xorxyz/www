@@ -36,13 +36,13 @@ export async function buildExceptTS () {
 
 async function buildHtml () {
   const engine = new Liquid({
-    layouts: getDirPath('src/layouts'),
-    partials: getDirPath('src/partials'),
+    layouts: getDirPath('html/layouts'),
+    partials: getDirPath('html/partials'),
     extname: '.html',
     cache: true,
   });
   
-  const pageDir = getDirPath('src/pages')
+  const pageDir = getDirPath('html/pages')
   const outDir = getDirPath('dist')
   const files = await readdir(pageDir, { recursive: true })
   
