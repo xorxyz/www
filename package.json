@@ -14,6 +14,8 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@types/node": "^20.12.11",
+    "budo": "^11.8.4",
+    "bulma": "^1.0.0",
     "dotenv": "^16.4.5",
     "esbuild": "0.21.2",
     "feed": "^4.2.2",
@@ -26,6 +28,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "alpinejs": "^3.13.10"
+    "alpinejs": "^3.13.10",
+    "sass": "^1.77.1"
   }
 }

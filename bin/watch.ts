@@ -1,20 +1,23 @@
-import * as esbuild from 'esbuild'
-import { buildExceptTS } from './build'
+import path from 'path';
+import budo from 'budo';
+import { buildAll } from './build';
 
-(async function () {
-  let ctx = await esbuild.context({
-    entryPoints: ['src/index.ts'],
-    outfile: 'dist/js/script.js',
-    bundle: true,
-    plugins: [{
-      name: 'buildExceptTS',
-      setup: build => build.onStart(buildExceptTS),
-    }]
-  })
+process.env.NODE_ENV = 'development';
 
-  await ctx.watch()
-
-  const { port } = await ctx.serve({ servedir: 'dist'})
-  
-  console.log(`Serving site at http://localhost:${port}`);
-})()
+const PORT = 1337;
+const b = budo(path.join(__dirname, '../noop.js'), {
+  live: true,
+  port: PORT,
+  dir: path.join(__dirname, '../dist'),
+  watchGlob: ['{src,html,static}/**/*.{html,css,ts}', '!**/*_fake.js'],
+  staticOptions: {
+    extensions: ['html'],
+  },
+  verbose: true
+}).on('connect', async () => {
+  await buildAll();
+  console.log(`Serving site at http://localhost:${PORT}`);
+}).on('watch', async () => {
+  await buildAll();
+  b.reload();
+});

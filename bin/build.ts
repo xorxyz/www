@@ -8,6 +8,7 @@ import * as dotenv from 'dotenv';
 import { Feed } from 'feed';
 import * as esbuild from 'esbuild'
 import { Liquid } from 'liquidjs';
+import { compile, compileAsync } from 'sass';
 
 dotenv.config();
 
@@ -22,19 +23,17 @@ export async function buildAll() {
 
   await recreateDist()
 
-  await Promise.all([buildTs(), buildExceptTS()])
+  await Promise.all([
+    buildTs(), 
+    copyAssets(),
+    buildHtml().then(buildRss),
+    buildCss()
+  ])
 
   console.log('Done.');
 }
 
-export async function buildExceptTS () {
-  await Promise.all([
-    copyAssets(),
-    buildHtml().then(buildRss),
-  ])
-}
-
-async function buildHtml () {
+export async function buildHtml () {
   const engine = new Liquid({
     layouts: getDirPath('html/layouts'),
     partials: getDirPath('html/partials'),
@@ -60,16 +59,7 @@ async function buildHtml () {
   }))
 }
 
-async function buildRss() {
-  const feed = createRSSFeed()
-  
-  await Promise.all([
-    writeFile('dist/rss', feed.rss2()),
-    writeFile('dist/atom', feed.atom1())
-  ])
-}
-
-function createRSSFeed() {
+export async function buildRss() {
   const feed = new Feed({
     title: 'The Wizard of Xor',
     description: 'The Wizard of Xor is a free computer security education program with original content built on a capture-the-flag framework created by security expert Jonathan Dupré.',
@@ -87,25 +77,34 @@ function createRSSFeed() {
       name: 'Jonathan Dupré',
       link: 'https://jonathandupre.com',
     },
-  });
-
-  return feed;
+  })
+  
+  await Promise.all([
+    writeFile('dist/rss', feed.rss2()),
+    writeFile('dist/atom', feed.atom1())
+  ])
 }
 
-async function recreateDist() {
+export async function recreateDist() {
   await rimraf(getDirPath('dist'));
   await mkdirp(getDirPath('dist'));
 }
 
-async function copyAssets() {
+export async function copyAssets() {
   await fse.copy(getDirPath('static'), getDirPath('dist'));
 }
 
-async function buildTs() {
+export async function buildTs() {
   await esbuild.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
     minify: true,
     outfile: path.join(getDirPath('dist'), 'js/script.js'),
   })
+}
+
+export async function buildCss() {
+  // const css = (await compileAsync(path.join(getDirPath('style'), 'index.scss'), { loadPaths: ['node_modules'] })).css
+  // await mkdirp(getDirPath('dist/css'))
+  // await writeFile(path.join(getDirPath('dist/css'), 'style.css'), css)
 }
