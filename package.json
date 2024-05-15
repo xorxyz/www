@@ -13,6 +13,7 @@
   "author": "Jonathan Dupré",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@types/alpinejs": "^3.13.10",
     "@types/node": "^20.12.11",
     "budo": "^11.8.4",
     "bulma": "^1.0.0",

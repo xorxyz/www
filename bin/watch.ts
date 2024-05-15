@@ -11,6 +11,7 @@ const b = budo(path.join(__dirname, '../noop.js'), {
   dir: path.join(__dirname, '../dist'),
   watchGlob: ['{src,html,static}/**/*.{html,css,ts}', '!**/*_fake.js'],
   staticOptions: {
+    index: false,
     extensions: ['html'],
   },
   verbose: true
