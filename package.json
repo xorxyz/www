@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run watch",
     "watch": "npx ts-node bin/watch",
-    "build": "npx ts-node bin/build",
+    "build": "npx ts-node --transpile-only bin/build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix --ext .js,.ts"
   },
