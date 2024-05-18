@@ -1,4 +1,4 @@
 import Alpine from 'alpinejs'
-import './components/code_editor'
+import './components/program_editor'
 
 Alpine.start()

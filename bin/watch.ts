@@ -1,24 +1,30 @@
 import path from 'path';
-import budo from 'budo';
+import http from 'http';
+import { watch } from 'chokidar';
 import { buildAll } from './build';
+import { createReloader } from './budo/reload-server';
+import { createMiddleware } from './budo/middleware';
 
 process.env.NODE_ENV = 'development';
 
 const PORT = 1337;
-const b = budo(path.join(__dirname, '../noop.js'), {
-  live: true,
-  port: PORT,
-  dir: path.join(__dirname, '../dist'),
-  watchGlob: ['{src,html,static}/**/*.{html,css,ts}', '!**/*_fake.js'],
-  staticOptions: {
-    index: false,
-    extensions: ['html'],
-  },
-  verbose: true
-}).on('connect', async () => {
-  await buildAll();
-  console.log(`Serving site at http://localhost:${PORT}`);
-}).on('watch', async () => {
-  await buildAll();
-  b.reload();
-});
+
+const server = http.createServer(createMiddleware({
+  dir: path.join(__dirname, '../dist')
+}))
+
+const watcher = watch('{src,html,static,style}/**/*.{html,scss,ts}', {
+  usePolling: false,
+  ignored: ['node_modules/**', '.git', '.DS_Store'],
+  ignoreInitial: true
+})
+
+let reloader
+
+server.listen(PORT, undefined,  function connect () {
+  reloader = createReloader(server)
+
+  watcher.on('change', async () => buildAll().then(() => reloader.reload()))
+
+  console.log(`Server running at http://localhost:${PORT}`)
+})

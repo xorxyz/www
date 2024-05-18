@@ -1,5 +1,10 @@
 import Alpine from 'alpinejs'
 import { tokenize } from '../lib/tokenization'
+import { Machine } from '../lib/machine'
+
+const machine = new Machine()
+
+window.machine = machine
 
 const constantType = { name: 'constant', icon: '#' }
 const refType = { name: 'pointer', icon: '&' }
@@ -8,24 +13,10 @@ const operationType = { name: 'op', icon: '>' }
 const types = [operationType, constantType, refType, derefType]
 const operations = ['nop', 'hlt', 'jmp', 'dup', 'out']
 
-const code = tokenize(`
-  start:
-    @0
-  loop:
-    out
-    #1
-    add
-    &start
-    jmp
-`)
-
-console.log(code)
-
 document.addEventListener('alpine:init', () => {
   Alpine.data('editor', () => ({
     types,
     operations,
-    code,
     step,
     reset,
     add,
@@ -35,6 +26,16 @@ document.addEventListener('alpine:init', () => {
     changeType,
     output: [],
     tick: 0,
+    code: tokenize(`
+      start:
+        @0
+      loop:
+        out
+        #1
+        add
+        &start
+        jmp
+    `),
   }));
 })
 

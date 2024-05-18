@@ -104,7 +104,11 @@ export async function buildTs() {
 }
 
 export async function buildCss() {
-  // const css = (await compileAsync(path.join(getDirPath('style'), 'index.scss'), { loadPaths: ['node_modules'] })).css
-  // await mkdirp(getDirPath('dist/css'))
-  // await writeFile(path.join(getDirPath('dist/css'), 'style.css'), css)
+  try {
+    const css = (await compileAsync(path.join(getDirPath('style'), 'index.scss'), { loadPaths: ['node_modules'] })).css
+    await mkdirp(getDirPath('dist/css'))
+    await writeFile(path.join(getDirPath('dist/css'), 'style.css'), css)
+  } catch (err) {
+    console.log(err)
+  }
 }

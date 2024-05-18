@@ -21,7 +21,6 @@ export function tokenize (code: string): Array<Token> {
     .filter(line => line.length)
     .map(line => line.trimStart().trimEnd())
     .map((line, idx): Token => {
-      console.log(line)
       if (line.endsWith(':')) {
         if (!isValidLabel(line.slice(0, -1))) throw new SyntaxError(`Not a valid label`, idx, line)
         return { type: 'label', lexeme: line, value: line.slice(0, -1) }
