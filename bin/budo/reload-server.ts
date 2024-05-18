@@ -9,14 +9,10 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 var WebSocketServer = require('ws').Server
-var log = require('bole')('budo')
 var path = require('path')
-var isAbsolute = require('path-is-absolute')
-var color = require('term-color')
 
 export function createReloader(server) {
   const opts = {}
-  log.info({ message: 'LiveReload running' })
 
   // get a list of static folders to use as base dirs
   var cwd = path.resolve(opts.cwd || process.cwd())
@@ -54,7 +50,7 @@ export function createReloader(server) {
 
     if (file && typeof file === 'string') {
       // absolute file path
-      file = isAbsolute(file) ? path.normalize(file) : path.resolve(cwd, file)
+      file = path.isAbsolute(file) ? path.normalize(file) : path.resolve(cwd, file)
 
       // make it relative, removing the static folder parts
       for (var i = 0; i < staticDirs.length; i++) {
@@ -89,7 +85,7 @@ export function createReloader(server) {
         }
       })
     } catch (err) {
-      console.error(color.red('ERROR'), 'Error sending LiveReload event to client:')
+      console.error('ERROR: Error sending LiveReload event to client:')
       console.error(err)
     }
   }

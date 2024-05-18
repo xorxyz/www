@@ -8,7 +8,7 @@ import * as dotenv from 'dotenv';
 import { Feed } from 'feed';
 import * as esbuild from 'esbuild'
 import { Liquid } from 'liquidjs';
-import { compile, compileAsync } from 'sass';
+// import { compile, compileAsync } from 'sass';
 
 dotenv.config();
 
@@ -35,13 +35,13 @@ export async function buildAll() {
 
 export async function buildHtml () {
   const engine = new Liquid({
-    layouts: getDirPath('html/layouts'),
-    partials: getDirPath('html/partials'),
+    layouts: getDirPath('layouts'),
+    partials: getDirPath('partials'),
     extname: '.html',
     cache: true,
   });
   
-  const pageDir = getDirPath('html/pages')
+  const pageDir = getDirPath('pages')
   const outDir = getDirPath('dist')
   const files = await readdir(pageDir, { recursive: true })
   
@@ -104,11 +104,11 @@ export async function buildTs() {
 }
 
 export async function buildCss() {
-  try {
-    const css = (await compileAsync(path.join(getDirPath('style'), 'index.scss'), { loadPaths: ['node_modules'] })).css
-    await mkdirp(getDirPath('dist/css'))
-    await writeFile(path.join(getDirPath('dist/css'), 'style.css'), css)
-  } catch (err) {
-    console.log(err)
-  }
+  // try {
+  //   const css = (await compileAsync(path.join(getDirPath('style'), 'index.scss'), { loadPaths: ['node_modules'] })).css
+  //   await mkdirp(getDirPath('dist/css'))
+  //   await writeFile(path.join(getDirPath('dist/css'), 'style.css'), css)
+  // } catch (err) {
+  //   console.log(err)
+  // }
 }

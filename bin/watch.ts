@@ -13,7 +13,7 @@ const server = http.createServer(createMiddleware({
   dir: path.join(__dirname, '../dist')
 }))
 
-const watcher = watch('{src,html,static,style}/**/*.{html,scss,ts}', {
+const watcher = watch('{src,layouts,pages,partials,static,style}/**/*.{html,ts,svg}', {
   usePolling: false,
   ignored: ['node_modules/**', '.git', '.DS_Store'],
   ignoreInitial: true
@@ -21,10 +21,14 @@ const watcher = watch('{src,html,static,style}/**/*.{html,scss,ts}', {
 
 let reloader
 
-server.listen(PORT, undefined,  function connect () {
-  reloader = createReloader(server)
+(async function () {
+  await buildAll()
 
-  watcher.on('change', async () => buildAll().then(() => reloader.reload()))
-
-  console.log(`Server running at http://localhost:${PORT}`)
-})
+  server.listen(PORT, undefined,  function connect () {
+    reloader = createReloader(server)
+  
+    watcher.on('change', async () => buildAll().then(() => reloader.reload()))
+  
+    console.log(`Server running at http://localhost:${PORT}`)
+  })  
+})()

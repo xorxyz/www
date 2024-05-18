@@ -15,22 +15,25 @@
   "devDependencies": {
     "@types/alpinejs": "^3.13.10",
     "@types/node": "^20.12.11",
-    "budo": "^11.8.4",
-    "bulma": "^1.0.0",
+    "chokidar": "^3.6.0",
     "dotenv": "^16.4.5",
     "esbuild": "0.21.2",
+    "escape-html": "^1.0.3",
     "feed": "^4.2.2",
     "fs-extra": "^11.2.0",
-    "jsdom": "^24.0.0",
+    "inject-lr-script": "^2.2.0",
     "liquidjs": "^10.13.0",
     "mkdirp": "^3.0.1",
+    "on-finished": "^2.4.1",
+    "on-headers": "^1.0.2",
     "rimraf": "^5.0.7",
+    "serve-static": "^1.15.0",
+    "stacked": "^1.1.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "ws": "^8.17.0"
   },
   "dependencies": {
-    "alpinejs": "^3.13.10",
-    "sass": "^1.77.1",
-    "tachyons-sass": "^4.9.5"
+    "alpinejs": "^3.13.10"
   }
 }

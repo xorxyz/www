@@ -8,7 +8,6 @@
 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var log = require('bole')('budo')
 var onResHeaders = require('on-headers')
 var onResFinished = require('on-finished')
 
@@ -35,22 +34,6 @@ function simpleHttpLoggerMiddleware (opts) {
         // missing request and/or response start time
         return
       }
-
-      // calculate diff
-      var ms = (res._startAt[0] - req._startAt[0]) * 1000 +
-        (res._startAt[1] - req._startAt[1]) * 1e-6
-
-      log.info({
-        elapsed: ms,
-        contentLength: byteLength,
-        method: (req.method || 'GET').toUpperCase(),
-        url: req.url,
-        statusCode: res.statusCode,
-        type: httpLogger.type === 'static' ? undefined : httpLogger.type,
-        colors: {
-          elapsed: ms > 1000 ? 'yellow' : 'dim'
-        }
-      })
     }
 
     var isAlreadyLogging = res._simpleHttpLogger
