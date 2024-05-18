@@ -1,16 +1,13 @@
-{% assign pages = "/:Scoreboard:crown,/levels:Levels:castle,/tools:Tools:shovel,/docs:Docs:scroll" | split: "," %}
-
-<div class="flex flex-col items-center my-8">
+<div id="sidebar" class="flex flex-col items-center my-8 lg:px-12">
   <img class="w-24" src="/images/wox.svg"/>
-  <div class="my-3">
-    {% for page in pages %}
-      {% assign parts = page | split: ":" %}
-      <a href="{{parts[0]}}">
+  <nav class="my-3">
+    {% for link in nav %}
+      <a href="{{ link.to }}">
         <div class="flex flex-row rounded-sm px-4 py-2 hover:bg-violet-800 transition duration-300 cursor-pointer">
-          <img class="w-4 mr-1" src="/images/{{parts[2]}}.svg">
-          <span class="ml-1 text-lg font-semibold">{{parts[1]}}</span>
+          <img class="w-4 mr-2" src="/images/{{ link.icon }}.svg">
+          <span class="text-lg font-semibold ml-2 mr-6">{{ link.label }}</span>
         </div>
       </a>
     {% endfor %}
-  </div>
+  </nav>
 </div>

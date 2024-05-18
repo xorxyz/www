@@ -9,6 +9,7 @@ import { Feed } from 'feed';
 import * as esbuild from 'esbuild'
 import { Liquid } from 'liquidjs';
 // import { compile, compileAsync } from 'sass';
+// import data from '../data'
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ export async function buildHtml () {
   const pageDir = getDirPath('pages')
   const outDir = getDirPath('dist')
   const files = await readdir(pageDir, { recursive: true })
+  const ctx = await loadData()
   
   await Promise.all(files.map(async (filename) => {
     const filepath = path.join(pageDir, filename)
@@ -51,12 +53,24 @@ export async function buildHtml () {
     if ((await stat(filepath)).isDirectory()) return
 
     const text = await readFile(filepath, 'utf8')
-    const html = await engine.parseAndRender(text)
+    const html = await engine.parseAndRender(text, ctx)
     const dest = path.join(outDir, filename)
 
     await mkdirp(path.dirname(dest))
     await writeFile(dest, html)
   }))
+}
+
+async function loadData() {
+  const dir = '../data'
+  const prefix = path.dirname(require.resolve(dir))
+  const files = Object.keys(require.cache).filter(filename => filename.startsWith(prefix))
+
+  files.forEach(file => delete require.cache[file])
+
+  const data = await import(dir);
+
+  return data.default;
 }
 
 export async function buildRss() {

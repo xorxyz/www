@@ -13,7 +13,7 @@ const server = http.createServer(createMiddleware({
   dir: path.join(__dirname, '../dist')
 }))
 
-const watcher = watch('{src,layouts,pages,partials,static,style}/**/*.{html,ts,svg}', {
+const watcher = watch('{src,layouts,pages,partials,static,style,data}/**/*.{html,ts,svg}', {
   usePolling: false,
   ignored: ['node_modules/**', '.git', '.DS_Store'],
   ignoreInitial: true

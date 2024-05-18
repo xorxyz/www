@@ -1,5 +1,34 @@
 {% layout "default.html" %}
 
 {% block content %}
-<h1>Levels</h1>
+
+<small>
+  <span class="text-neutral-200">Levels</span>
+  <span class="text-neutral-400">/</span>
+</small>
+
+<div class="card">
+  <h1 class="text-2xl">Levels</h1>
+
+  <table class="my-3">
+    <thead>
+      <tr class="text-sm">
+        <td class="pr-2"></td>
+        <td class="px-2">Title</td>
+        <td class="pl-2"></td>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for level in levels %}
+      <tr>
+        <td class="pr-2">{{ forloop.index }}</td>
+        <td class="px-2">{{ level.title }}</td>
+        <td class="pl-2"><a href="/levels/{{ forloop.index }}" class="bg-neutral-600 rounded-sm px-3 py-1">Play &gt; </a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}

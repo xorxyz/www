@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html class="h-screen">
   {% render '_head.html' %}
 
-  <body class="bg-neutral-900 text-neutral-100 h-screen">
-    <div class="flex flex-row h-full">
-      <div class="w-48 h-full">
-        {% render '_sidebar.html' %}
+  <body class="bg-neutral-900 text-neutral-100">
+    <div class="md:hidden">
+      {% include '_topbar.html' %}
+    </div>
+
+    <div class="flex flex-row w-full h-full min-h-screen">
+      <div class="hidden md:block w-48 h-full">
+        {% include '_sidebar.html' %}
       </div>
-      <div class="my-8">
+
+      <div class="px-4 md:px-16 xl:px-32 py-8 w-full ">
+        <div class="md:hidden h-12">&nbsp;</div>
         {% block content %}{% endblock %}
       </div>
     </div>
+
+    {% include '_footer.html' %}
     <script src='/js/script.js' defer></script>
   </body>
 </html>

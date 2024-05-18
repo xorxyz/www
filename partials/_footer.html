@@ -1,0 +1,30 @@
+
+<footer class="flex flex-col md:flex-row p-4 md:px-16 md:py-16 text-xs">
+  <div class="p-1">
+    <div>
+      <img class="" src="/images/wox.svg"/>
+    </div>
+    <nav class="my-3">
+      <div class="text-neutral-400 font-bold">Follow me</div>
+      <ul class="flex flex-row">
+        <li class="pr-1"><a href="https://x.com/Jonathan_Dupre">Twitter</a></li>
+        <li class="px-1"><a href="https://jonathandupre.com">Blog</a></li>
+      </ul>
+    </nav>
+    <div class="text-neutral-400">© 2019-2024 Jonathan Dupré</div>
+  </div>
+
+  <div class="p-1 mx-0 my-6 md:mx-4 md:my-0 lg:mx-12">
+    <div>
+      <div class="text-neutral-400 font-bold">Play</div>
+
+      <ul class="my-3">
+        {% for link in nav %}
+          <li class="my-1">
+            <a href="{{ link.to }}">{{ link.label }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</footer>
