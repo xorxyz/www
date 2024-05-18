@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "npm run watch",
-    "watch": "ts-node bin/watch",
-    "build": "ts-node bin/build",
+    "watch": "npx ts-node bin/watch",
+    "build": "npx ts-node bin/build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix --ext .js,.ts"
   },
