@@ -1,36 +1,50 @@
 {% layout "level.html", id: 1, title: 'Albert lost his keys' %}
 
-
 {% block story %}
   <p>Albert used the snake cipher to encrypt a secret phrase: </p>
 
-  <pre class="flex">
-    <code class="overflow-x-auto pa1 lh-solid">
-  [vsymgkf eb a2dajugmvl2ivgwgddr  ienq0zwkhszdadgzeq]
-    </code>
+  <pre class="flex my-1">
+    <code class="overflow-x-auto px-1 py-2 bg-neutral-900">[vsymgkf eb a2dajugmvl2ivgwgddr  ienq0zwkhszdadgzeq]</code>
   </pre>
 
   <p>But he lost his encryption key. Can you find it for him?</p>
 {% endblock %}
 
 {% block solution %}
-  <div class="mv2 pv1">
-    <label>🗝️ Albert's key is:</label>
-    <input id="in" class="mv1 ns-mv0" type="text" placeholder="00000 00000 00000 00000 00000" size="29" pattern="[01]*"/>
-    <button id="ok" class=".nput-reset ph3 mv1 ns-mv0 b--solid pointer b--blue bg-blue white br1">Verify</button>
+  <div class="my-2 py-1">
+    <label class="mr-2 my-1">Albert's key is:</label>
+    <input id="in" class="text-input" type="text" placeholder="00000 00000 00000 00000 00000" size="29" pattern="[01]*"/>
+    <button id="ok" class="btn is-primary">Verify</button>
   </div>
   <p id="out" class="dn"></p>
 {% endblock %}
 
 {% block clues %}
-  <ol>
-    <li>You can look at the [📜 Snake key generator logs](/xor/scrolls/snake-key-generator)</li>
-    <li>
-      These are relevant books from the library:
-      <ol>
-        <li>[📕 Snake cipher](/xor/library/snake-cipher)</li>
-        <li>[📕 Tobaud code](/xor/library/tobaud-code)</li>
-      </ol>
-    </li>
+  <p>These are relevant books from the library:</p>
+
+  <ol class="list-disc list-inside pl-6 mb-4">
+    <li><a class="link" href="/docs/snake-cipher">Snake cipher</a></li>
+    <li><a class="link" href="/docs/tobaud-encoding">Tobaud encoding</a></li>
   </ol>
+
+  <p>Every time the generator ran, we wrote down the name of the person who requested a key:</p>
+
+  <table class="border-collapse table-auto my-3">
+  <tbody>
+    <tr class="border border-neutral-600">
+      <th class="border border-neutral-600 px-3 py-2">Id</th>
+      <th class="border border-neutral-600 px-3 py-2">Name</th>
+    </tr>
+
+    {% assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %}
+    
+    {% for name in names %}
+      <tr>
+        <td class="border border-neutral-600 px-3 py-2">{{ forloop.index }}</td>
+        <td class="border border-neutral-600 px-3 py-2">{{ name }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+
 {% endblock %}

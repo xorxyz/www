@@ -1,7 +1,7 @@
 export default [
   { username: 'kavehcpa' },
-  { username: 'none' },
-  { username: 'none' },
+  { username: '-' },
+  { username: '-' },
   { username: 'none' },
   { username: 'none' },
   { username: 'none' },
