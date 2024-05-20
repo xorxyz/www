@@ -1,3 +1,3 @@
 export default [
-  { title: 'Albert lost his key' }
+  { path: '2024/001', title: 'Albert lost his key' }
 ]

@@ -1,22 +1,35 @@
-{% layout "level.html", id: 1, title: 'Albert lost his keys' %}
+{% layout "level.html", year: 2024, id: 1, title: 'Albert lost his keys' %}
 
 {% block story %}
   <p>Albert used the snake cipher to encrypt a secret phrase: </p>
 
   <pre class="flex my-1">
-    <code class="overflow-x-auto px-1 py-2 bg-neutral-900">[vsymgkf eb a2dajugmvl2ivgwgddr  ienq0zwkhszdadgzeq]</code>
+    <code>[vsymgkf eb a2dajugmvl2ivgwgddr  ienq0zwkhszdadgzeq]</code>
   </pre>
 
   <p>But he lost his encryption key. Can you find it for him?</p>
 {% endblock %}
 
 {% block solution %}
-  <div class="my-2 py-1">
-    <label class="mr-2 my-1">Albert's key is:</label>
-    <input id="in" class="text-input" type="text" placeholder="00000 00000 00000 00000 00000" size="29" pattern="[01]*"/>
-    <button id="ok" class="btn is-primary">Verify</button>
+  <div x-data="level_2024_001">
+    <div class="my-2 py-1">
+      <label class="mr-2 my-1">Albert's key is:</label>
+      <input type="text" 
+        class="text-input" 
+        placeholder="00000 00000 00000 00000 00000" 
+        size="29"
+        pattern="[01]*" 
+        x-model="input"/>
+      <button id="ok" class="btn is-primary" @click="verify">Verify</button>
+    </div>
+    <p id="out" class="rounded p-2" 
+      :class="{ 
+        'display-none': !failed && !won, 
+        'bg-yellow-500 text-neutral-800': failed, 
+        'bg-green-500 text-neutral-100': won }"
+      x-text="output">
+    </p>
   </div>
-  <p id="out" class="dn"></p>
 {% endblock %}
 
 {% block clues %}

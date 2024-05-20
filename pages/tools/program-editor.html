@@ -28,13 +28,11 @@
                     @click="open = !open"
                     :aria-expanded="open ? 'true' : 'false'"
                     x-text="`${line.type} ▼`"
-                  >
-                  </button>
+                  ></button>
                   <div
                     class="absolute bg-white ba"
                     x-show="open"
-                    @click.away="open = false"
-                  >
+                    @click.away="open = false">
                     <ul class="list pl0 ba f7">
                       <template x-for="type in types">
                         <li class=""><button @click="changeType(line, type); open = false" x-text="type.icon"></button></li>

@@ -5,5 +5,5 @@ import levels from './levels'
 export default {
   nav,
   rankings,
-  levels
+  levels,
 }

@@ -8,12 +8,15 @@ import * as dotenv from 'dotenv';
 import { Feed } from 'feed';
 import * as esbuild from 'esbuild'
 import { Liquid } from 'liquidjs';
+import * as marked from 'marked';
+import matter from 'gray-matter';
 // import { compile, compileAsync } from 'sass';
-// import data from '../data'
 
 dotenv.config();
 
 const getDirPath = (name: string) =>  path.join(__dirname, "..", name)
+
+let _engine
 
 if (require.main === module) {
   buildAll().then(() => exit());
@@ -34,31 +37,107 @@ export async function buildAll() {
   console.log('Done.');
 }
 
-export async function buildHtml () {
-  const engine = new Liquid({
+function createLiquidEngine () {
+  if (_engine) return _engine
+  _engine = new Liquid({
     layouts: getDirPath('layouts'),
     partials: getDirPath('partials'),
     extname: '.html',
-    cache: true,
+    cache: false,
   });
-  
+
+  return _engine
+}
+
+interface Page {
+  filepath: string
+  filename: string
+}
+
+export async function listPages() {
   const pageDir = getDirPath('pages')
-  const outDir = getDirPath('dist')
-  const files = await readdir(pageDir, { recursive: true })
-  const ctx = await loadData()
-  
-  await Promise.all(files.map(async (filename) => {
+  const dynamicPages: Array<Page> = []
+  const staticPages: Array<Page> = []
+
+  for (let filename of await readdir(pageDir, { recursive: true })) {
     const filepath = path.join(pageDir, filename)
+    const stats = await stat(filepath)
 
-    if ((await stat(filepath)).isDirectory()) return
+    if (!stats.isDirectory()) {
+      if (path.basename(filename).startsWith('_')) {
+        dynamicPages.push({filename, filepath})
+      } else {
+        staticPages.push({filename, filepath})
+      }
+    }
+  }
 
-    const text = await readFile(filepath, 'utf8')
-    const html = await engine.parseAndRender(text, ctx)
-    const dest = path.join(outDir, filename)
+  return {
+    dynamicPages,
+    staticPages
+  }
+}
+
+export async function buildHtml () {
+  const { dynamicPages, staticPages } = await listPages()
+  
+  const ctx = await loadData()
+  let contentList = {}
+
+  for (let page of dynamicPages) {
+    const text = await readFile(page.filepath, 'utf8')
+    const pages = await buildDynamicPages(page.filepath, text, ctx)
+    contentList = { ...contentList, ...pages }
+  }
+
+  for (let page of staticPages) {
+    const text = await readFile(page.filepath, 'utf8')
+    const dest = path.join(getDirPath('dist'), page.filename)
+    await buildPage(text, dest, { ...ctx, ...contentList })
+  }
+}
+
+async function buildPage(text: string, dest: string, ctx: Record<any, any>) {
+  const engine = createLiquidEngine()
+  const html = await engine.parseAndRender(text, ctx)
+
+  await mkdirp(path.dirname(dest))
+  await writeFile(dest, html)
+}
+
+async function buildDynamicPages(templateSrc: string, templateText: string, ctx: Record<any, any>) {
+  const engine = createLiquidEngine()
+  const renderer = new marked.Renderer();
+
+  const subDir = path.relative(getDirPath('pages'), path.dirname(templateSrc))
+
+  const contentDir = path.join(getDirPath('content'), subDir)
+  const outDir = path.join(getDirPath('dist'), subDir)
+
+  const contentFiles = await readdir(contentDir)
+  const contentList: Array<Record<string, string>> = []
+
+  await Promise.all(contentFiles.map(async (filename) => {
+    const mdSrc = path.join(contentDir, filename)
+    const md = await readFile(mdSrc, 'utf8')
+    const frontmatter = matter(md)
+    const content = marked.marked(frontmatter.content, { renderer });
+
+    const html = await engine.parseAndRender(templateText, { ...ctx, meta: frontmatter.data, content })
+    const dest = path.join(outDir, path.basename(filename, '.md') + '.html')
 
     await mkdirp(path.dirname(dest))
     await writeFile(dest, html)
+
+    contentList.push({
+      slug: path.basename(filename, '.md'),
+      title: frontmatter.data.title
+    })
   }))
+
+  return {
+    [subDir]: contentList
+  }
 }
 
 async function loadData() {
@@ -112,7 +191,7 @@ export async function buildTs() {
   await esbuild.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
-    minify: true,
+    // minify: true,
     outfile: path.join(getDirPath('dist'), 'js/script.js'),
   })
 }

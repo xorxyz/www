@@ -1,5 +1,32 @@
 {% layout "default.html" %}
 
 {% block content %}
-<h1>Docs</h1>
+
+<small>
+  <span class="text-neutral-200">Docs</span>
+  <span class="text-neutral-400">/</span>
+</small>
+
+<div class="card">
+  <h1 class="">Docs</h1>
+
+  <table class="my-3">
+    <thead>
+      <tr class="text-sm">
+        <td class="pr-2"></td>
+        <td class="px-2">Title</td>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for doc in docs %}
+      <tr>
+        <td class="pr-2">{{ forloop.index }}</td>
+        <td class="px-2"><a href="/docs/{{ doc.slug }}" class="link">{{ doc.title }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}

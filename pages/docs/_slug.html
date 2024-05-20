@@ -1,0 +1,16 @@
+{% layout "default.html" %}
+
+{% block content %}
+
+<small>
+  <span class=""><a href="/docs" class="link">Docs</a></span>
+  <span class="text-neutral-400">/</span>
+  <span class="text-neutral-400">{{ meta.title }}</span>
+</small>
+
+<div class="card">
+  <h1 class="">{{ meta.title }}</h1>
+  {{ content }}
+</div>
+
+{% endblock %}
