@@ -1,6 +1,6 @@
 export default [
   { username: 'kavehcpa' },
-  { username: '-' },
+  { username: 'cdupre' },
   { username: '-' },
   { username: 'none' },
   { username: 'none' },
