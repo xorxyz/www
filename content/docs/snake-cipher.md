@@ -5,6 +5,7 @@ description: Symmetric encryption algorithm
 ---
 
 The snake cipher is a symmetric key algorithm made to be used with the [Tobaud Code](/docs/tobaud-encoding).
+
 Snake encryption keys are 25-bit numbers.
 
 ### Key generation algorithm
@@ -18,11 +19,11 @@ Here is how it works:
 2. Set aside the value of bits 1 and 4
 4. Apply a bitwise right shift (Move 0 into 1, 1 into 2, 2 into 3, and 3 into 4)
 5. `XOR` together the two bits you set aside and assign the result to bit 0
-6. Save the result as the first part of the key
-7. Reuse the first part as the next seed
-8. Repeat this 4 more times
-9. Use the last part of the key as the seed for the next run
-10. Log the name of the user after each run for audit purposes
+6. Save the resulting 5-bit value. This is the first part of the key
+7. Reuse the first part of the key as the new seed value
+8. Repeat this 4 more times to end up with 5 parts
+9. The fifth part of the key (the last part) becomes the new seed value the next time you use the generator
+10. In debug mode, log the name of the user after each run
 
 ### Encryption
 
