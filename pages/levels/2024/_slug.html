@@ -4,18 +4,14 @@
   <small>
     <span class="text-neutral-200"><a href="/levels" class="text-violet-300 font-bold">Levels</a></span>
     <span class="text-neutral-400">/</span>
-    <span class="text-neutral-200">{{ id }}</span>
+    <span class="text-neutral-200">{{ meta.id }}</span>
   </small>
 
   <div class="card">
-    <h1 class="">{{ title }}</h1>
+    <h1 class="">{{ meta.title }}</h1>
 
     <div class="my-3">
-      {% block story %}
-      {% endblock %}
-      
-      {% block solution %}
-      {% endblock %}
+      {{ content }}
     </div>
   </div>
 
@@ -25,12 +21,11 @@
       <p>These are relevant books from the library:</p>
 
       <ol class="list-disc list-inside pl-6 mb-4">
-        {% for doc in docs %}
-          <li><a class="link" href="/docs/{{ doc }}">{{ doc.title }}</a></li>
+        {% for slug in meta.ref %}
+          <li><a class="link" href="/docs/{{ slug }}">{{ by_key.docs[slug].meta.title }}</a></li>
         {% endfor %}
       </ol>
-      {% block clues %}
-      {% endblock %}
     </div>
   </div>
+
 {% endblock %}

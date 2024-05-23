@@ -22,7 +22,7 @@
     {% for doc in docs %}
       <tr>
         <td class="pr-2">{{ forloop.index }}</td>
-        <td class="px-2"><a href="/docs/{{ doc.slug }}" class="link">{{ doc.title }}</a></td>
+        <td class="px-2"><a href="/docs/{{ doc.slug }}" class="link">{{ doc.meta.title }}</a></td>
       </tr>
     {% endfor %}
     </tbody>

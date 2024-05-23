@@ -81,19 +81,22 @@ export async function listPages() {
 export async function buildHtml () {
   const { dynamicPages, staticPages } = await listPages()
   
-  const ctx = await loadData()
-  let contentList = {}
+  const data = await loadData()
+
+  const contentList = await generateContentList(dynamicPages)
+  const contentByKey = indexContentByKey(contentList)
+
+  const ctx = { ...data, ...contentList, by_key: contentByKey }
 
   for (let page of dynamicPages) {
     const text = await readFile(page.filepath, 'utf8')
-    const pages = await buildDynamicPages(page.filepath, text, ctx)
-    contentList = { ...contentList, ...pages }
+    await buildDynamicPages(page.filepath, text, ctx)
   }
 
   for (let page of staticPages) {
     const text = await readFile(page.filepath, 'utf8')
     const dest = path.join(getDirPath('dist'), page.filename)
-    await buildPage(text, dest, { ...ctx, ...contentList })
+    await buildPage(text, dest, ctx)
   }
 }
 
@@ -103,6 +106,53 @@ async function buildPage(text: string, dest: string, ctx: Record<any, any>) {
 
   await mkdirp(path.dirname(dest))
   await writeFile(dest, html)
+}
+
+async function generateContentList(dynamicPages: Array<Page>) {
+  let list: Record<string, Array<any>> = {}
+
+  for (let page of dynamicPages) {
+    const templateSrc = page.filepath
+    const subDir = path.relative(getDirPath('pages'), path.dirname(templateSrc))
+    const contentDir = path.join(getDirPath('content'), subDir)
+    const contentFiles = await readdir(contentDir)
+    const contentList: Array<Record<string, any>> = []
+  
+    await Promise.all(contentFiles.map(async (filename) => {
+      const mdSrc = path.join(contentDir, filename)
+      const md = await readFile(mdSrc, 'utf8')
+      const frontmatter = matter(md)
+  
+      contentList.push({
+        slug: path.basename(filename, '.md'),
+        meta: frontmatter.data
+      })
+    }))
+  
+    const pages = {
+      [subDir.replace('/', '_')]: contentList
+    }
+
+    list = { 
+      ...list, 
+      ...pages
+    }
+  }
+
+  return list
+}
+
+function indexContentByKey (contentList: Record<string, Array<any>>) {
+  const contentByKey: Record<string, Record<string, any>> = {}
+
+  Object.entries(contentList).forEach(([key, items]) => {
+    if (!contentByKey[key]) contentByKey[key] = {}
+    items.forEach(item => {
+      contentByKey[key][item.slug] = item
+    })
+  })
+
+  return contentByKey
 }
 
 async function buildDynamicPages(templateSrc: string, templateText: string, ctx: Record<any, any>) {
@@ -121,9 +171,11 @@ async function buildDynamicPages(templateSrc: string, templateText: string, ctx:
     const mdSrc = path.join(contentDir, filename)
     const md = await readFile(mdSrc, 'utf8')
     const frontmatter = matter(md)
-    const content = marked.marked(frontmatter.content, { renderer });
+    const content = await engine.parseAndRender(marked.marked(frontmatter.content, { renderer }), { ...ctx })
 
-    const html = await engine.parseAndRender(templateText, { ...ctx, meta: frontmatter.data, content })
+    const fullCtx = { ...ctx, meta: frontmatter.data, content }
+
+    const html = await engine.parseAndRender(templateText, fullCtx)
     const dest = path.join(outDir, path.basename(filename, '.md') + '.html')
 
     await mkdirp(path.dirname(dest))
@@ -134,10 +186,12 @@ async function buildDynamicPages(templateSrc: string, templateText: string, ctx:
       title: frontmatter.data.title
     })
   }))
-
-  return {
-    [subDir]: contentList
+  
+  const pages = {
+    [subDir.replace('/', '_')]: contentList
   }
+
+  return pages
 }
 
 async function loadData() {
