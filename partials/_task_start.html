@@ -1,0 +1,12 @@
+<div class="card">
+  {% if open %}
+  <details open>
+  {% else %}
+  <details>
+  {% endif %}
+    <summary class="text-3xl">
+      Task {{ id }}
+      {% if done %}
+        <span>✅</span>
+      {% endif %}
+    </summary>

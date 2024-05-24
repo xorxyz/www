@@ -7,7 +7,7 @@ import { rimraf } from 'rimraf';
 import * as dotenv from 'dotenv';
 import { Feed } from 'feed';
 import * as esbuild from 'esbuild'
-import { Liquid } from 'liquidjs';
+import { Liquid, Output, Tag, Value } from 'liquidjs';
 import * as marked from 'marked';
 import matter from 'gray-matter';
 // import { compile, compileAsync } from 'sass';
@@ -45,6 +45,31 @@ function createLiquidEngine () {
     extname: '.html',
     cache: false,
   });
+
+  _engine.registerTag('markdown', {
+    parse(tagToken, remainTokens, liquid) {
+      this.tokens = [];
+
+      let stream = this.liquid.parser.parseStream(remainTokens)
+        .on('token', token => {
+          if (token.name === "endmarkdown") {
+            stream.stop();
+          } else {
+            this.tokens.push(token);
+          }
+        })
+        .on('end', () => {
+          stream.stop();
+        });
+  
+      stream.start();
+    },
+    * render(context, emitter) {
+      const text = this.tokens.map(token => token.getText()).join('')
+      const content = marked.marked(text, { async: false })
+      emitter.write(content)
+    }
+  }) 
 
   return _engine
 }
@@ -171,6 +196,7 @@ async function buildDynamicPages(templateSrc: string, templateText: string, ctx:
     const mdSrc = path.join(contentDir, filename)
     const md = await readFile(mdSrc, 'utf8')
     const frontmatter = matter(md)
+    // const content = marked.marked(frontmatter.content, { renderer });
     const content = await engine.parseAndRender(marked.marked(frontmatter.content, { renderer }), { ...ctx })
 
     const fullCtx = { ...ctx, meta: frontmatter.data, content }

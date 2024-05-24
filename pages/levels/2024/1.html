@@ -1,0 +1,72 @@
+{% layout "level.html", id: "2024/1" %}
+
+{% block story %}
+  {% markdown %}
+  Albert used the snake cipher to encrypt a secret phrase:
+
+  ```
+  vsymgkf eb a2dajugmvl2ivgwgddr  ienq0zwkhszdadgzeq
+  ```
+
+  But he lost his encryption key. Can you find it for him?
+  {% endmarkdown %}
+{% endblock %}
+
+{% block extras %}
+  {% include "_task_start.html", id: 1, done: true, open: false %}
+  {% markdown %}
+  This is the first task.
+  {% endmarkdown %}
+  {% include "_task_end.html" %}
+
+  {% include "_task_start.html", id: 2, done: false %}
+  {% markdown %}
+  This is the second task.
+  {% endmarkdown %}
+  {% include "_task_end.html" %}
+
+  {% include "_task_start.html", id: 3, done: false, open: true %}
+    <div x-data="level_2024_001">
+      <div class="my-2 py-1">
+        <label class="mr-2 my-1">Albert's key is:</label>
+        <input type="text" 
+          class="text-input" 
+          placeholder="00000 00000 00000 00000 00000" 
+          size="29"
+          pattern="[01]*" 
+          x-model="input"/>
+        <button id="ok" class="btn is-primary" @click="verify">Verify</button>
+      </div>
+      <p id="out" class="rounded p-2" 
+        :class="{
+          'hidden': !failed && !won, 
+          'bg-yellow-500 text-neutral-800': failed, 
+          'bg-green-500 text-neutral-100': won }"
+        x-text="output">
+      </p>
+    </div>
+  {% include "_task_end.html" %}
+{% endblock %}
+
+{% block clues %}
+  {% markdown %}
+  Every time the generator ran, we wrote down the name of the person who requested a key:
+  {% endmarkdown %}
+
+  <!-- % assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
+  <table class="border-collapse table-auto my-3">
+    <tbody>
+      <tr class="border border-neutral-600">
+        <th class="border border-neutral-600 px-3 py-2">Id</th>
+        <th class="border border-neutral-600 px-3 py-2">Name</th>
+      </tr>
+      <!-- {% assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
+      <!-- {% for name in names %} -->
+        <tr>
+          <td class="border border-neutral-600 px-3 py-2">{{ forloop.index }}</td>
+          <td class="border border-neutral-600 px-3 py-2">{{ name }}</td>
+        </tr>
+      <!-- {% endfor %} -->
+    </tbody>
+    </table>
+{% endblock %}

@@ -20,11 +20,11 @@
     </thead>
     <tbody>
 
-    {% for level in levels_2024 %}
+    {% for level in levels %}
       <tr>
         <td class="pr-2">{{ forloop.index }}</td>
-        <td class="px-2">{{ level.meta.title }}</td>
-        <td class="pl-2"><a href="/levels/2024/{{ level.slug }}" class="btn">Play &gt; </a></td>
+        <td class="px-2">{{ level.title }}</td>
+        <td class="pl-2"><a href="/levels/{{ level.id }}" class="btn">Play &gt; </a></td>
       </tr>
     {% endfor %}
     </tbody>
