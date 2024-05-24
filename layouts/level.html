@@ -19,9 +19,6 @@
       </div>
     </div>
 
-    {% block extras %}
-    {% endblock %}
-
     <div class="card">
       <h2>Clues</h2>
       <div class="my-3">
@@ -35,7 +32,9 @@
         {% block clues %}
         {% endblock %}
       </div>
-      
     </div>
+
+    {% block tasks %}
+    {% endblock %}
   </div>
 {% endblock %}

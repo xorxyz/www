@@ -10,7 +10,30 @@
   {% endmarkdown %}
 {% endblock %}
 
-{% block extras %}
+{% block clues %}
+
+{% markdown %}
+Every time the generator ran, we wrote down the name of the person who requested a key:
+{% endmarkdown %}
+<!-- % assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
+<table class="border-collapse table-auto my-3">
+  <tbody>
+    <tr class="border border-neutral-600">
+      <th class="border border-neutral-600 px-3 py-2">Id</th>
+      <th class="border border-neutral-600 px-3 py-2">Name</th>
+    </tr>
+    <!-- {% assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
+    <!-- {% for name in names %} -->
+      <tr>
+        <td class="border border-neutral-600 px-3 py-2">{{ forloop.index }}</td>
+        <td class="border border-neutral-600 px-3 py-2">{{ name }}</td>
+      </tr>
+    <!-- {% endfor %} -->
+  </tbody>
+</table>
+{% endblock %}
+
+{% block tasks %}
 
   <!-- Task 1 -->
 
@@ -233,28 +256,4 @@
   {% include "_task_end.html" %}
 
   <!--  -->
-
-{% endblock %}
-
-{% block clues %}
-
-{% markdown %}
-Every time the generator ran, we wrote down the name of the person who requested a key:
-{% endmarkdown %}
-<!-- % assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
-<table class="border-collapse table-auto my-3">
-  <tbody>
-    <tr class="border border-neutral-600">
-      <th class="border border-neutral-600 px-3 py-2">Id</th>
-      <th class="border border-neutral-600 px-3 py-2">Name</th>
-    </tr>
-    <!-- {% assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
-    <!-- {% for name in names %} -->
-      <tr>
-        <td class="border border-neutral-600 px-3 py-2">{{ forloop.index }}</td>
-        <td class="border border-neutral-600 px-3 py-2">{{ name }}</td>
-      </tr>
-    <!-- {% endfor %} -->
-  </tbody>
-</table>
 {% endblock %}
