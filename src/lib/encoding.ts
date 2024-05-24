@@ -16,7 +16,7 @@ export function encode(numbers: number[]): string {
 }
 
 // Decode a Tobaud encoded string
-export function decode(str: string): number[] { 
+export function decode(str: string): number[] {
   var result = str.split('').map((char: string) => {
     if (char == " ") return 0
     if (/[a-z]/.test(char)) return char.codePointAt(0) as number - LOWERCASE_A_CODE_POINT_OFFSET

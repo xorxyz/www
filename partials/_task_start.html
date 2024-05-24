@@ -1,12 +1,13 @@
-<div class="card">
-  {% if open %}
+{% assign task_name = id | prepend: "task" %}
+<div class="card" x-data="{{ task_name }}">
+  {% if done %}
+  <details>
+  {% elsif open %}
   <details open>
   {% else %}
   <details>
   {% endif %}
-    <summary class="text-3xl">
+    <summary class="text-xl">
       Task {{ id }}
-      {% if done %}
-        <span>✅</span>
-      {% endif %}
+      <span x-show="won">✅</span>
     </summary>

@@ -15,6 +15,8 @@
       <tr class="text-sm">
         <td class="pr-2"></td>
         <td class="px-2">Title</td>
+        <td class="pl-2">Tasks</td>
+        <td class="pl-2">Solves</td>
         <td class="pl-2"></td>
       </tr>
     </thead>
@@ -24,6 +26,8 @@
       <tr>
         <td class="pr-2">{{ forloop.index }}</td>
         <td class="px-2">{{ level.title }}</td>
+        <td class="px-2">{{ level.task_count }}</td>
+        <td class="px-2">{{ level.solves.length }}</td>
         <td class="pl-2"><a href="/levels/{{ level.id }}" class="btn">Play &gt; </a></td>
       </tr>
     {% endfor %}

@@ -2,71 +2,259 @@
 
 {% block story %}
   {% markdown %}
-  Albert used the snake cipher to encrypt a secret phrase:
+  Albert and his associates were looking for a way to exchange secret information. So the Snake provided them with an encryption system. Every member of the group created their own secret key. And they all started using the system to store their secrets.
+
+  But after a while, they started having issues with the Snake's solution.
+  
+  Learn how this cryptosystem works so that you can help Albert with his problem.
+  {% endmarkdown %}
+{% endblock %}
+
+{% block extras %}
+
+  <!-- Task 1 -->
+
+  {% include "_task_start.html", id: 1 %}
+  {% markdown %}
+  Convert Tobaud-encoded text to binary.
+  {% endmarkdown %}
+  <div class="flex flex-col md:flex-row items-start md:items-center">
+    <div class="">
+      <span class="inline-block w-20 md:w-auto">Text:</span>
+      <input disabled type="text"
+        x-model="task1.chars"
+        size="5">
+    </div>
+    <div class="md:mx-4">
+        <span class="inline-block w-20 md:w-auto">Binary:</span>
+        <input type="text" 
+          x-model="task1.input"
+          size="17"
+          pattern="[01]*"
+          placeholder="00000 00000 00000"
+          minlength="15"
+          maxlength="15"
+          @keypress="$store.inputs.binary_only">
+    </div>
+
+    <div class="">
+      <button class="btn is-primary" @click="task1.verify">Verify</button>
+    </div>
+  </div>
+
+  <p class="rounded p-2 mt-6"
+    :class="{
+      'hidden': !task1.failed && !task1.won, 
+      'bg-yellow-500 text-neutral-800': task1.failed, 
+      'bg-green-600 text-neutral-100': task1.won }"
+    x-text="task1.output">
+  </p>
+  {% include "_task_end.html" %}
+
+  <!-- Task 2 -->
+
+  {% include "_task_start.html", id: 2 %}
+  {% markdown %}
+  Bit shift right this 5-bit byte, twice.
+  {% endmarkdown %}
+  <div class="flex flex-col md:flex-row items-start md:items-center">
+    <div class="">
+      <span class="inline-block w-20 md:w-auto">Byte:</span>
+      <input disabled type="text"
+        x-model="task2.byte"
+        size="5"
+        pattern="[01]*">
+    </div>
+    <div class="md:mx-4">
+      <span class="inline-block w-20 md:w-auto">Bit shifted:</span>
+      <input type="text" 
+        x-model="task2.input"
+        size="5"
+        pattern="[01]*"
+        placeholder="00000"
+        minlength="5"
+        maxlength="5"
+        @keypress="$store.inputs.binary_only">
+    </div>
+    <div class="">
+      <button class="btn is-primary my-1" @click="task2.verify">Verify</button>
+    </div>
+  </div>
+
+  <p class="rounded p-2 mt-6"
+    :class="{
+      'hidden': !task2.failed && !task2.won, 
+      'bg-yellow-500 text-neutral-800': task2.failed, 
+      'bg-green-600 text-neutral-100': task2.won }"
+    x-text="task2.output">
+  </p>
+  {% include "_task_end.html" %}
+
+  <!-- Task 3 -->
+
+  {% include "_task_start.html", id: 3 %}
+  {% markdown %}
+  XOR together two 5-bit bytes
+  {% endmarkdown %}
+  <div class="my-1">
+    <span class="w-20 inline-block">Byte A:</span>
+    <input disabled type="text"
+      x-model="task3.a"
+      size="5"
+      pattern="[01]*">
+  </div>
+  <div class="my-1">
+    <span class="w-20 inline-block">Byte B:</span>
+    <input disabled type="text" 
+      x-model="task3.b"
+      size="5"
+      pattern="[01]*">
+  </div>
+  <div class="my-1">
+    <span class="w-20 inline-block">XORed:</span>
+    <input type="text" 
+      x-model="task3.input"
+      size="5"
+      pattern="[01]*"
+      placeholder="00000"
+      minlength="5"
+      maxlength="5"
+      @keypress="$store.inputs.binary_only">
+  </div>
+  <button class="btn is-primary my-1" @click="task3.verify">Verify</button>
+
+  <p class="rounded p-2 mt-6"
+    :class="{
+      'hidden': !task3.failed && !task3.won, 
+      'bg-yellow-500 text-neutral-800': task3.failed, 
+      'bg-green-600 text-neutral-100': task3.won }"
+    x-text="task3.output">
+  </p>
+  {% include "_task_end.html" %}
+
+  <!-- Task 4 -->
+
+  {% include "_task_start.html", id: 4 %}
+  {% markdown %}
+  Decrypt a Tobaud-encoded string using the provided key.
+  {% endmarkdown %}
+    <div class="my-1">
+      <span class="w-20 inline-block">Ciphertext:</span>
+      <input disabled type="text" x-model="task4.encrypted" size="3" pattern="[a-z0-4 ]*">
+    </div>
+    <div class="my-1">
+      <span class="w-20 inline-block">Key:</span>
+      <input disabled type="text" x-model="task4.key" size="3" pattern="[a-z0-4 ]*">
+    </div>
+    <div class="my-1">
+      <span class="w-20 inline-block">Plaintext:</span>
+      <input type="text" 
+        x-model="task4.input"
+        size="3"
+        pattern="[a-z0-4 ]*"
+        placeholder=""
+        minlength="3"
+        maxlength="3"
+        @keypress="$store.inputs.tobaud_only">
+    </div>
+    <button class="btn is-primary my-1" @click="task4.verify">Verify</button>
+    <p class="rounded p-2 mt-6"
+      :class="{
+        'hidden': !task4.failed && !task4.won, 
+        'bg-yellow-500 text-neutral-800': task4.failed, 
+        'bg-green-600 text-neutral-100': task4.won }"
+      x-text="task4.output">
+
+  {% include "_task_end.html" %}
+
+  <!-- Task 5 -->
+
+  {% include "_task_start.html", id: 5, open %}
+  {% markdown %}
+  Use the key generator algorithm to generate a key using the provided seed.
+  {% endmarkdown %}
+    <div class="my-1">
+      <div class="">Seed:</div>
+      <input disabled type="text" x-model="task5.seed" class="" size="5" pattern="[01]*">
+    </div>
+    <div class="my-1">
+      <div class="">Key:</div>
+      <input type="text" 
+        x-model="task5.input"
+        size="29"
+        pattern="[01]*"
+        placeholder="00000 00000 00000 00000 00000"
+        minlength="25"
+        maxlength="25"
+        @keypress="$store.inputs.binary_only">
+    </div>
+    <button class="btn is-primary my-1" @click="task5.verify">Verify</button>
+    <p class="rounded p-2 mt-6"
+      :class="{
+        'hidden': !task5.failed && !task5.won, 
+        'bg-yellow-500 text-neutral-800': task5.failed, 
+        'bg-green-600 text-neutral-100': task5.won }"
+      x-text="task5.output">
+  {% include "_task_end.html" %}
+
+  <!-- Task 6 -->
+
+  {% include "_task_start.html", id: 6 %}
+
+  {% markdown %}
+  Albert used his key to encrypt a secret phrase. This is the cipher text that he produced:
 
   ```
   vsymgkf eb a2dajugmvl2ivgwgddr  ienq0zwkhszdadgzeq
   ```
 
-  But he lost his encryption key. Can you find it for him?
+  But Albert lost the key. Can you recover it for him?
   {% endmarkdown %}
-{% endblock %}
 
-{% block extras %}
-  {% include "_task_start.html", id: 1, done: true, open: false %}
-  {% markdown %}
-  This is the first task.
-  {% endmarkdown %}
+  <div class="my-2 py-1">
+    <span>Albert's key is:</span>
+    <input type="text" 
+      x-model="task6.input"
+      size="29"
+      pattern="[01]*"
+      placeholder="00000 00000 00000 00000 00000"
+      minlength="25"
+      maxlength="25"
+      @keypress="$store.inputs.binary_only"/>
+    <button id="ok" class="btn is-primary" @click="task6.verify">Verify</button>
+  </div>
+  <p id="out" class="rounded p-2" 
+    :class="{
+      'hidden': !task6.failed && !task6.won, 
+      'bg-yellow-500 text-neutral-800': task6.failed, 
+      'bg-green-500 text-neutral-100': task6.won }"
+    x-text="task6.output">
+  </p>
   {% include "_task_end.html" %}
 
-  {% include "_task_start.html", id: 2, done: false %}
-  {% markdown %}
-  This is the second task.
-  {% endmarkdown %}
-  {% include "_task_end.html" %}
+  <!--  -->
 
-  {% include "_task_start.html", id: 3, done: false, open: true %}
-    <div x-data="level_2024_001">
-      <div class="my-2 py-1">
-        <label class="mr-2 my-1">Albert's key is:</label>
-        <input type="text" 
-          class="text-input" 
-          placeholder="00000 00000 00000 00000 00000" 
-          size="29"
-          pattern="[01]*" 
-          x-model="input"/>
-        <button id="ok" class="btn is-primary" @click="verify">Verify</button>
-      </div>
-      <p id="out" class="rounded p-2" 
-        :class="{
-          'hidden': !failed && !won, 
-          'bg-yellow-500 text-neutral-800': failed, 
-          'bg-green-500 text-neutral-100': won }"
-        x-text="output">
-      </p>
-    </div>
-  {% include "_task_end.html" %}
 {% endblock %}
 
 {% block clues %}
-  {% markdown %}
-  Every time the generator ran, we wrote down the name of the person who requested a key:
-  {% endmarkdown %}
 
-  <!-- % assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
-  <table class="border-collapse table-auto my-3">
-    <tbody>
-      <tr class="border border-neutral-600">
-        <th class="border border-neutral-600 px-3 py-2">Id</th>
-        <th class="border border-neutral-600 px-3 py-2">Name</th>
+{% markdown %}
+Every time the generator ran, we wrote down the name of the person who requested a key:
+{% endmarkdown %}
+<!-- % assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
+<table class="border-collapse table-auto my-3">
+  <tbody>
+    <tr class="border border-neutral-600">
+      <th class="border border-neutral-600 px-3 py-2">Id</th>
+      <th class="border border-neutral-600 px-3 py-2">Name</th>
+    </tr>
+    <!-- {% assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
+    <!-- {% for name in names %} -->
+      <tr>
+        <td class="border border-neutral-600 px-3 py-2">{{ forloop.index }}</td>
+        <td class="border border-neutral-600 px-3 py-2">{{ name }}</td>
       </tr>
-      <!-- {% assign names = "Anselm, Peter, Alexander, Albert, Thomas" | split: ", " %} -->
-      <!-- {% for name in names %} -->
-        <tr>
-          <td class="border border-neutral-600 px-3 py-2">{{ forloop.index }}</td>
-          <td class="border border-neutral-600 px-3 py-2">{{ name }}</td>
-        </tr>
-      <!-- {% endfor %} -->
-    </tbody>
-    </table>
+    <!-- {% endfor %} -->
+  </tbody>
+</table>
 {% endblock %}

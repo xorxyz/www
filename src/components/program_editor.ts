@@ -1,4 +1,4 @@
-import Alpine from 'alpinejs'
+import { registerComponent } from '../register';
 import { tokenize } from '../lib/tokenization'
 import { Machine } from '../lib/machine'
 
@@ -13,31 +13,29 @@ const operationType = { name: 'op', icon: '>' }
 const types = [operationType, constantType, refType, derefType]
 const operations = ['nop', 'hlt', 'jmp', 'dup', 'out']
 
-document.addEventListener('alpine:init', () => {
-  Alpine.data('editor', () => ({
-    types,
-    operations,
-    step,
-    reset,
-    add,
-    remove,
-    up,
-    down,
-    changeType,
-    output: [],
-    tick: 0,
-    code: tokenize(`
-      start:
-        @0
-      loop:
-        out
-        #1
-        add
-        &start
-        jmp
-    `),
-  }));
-})
+registerComponent('editor', () => ({
+  types,
+  operations,
+  step,
+  reset,
+  add,
+  remove,
+  up,
+  down,
+  changeType,
+  output: [],
+  tick: 0,
+  code: tokenize(`
+    start:
+      @0
+    loop:
+      out
+      #1
+      add
+      &start
+      jmp
+  `)
+}))
 
 function step() {
   this.tick++
