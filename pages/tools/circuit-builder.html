@@ -1,0 +1,62 @@
+{% layout "tool.html", slug: "circuit-builder" %}
+
+{% block component %}
+
+<div id="circuit-builder" class="f7">
+  
+  <div class="flex w-100">
+    <select x-model="block_type">
+      <option value="">-- Blocks --</option>
+      <template x-for="type in block_types">
+        <option :value="type" x-text="type"></option> 
+      </template>
+    </select>
+    <button class="btn mx-2" @click="add" :disabled="!block_type">Add block</button>
+  </div>
+
+  <div class="flex flex-row justify-end items-center my-4 text-4xl h-16 border border-neutral-600 bg-neutral-900">
+    <template x-for="cell in mem_cells">
+      <code class="flex items-center" x-text="cell.value"></code>
+    </template>
+  </div>
+
+  <div class="flex my-4">
+    <div class="mr-1 flex items-center"><span>Clock</span></div>
+    <div class="mx-1"><input disabled type="text" class="mono text-right" value="0" size="3" x-model="tick" /></div>
+    <div class="mx-1"><button class="btn" @click="step">Step</button></div>
+    <div class="mx-1"><button class="btn" @click="reset">Reset</button></div>
+  </div>
+  <table class="text-xs">
+    <thead>
+      <tr id="table_header_row" class="striped--light-gray">
+        <!-- <th></th> -->
+        <th>ID</th>
+        <th>Type</th>
+        <th>Output</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <template x-for="block in blocks">
+        <tr>
+          <td x-text="block.id"></td>
+          <td x-text="block.type"></td>
+          <td>
+              <select x-model="block.out">
+                <option value="0">-</option>
+                <template x-for="block in blocks">
+                  <option :value="block.id" x-text="block.id"></option>
+                </template>
+              </select>
+          </td>
+          <td @click="remove(block.id)" class="text-xl"><button class="btn">✖</button></td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
+
+  <pre><code x-text="JSON.stringify(blocks, null, 2)"></code></pre>
+</div>
+
+
+{% endblock %}

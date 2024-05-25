@@ -1,5 +1,32 @@
 {% layout "default.html" %}
 
 {% block content %}
-<h1>Tools</h1>
+
+<small>
+  <span class="text-neutral-200">Tools</span>
+  <span class="text-neutral-400">/</span>
+</small>
+
+<div class="card">
+  <h1 class="">Tools</h1>
+
+  <table class="my-3">
+    <thead>
+      <tr class="text-sm">
+        <td class="pr-2"></td>
+        <td class="px-2">Name</td>
+      </tr>
+    </thead>
+    <tbody>
+      
+    {% for tool in tools %}
+      <tr>
+        <td class="pr-2">{{ forloop.index }}</td>
+        <td class="px-2"><a href="/tools/{{ tool.slug }}" class="link">{{ tool.name }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
 {% endblock %}

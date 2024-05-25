@@ -14,7 +14,7 @@
     {% for ranking in rankings limit:3 %}
       <div class="w-1/3 text-center py-1">
         {{ forloop.index }}
-        <div class="">{{ ranking.username }}</div>
+        <div class="">{{ ranking.username }} ({{ ranking.score }})</div>
       </div>
     {% endfor %}
   </div>
@@ -24,16 +24,18 @@
       <tr class="text-sm border-none">
         <td class="pr-2 text-right border-none">Rank</td>
         <td class="px-2 border-none">Name</td>
-        <td class="pl-2 border-none"></td>
+        <td class="pl-2 border-none">Score</td>
+        <td class="pl-2 border-none">Joined on</td>
       </tr>
     </thead>
     <tbody>
 
     {% for ranking in rankings offset:3 %}
-      <tr class="border-none">
+      <tr class="border-none" x-data >
         <td class="pr-2 text-right border-none">{{ forloop.index | plus: 3 }}</td>
-        <td class="px-2 text-neutral-400 border-none">{{ ranking.username }}</td>
-        <td class="pl-2 border-none"></td>
+        <td class="px-2 border-none" :class="true ? 'text-neutral-400' : ''">{{ ranking.username }}</td>
+        <td class="pl-2 border-none" :class="true ? 'text-neutral-400' : ''">{{ ranking.score }}</td>
+        <td class="pl-2 border-none" :class="true ? 'text-neutral-400' : ''">{{ ranking.joined_on }}</td>
       </tr>
     {% endfor %}
     </tbody>

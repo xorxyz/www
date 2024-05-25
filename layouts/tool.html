@@ -1,0 +1,20 @@
+{% assign tool = tools | find: "slug", slug %}
+{% layout "default.html" %}
+
+{% block content %}
+{% assign component_id = tool.slug | replace: "-", "_" %}
+
+<small>
+  <span class="text-neutral-200"><a href="/tools" class="text-violet-300 font-bold">Tools</a></span>
+  <span class="text-neutral-400">/</span>
+  <span class="text-neutral-200">{{ tool.name }}</span>
+</small>
+
+<div class="card" x-data="{{ component_id }}">
+  <h1>{{ tool.name }}</h1>
+
+  {% block component %}
+  {% endblock %}
+</div>
+
+{% endblock %}
