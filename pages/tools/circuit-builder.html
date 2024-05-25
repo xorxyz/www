@@ -2,16 +2,73 @@
 
 {% block component %}
 
-<div id="circuit-builder" class="f7">
+<style>
+  .dropdown-check-list {
+    display: inline-block;
+    position: relative;
+  }
   
+  .dropdown-check-list .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 50px 5px 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .dropdown-check-list .anchor:after {
+    position: absolute;
+    content: "";
+    border-left: .1rem solid #fff;
+    border-top: .1rem solid #fff;
+    padding: .3rem;
+    right: .5rem;
+    top: 20%;
+    -moz-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+  
+  .dropdown-check-list .anchor:active:after {
+    right: 8px;
+    top: 21%;
+  }
+  
+  .dropdown-check-list ul.items {
+    padding: 2px;
+    display: none;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+  
+  .dropdown-check-list ul.items li {
+    list-style: none;
+  }
+  
+  .dropdown-check-list.visible .anchor {
+    color: #fff;
+  }
+  
+  .dropdown-check-list.visible .items {
+    display: block;
+  }
+
+</style>
+
+<div id="circuit-builder" class="f7">
   <div class="flex w-100">
     <select x-model="block_type">
       <option value="">-- Blocks --</option>
       <template x-for="type in block_types">
-        <option :value="type" x-text="type"></option> 
+        <option :value="type" x-text="type" :selected="block_type === type"></option> 
       </template>
     </select>
-    <button class="btn mx-2" @click="add" :disabled="!block_type">Add block</button>
+    <button class="btn mx-2" @click="add" :disabled="!block_type">
+      Add block
+    </button>
   </div>
 
   <div class="flex flex-row justify-end items-center my-4 text-4xl h-16 border border-neutral-600 bg-neutral-900">
@@ -42,14 +99,39 @@
           <td x-text="block.id"></td>
           <td x-text="block.type"></td>
           <td>
-              <select x-model="block.out">
-                <option value="0">-</option>
-                <template x-for="block in blocks">
-                  <option :value="block.id" x-text="block.id"></option>
+            <!-- <select x-model="block.out">
+              <option value="0">-</option>
+              <template x-for="b in blocks">
+                <option :value="b.id" x-text="b.id" :selected="block.out == b.id"></option>
+              </template>
+            </select> -->
+
+
+            <div class="dropdown-check-list" tabindex="100" x-data="dropdown(block.id === 1)" :class="open ? 'visible' : ''" @click.outside="close">
+              <span class="anchor bg-neutral-90 rounded-sm w-28" @click="click" x-text="block.out.join(', ') || '  - '"></span>
+              <ul class="absolute items w-full bg-neutral-900/100 z-10">
+                <template x-for="b in blocks">
+                  <li class="">
+                    <input 
+                      type="checkbox" 
+                      :id="true ? `${block.id}-${b.id}` : ''"
+                      class="hidden"
+                      :class="true ? `peer/${block.id}-${b.id}`: ''"
+                      x-model.number="block.out"
+                      :value="b.id"/>
+                    <label :for="true ? `${block.id}-${b.id}` : ''" 
+                      class="px-2 py-1 cursor-pointer w-full inline-block bg-neutral-900/100 hover:bg-neutral-300 hover:text-neutral-900"
+                      :class="true ? `peer-checked/${block.id}-${b.id}:bg-purple-600`: ''"
+                      x-text="'Block ' + b.id">
+                    </label>
+                  </li>
                 </template>
-              </select>
+              </ul>
+            </div>
+
+
           </td>
-          <td @click="remove(block.id)" class="text-xl"><button class="btn">✖</button></td>
+          <td class="text-lg"><button class="btn" @click="remove(block.id)">✖</button></td>
         </tr>
       </template>
     </tbody>
@@ -57,6 +139,5 @@
 
   <pre><code x-text="JSON.stringify(blocks, null, 2)"></code></pre>
 </div>
-
 
 {% endblock %}
