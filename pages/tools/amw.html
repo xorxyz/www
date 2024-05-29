@@ -1,0 +1,21 @@
+{% layout "tool.html", slug: "amw" %}
+
+{% block component %}
+
+<p>ticks: <code x-text="ticks" class=""></code></p>
+
+<div id="cols" class="flex flex-row text-xs">
+  {% for x in (0..7) %}
+  <div class="w-12">
+    {% for y in (0..7) %}
+    <div class="h-12 border flex items-center justify-center mono" x-data="grid.atXY({{x}}, {{y}})">
+      <pre x-text="render()"></pre>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+
+<pre><code x-text="grid"></code></pre>
+
+{% endblock %}
