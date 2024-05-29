@@ -36,6 +36,7 @@ export default class Clock {
   }
 
   private step(): void {
+    if (!this._running) return
     this._tick += 1;
     const drift = Date.now() - this.expectedMs;
     this.callback();

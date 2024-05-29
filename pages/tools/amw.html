@@ -4,18 +4,24 @@
 
 <p>ticks: <code x-text="ticks" class=""></code></p>
 
-<div id="cols" class="flex flex-row text-xs">
-  {% for x in (0..7) %}
-  <div class="w-12">
-    {% for y in (0..7) %}
-    <div class="h-12 border flex items-center justify-center mono" x-data="grid.atXY({{x}}, {{y}})">
-      <pre x-text="render()"></pre>
+<div id="cols" class="inline-flex flex-row border border-2" :class="halted ? 'border-red-500': ''">
+  <template x-for="column in columns">
+    <div class="w-12">
+      <template x-for="cell in column">
+        <div class="h-12 border flex items-center justify-center mono" :class="cell.style">
+          <pre x-text="cell.output"></pre>
+        </div>
+      </template>
     </div>
-    {% endfor %}
-  </div>
-  {% endfor %}
+  </template>
 </div>
 
-<pre><code x-text="grid"></code></pre>
+<div class="my-2">
+  <button class="btn" @click="play_pause" x-text="play_pause_btn_label" :disabled="halted"></button>
+  <button class="btn" @click="step" :disabled="halted">Step</button>
+  <button class="btn" @click="reset">Reset</button>
+</div>
+
+<!-- <pre><code x-text="JSON.stringify(columns, null, 2)"></code></pre> -->
 
 {% endblock %}
