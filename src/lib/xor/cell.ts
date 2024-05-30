@@ -1,3 +1,4 @@
+import { Attribute } from "./attribute"
 import Thing from "./thing"
 import Vector from "./vector"
 
@@ -15,14 +16,20 @@ export default class Cell {
     this.pos = new Vector(x, y)
     this.label = `[${this.pos.x},${this.pos.y}]`
   }
+  has_attribute(attr: Attribute) {
+    if (!this.thing) return false
+    return this.thing.attributes.has(attr)
+  }
   put(thing: Thing) {
     thing.pos.copy(this.pos)
     this.thing = thing
   }
-  rm() {
+  rm(): Thing | null {
+    const thing = this.thing
     this.thing = null
+    return thing
   }
-  update(ticks: number) {
+  update() {
     this.output = this.thing
       ? this.thing.render()
       : '..'
@@ -30,7 +37,7 @@ export default class Cell {
   render(): Output {
     return ({ 
       output: this.output, 
-      style: this.thing && this.thing.error ? 'bg-red-500' : ''
+      style: this.thing && this.thing.error ? 'bg-red-500' : this.thing && this.thing.win ? 'bg-green-500' : ''
     })
   }
   clear() {

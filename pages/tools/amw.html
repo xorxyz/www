@@ -4,11 +4,20 @@
 
 <p>ticks: <code x-text="ticks" class=""></code></p>
 
-<div id="cols" class="inline-flex flex-row border border-2" :class="halted ? 'border-red-500': ''">
+<div class="inline-flex flex-row border border-2">
+  <template x-for="type in thing_types">
+    <div class="w-12 h-12 border flex items-center justify-center mono select-none cursor-grab">
+      <pre x-text="type.icon"></pre>
+    </div>
+  </template>
+</div>
+
+
+<div id="cols" class="inline-flex flex-row border border-2" :class="border_style">
   <template x-for="column in columns">
     <div class="w-12">
       <template x-for="cell in column">
-        <div class="h-12 border flex items-center justify-center mono" :class="cell.style">
+        <div class="h-12 border flex items-center justify-center mono" :class="cell.style" @mousedown="select">
           <pre x-text="cell.output"></pre>
         </div>
       </template>

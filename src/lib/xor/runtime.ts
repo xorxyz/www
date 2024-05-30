@@ -3,9 +3,10 @@ import EventBus from './event_bus'
 import Grid from "./grid"
 import Thing from './thing'
 
-const MS_PER_CYCLE = 800
+const MS_PER_CYCLE = 400
 
 export default class Runtime extends EventBus {
+  private win = false
   private halted = false
   private ticks = 0
   private clock: Clock
@@ -15,6 +16,7 @@ export default class Runtime extends EventBus {
   get is_halted () { return this.halted; }
   get is_running () { return this.clock.isRunning; }
   get get_ticks () { return this.ticks; }
+  get has_won () { return this.win; }
 
   constructor (grid: Grid) {
     super()
@@ -58,32 +60,50 @@ export default class Runtime extends EventBus {
   }
 
   update() {
-    this.grid.each((cell) => cell.update(this.ticks))
+    this.grid.each((cell) => cell.update())
   }
 
   tick () {
     this.things.forEach(thing => {
       if (this.halted) return false
-      const src = this.grid.at(thing.pos)
-      if (!src) return
-
-      const dest_pos = thing.pos.clone().add(thing.dir)
-      const dest = this.grid.at(dest_pos)
-
-      if (!dest) {
-        console.warn('no cell!')
-        thing.error = true
-        this.halt()
-        return
-      }
-
-      src.rm()
-      dest.put(thing)
+      if (thing.attributes.has('walks')) this.handleWalking(thing)
     })
 
     this.update()
 
     this.ticks += 1
     this.emit('tick', { ticks: this.ticks })
+  }
+
+  handleWalking (thing: Thing) {
+    const src = this.grid.at(thing.pos)
+    if (!src) return
+
+    const dest_pos = thing.pos.clone().add(thing.dir)
+    const dest = this.grid.at(dest_pos)
+
+    if (!dest) {
+      console.warn('no cell!')
+      thing.error = true
+      this.halt()
+      return
+    }
+
+    if (dest.has_attribute('blocks')) {
+      if (dest.has_attribute('stops')) return
+      thing.rotate_left()
+      return
+    }
+
+    const prev = dest.rm()
+    src.rm()
+    dest.put(thing)
+
+    if (prev && prev.attributes.has('win')) {
+      this.win = true
+      thing.win = true
+      this.halt()
+      return
+    }
   }
 }
