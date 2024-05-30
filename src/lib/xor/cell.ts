@@ -3,8 +3,11 @@ import Thing from "./thing"
 import Vector from "./vector"
 
 interface Output {
+  id: string,
   output: string,
-  style: string
+  style: string,
+  x: number,
+  y: number
 }
 
 export default class Cell {
@@ -35,9 +38,12 @@ export default class Cell {
       : '..'
   }
   render(): Output {
-    return ({ 
+    return ({
+      id: `${this.pos.x}${this.pos.y}`,
       output: this.output, 
-      style: this.thing && this.thing.error ? 'bg-red-500' : this.thing && this.thing.win ? 'bg-green-500' : ''
+      style: this.thing && this.thing.error ? 'bg-red-500' : this.thing && this.thing.win ? 'bg-green-500' : '',
+      x: this.pos.x,
+      y: this.pos.y
     })
   }
   clear() {

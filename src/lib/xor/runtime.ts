@@ -33,6 +33,13 @@ export default class Runtime extends EventBus {
     this.update()
   }
 
+  remove(thing: Thing) {
+    const cell = this.grid.at(thing.pos)
+    if (cell) cell.rm()
+    this.things.delete(thing)
+    this.update()
+  }
+
   start() {
     this.clock.start()
   }
