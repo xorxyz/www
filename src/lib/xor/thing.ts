@@ -10,6 +10,7 @@ export default class Thing {
   dir = new Vector(0, 1)
   win = false
   error = false
+  fixed = false
   attributes = new Set<Attribute>
   constructor (name: string, icon: string, attributes: Attribute[]) {
     this.name = name
@@ -31,4 +32,34 @@ export default class Thing {
     const nextDir = directions[nextIndex]
     this.dir.copy(nextDir)
   }
+  clone() {
+    const copy = new Thing(this.name, this.icon, [...this.attributes])
+    copy.pos.copy(this.pos)
+    copy.dir.copy(this.dir)
+    copy.fixed = this.fixed
+    return copy
+  }
+}
+
+export function createThing(type: string, x = 0, y = 0) {
+  let thing
+  switch (type) {
+    case 'wizard':
+      thing = new Thing('wizard', '🧙‍♂️', ['walks'])
+      break
+    case 'flag':
+      thing = new Thing('flag', '🚩', ['win'])
+      break
+    case 'tree':
+      thing = new Thing('tree', '🌲', ['blocks'])
+      break
+    case 'mountain':
+      thing = new Thing('mountain', '⛰️', ['blocks', 'halts'])
+      break
+    default:
+      throw new Error(`Couldn't create thing of type '${type}'`)
+  }
+
+  thing.pos.setXY(x, y)
+  return thing
 }

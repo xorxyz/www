@@ -2,7 +2,7 @@ const attributes = [
   'walks',
   'blocks',
   'win',
-  'stops'
+  'halts'
 ] as const
 
 export type Attribute = typeof attributes[number]

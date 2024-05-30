@@ -1,7 +1,7 @@
 export default class EventBus {
   private listeners = new Map<string, Function[]>
 
-  emit(name: string, data: Record<string, any>) {
+  protected emit(name: string, data?: Record<string, any>) {
     const listeners = this.listeners.get(name);
 
     listeners?.forEach(fn => fn.call(fn, data))

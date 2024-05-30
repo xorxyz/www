@@ -2,105 +2,33 @@
 
 {% block component %}
 
-<style>
-.drag-and-drop {
-  display: flex;
-  max-width: 760px;
-  padding: 20px;
-  margin: 0 auto;
-}
-.drag-and-drop__container {
-  position: relative;
-  overflow: hidden;
-  width: 50%;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-}
-.drag-and-drop__divider {
-  padding: 10px;
-  font-size: 20px;
-  align-self: center;
-}
-.drag-and-drop__title {
-  padding: 15px 20px;
-  font-size: 20px;
-  background: #ddd;
-}
-.drag-and-drop__items {
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-  min-height: 150px;
-  margin: 0 -1px;
-  padding-bottom: 40px;
-  border-top: 1px solid #ccc;
-}
-.drag-and-drop__items--adding {
-  background-color: #9AE6B4;
-}
-.drag-and-drop__items--removing {
-  background-color: #FBD38D;
-}
-.drag-and-drop__item {
-  padding: 15px 20px;
-  border: 1px solid #ccc;
-  border-top: 0;
-  line-height: 1;
-  cursor: move;
-  background-color: #fff;
-}
-.drag-and-drop__item:hover {
-  background-color: #eee;
-}
-.drag-and-drop__item--dragging {
-  color: #ccc !important;
-  background-color: #fff !important;
-}
-</style>
-
-<div 
-@drop.prevent="drop_final"
-@dragover.prevent="dragover_final">
+<div
+  @drop.prevent="drop_final"
+  @dragover.prevent="dragover_final">
   <p>ticks: <code x-text="ticks" class=""></code></p>
+  <p>state: <code x-text="state" class=""></code></p>
 
-  <div class="inline-flex flex-row border border-2">
-    <template x-for="type in thing_types">
-      <div class="w-12 h-12 border flex items-center justify-center mono select-none cursor-grab"
-        @drop.prevent="src.drop"
-        @dragover.prevent="src.dragover"
-        @dragleave.prevent="src.dragleave">
-        <pre
-          :id="type.name" 
-          x-text="type.icon"
-          x-data="{ dragging: false }"
-          :data-type="type.name"
-          draggable="true"
-          @dragstart.self="src.dragstart"
-          @dragend="src.dragend"></pre>
-      </div>
-    </template>
-  </div>
-
-  <div id="cols" class="inline-flex flex-row border border-2" :class="border_style">
+  <div id="cols" class="text-2xl inline-flex flex-row border border-2" :class="border_style">
     <template x-for="column in columns">
       <div class="w-12">
         <template x-for="cell in column">
           <div 
-            class="cell h-12 border flex items-center justify-center mono"
+            x-data="{ dragging: false }"
+            :draggable="can_edit && !cell.fixed"
+            class="cell h-12 border flex items-center justify-center mono select-none"
+            :id="cell.id" 
+            :data-cell="true"
+            :data-x="cell.x"
+            :data-y="cell.y"
+            :data-fixed="cell.fixed"
             :class="cell.style"
             @mousedown="select"
             @drop.prevent.stop="dest.drop"
             @dragover.prevent="dest.dragover"
-            @dragleave.prevent="dest.dragleave">
+            @dragleave.prevent="dest.dragleave"
+            @dragstart.self="dest.dragstart"
+            @dragend.prevent="dest.dragend">
             <pre x-text="cell.output"
-              :id="cell.id" 
-              x-data="{ dragging: false }"
-              :data-cell="true"
-              :data-x="cell.x"
-              :data-y="cell.y"
-              draggable="true"
-              @dragstart.self="dest.dragstart"
-              @dragend.prevent="dest.dragend"
               ></pre>
           </div>
         </template>
@@ -108,13 +36,33 @@
     </template>
   </div>
 
-  <div class="my-2">
-    <button class="btn" @click="play_pause" x-text="play_pause_btn_label" :disabled="halted"></button>
-    <button class="btn" @click="step" :disabled="halted">Step</button>
-    <button class="btn" @click="reset">Reset</button>
+  <div class="text-2xl inline-flex flex-row border border-2" :class="can_edit ? 'cursor-grab' : 'opacity-50 cursor-not-allowed'">
+    <template x-for="type in thing_types">
+      <div class="w-12 h-12 border flex items-center justify-center mono select-none"
+        
+        :disabled="!can_edit"
+        x-data="{ dragging: false }"
+        :draggable="can_edit"
+        data-thing="true"
+        :id="type.name" 
+        :data-type="type.name"
+        @drop.prevent="src.drop"
+        @dragover.prevent="src.dragover"
+        @dragleave.prevent="src.dragleave"
+        @dragstart.self="src.dragstart"
+        @dragend="src.dragend">
+        <pre x-text="type.icon"></pre>
+      </div>
+    </template>
   </div>
 
-  <pre><code x-text="JSON.stringify(columns, null, 2)"></code></pre>
+  <div class="my-2">
+    <button class="btn w-20" @click="play_pause" x-text="play_pause_btn_label" :disabled="halted"></button>
+    <button class="btn w-20" @click="step" :disabled="halted || running">Step</button>
+    <button class="btn w-20" @click="reset">Reset</button>
+  </div>
+
+  <!-- <pre><code x-text="JSON.stringify(columns, null, 2)"></code></pre> -->
 </div>
 
 {% endblock %}

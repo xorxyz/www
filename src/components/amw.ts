@@ -1,7 +1,8 @@
 import { registerComponent } from "../register";
 import Grid from "../lib/xor/grid";
 import Runtime from "../lib/xor/runtime";
-import Thing from "../lib/xor/thing";
+import { createThing } from "../lib/xor/thing";
+import Vector from "../lib/xor/vector";
 
 const grid = new Grid(8, 8)
 const runtime = new Runtime(grid)
@@ -9,35 +10,16 @@ const autoplay = false
 
 const dnd = {
   remove_thing(x: number, y: number) {
-    const cell = grid.at_xy(x, y)
-
-    if (!cell) return
-
-    const thing = cell.rm()
-
-    if (thing) runtime.remove(thing)
-
-    runtime.update()
-    runtime.emit('force_render', {})
+    runtime.remove_at(new Vector(x, y))
   },
   move_thing(sx: number, sy: number, tx: number, ty: number) {
-    const scell = grid.at_xy(sx, sy)
-    const tcell = grid.at_xy(tx, ty)
-
-    console.log(scell, tcell)
+    runtime.move(new Vector(sx, sy), new Vector(tx, ty))
+  },
+  add_thing(x: number, y: number, type: string) {
+    const thing = createThing(type, x, y)
+    runtime.add(thing)
   },
   drop_final(event) {
-    console.log('drop_final')
-    // this.dest.adding = false
-    
-    // const is_cell = Boolean(event.target.dataset['cell'])
-    // if (!is_cell) return
-
-    // const x = Number(event.target.dataset['x'])
-    // const y = Number(event.target.dataset['y'])
-    // const cell = grid.at_xy(x, y)
-    // if (!cell) return
-
     const id = event.dataTransfer.getData('text/plain')
     const element = document.getElementById(id);
     if (!element) return
@@ -45,20 +27,15 @@ const dnd = {
     const y = Number(element.dataset['y'])
 
     this.remove_thing(x, y)
-
-    // console.log('dest.drop', cell, tcell)
   },
-  dragover_final(event) {
-  },
+  dragover_final(event) {},
   src: {
     adding: false,
     removing: false,
     drop (event) {
       this.src.removing = false
-      // const target = event.target.closest('div');
       const element = document.getElementById(event.dataTransfer.getData('text/plain'));
       console.log('src.drop', element)
-      // target.appendChild(element);
     },
     dragover () {
       this.src.removing = true
@@ -80,22 +57,34 @@ const dnd = {
     removing: false,
     drop (event) {
       this.dest.adding = false
-      console.log('dest_drop')
 
-      
       const id = event.dataTransfer.getData('text/plain')
       const element = document.getElementById(id);
       if (!element) return
-      const sx = Number(element.dataset['x'])
-      const sy = Number(element.dataset['y'])
-    
-      const target: HTMLElement | null = event.target.closest('.cell');
-      if (!target) return
-      const target_child = target.getElementsByTagName('pre')[0]
-      if (!target_child) return
-      const tx = Number(target_child.dataset['x'])
-      const ty = Number(target_child.dataset['y'])
-      this.move_thing(sx, sy, tx, ty)
+
+      if (Boolean(element.dataset['thing'])) {
+        const type = element.dataset['type']
+        
+        const target: HTMLElement | null = event.target.closest('.cell');
+        if (!target) return
+
+        const tx = Number(target.dataset['x'])
+        const ty = Number(target.dataset['y'])
+        this.add_thing(tx, ty, type)
+        return
+      }
+
+      if (Boolean(element.dataset['cell'])) {
+        const sx = Number(element.dataset['x'])
+        const sy = Number(element.dataset['y'])
+      
+        const target: HTMLElement | null = event.target.closest('.cell');
+        if (!target) return
+        const tx = Number(target.dataset['x'])
+        const ty = Number(target.dataset['y'])
+        this.move_thing(sx, sy, tx, ty)
+        return
+      }
     },
     dragover () {
       this.dest.adding = true
@@ -112,7 +101,6 @@ const dnd = {
     },
     dragend(event) {
       this.dest.removing = false
-      // const target = event.target.closest('div');
     }
   },
 }
@@ -124,6 +112,8 @@ registerComponent('amw', ()  => ({
   columns: grid.render(),
   runtime: runtime,
   halted: false,
+  running: false,
+  state: '',
   win: false,
   selected: {
     x: 0,
@@ -138,6 +128,9 @@ registerComponent('amw', ()  => ({
   get lost() {
     return this.halted && !this.win
   },
+  get can_edit() {
+    return !(this.ticks !== 0 || this.running)
+  },
   select(e) {
     console.log(e)
   },
@@ -150,7 +143,9 @@ registerComponent('amw', ()  => ({
       load(runtime)
       this.render()
     })
-    this.runtime.on('force_render', () => { this.render(); })
+    this.runtime.on('update', () => {
+      this.render()
+    })
     load(this.runtime)
     this.render()
     if (this.autoplay) {
@@ -159,10 +154,17 @@ registerComponent('amw', ()  => ({
   },
   render() {
     this.halted = runtime.is_halted
+    this.running = runtime.is_running
     this.win = runtime.has_won
+    this.ticks = runtime.get_ticks
+    this.state = this.win ? 'Victory' : this.lost ? 'Loss' : this.running ? 'Running' : 'Paused'
     this.columns = grid.render()
     this.play_pause_btn_label = this.runtime.is_running ? 'Pause' : 'Play'
-    this.border_style = this.lost ? 'border-red-500' : this.won ? 'border-green-500' : ''
+    this.border_style = [
+      this.can_edit ? '' : 'cursor-not-allowed',
+      this.lost ? 'border-red-500' : '',
+      this.won ? 'border-green-500' : ''
+    ].filter(x => x).join(' ')
   },
   play_pause() {
     if (runtime.is_running) {
@@ -184,22 +186,14 @@ registerComponent('amw', ()  => ({
 }))
 
 function load(runtime: Runtime) {
-  const wizard = new Thing('wizard', '🧙‍♂️', ['walks'])
-  runtime.add(wizard)
-  
-  const flag = new Thing('flag', '🚩', ['win'])
-  flag.pos.setXY(6, 4)
-  runtime.add(flag)
-  
-  const tree = new Thing('tree', '🌲', ['blocks'])
-  tree.pos.setXY(0, 7)
-  runtime.add(tree)
-  
-  const tree2 = new Thing('tree', '🌲', ['blocks'])
-  tree2.pos.setXY(7, 6)
-  runtime.add(tree2)
+  const wizard = createThing('wizard')
+  const flag = createThing('flag', 6, 4)
+  const mtn = createThing('mountain', 1, 4)
 
-  const mtn = new Thing('mountain', '⛰️', ['blocks', 'stops'])
-  mtn.pos.setXY(1, 4)
-  runtime.add(mtn)
+  const things = [wizard, flag, mtn]
+  
+  things.forEach(thing => {
+    thing.fixed = true
+    runtime.add(thing)
+  })
 }
