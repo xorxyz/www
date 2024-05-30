@@ -76,6 +76,8 @@ function renderBg (thing: Thing | null) {
   // if (thing.fixed) return 'bg-neutral-700'
   if (thing.name === 'mountain') return 'bg-amber-900'
   if (thing.name === 'tree') return 'bg-green-700'
+  if (thing.name === 'flag') return 'bg-yellow-500'
+  return 'bg-neutral-900'
 }
 
 
