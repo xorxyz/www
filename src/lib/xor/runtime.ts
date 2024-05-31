@@ -3,6 +3,7 @@ import EventBus from './event_bus'
 import Grid from "./grid"
 import Thing from './thing'
 import Vector from "./vector"
+import Axis from './axis'
 
 const MS_PER_CYCLE = 400
 
@@ -106,6 +107,11 @@ export default class Runtime extends EventBus {
     const src = this.grid.at(thing.pos)
     if (!src) return
 
+    if ([...this.things.values()].some(thing => thing.attributes.has('attracts'))) {
+      const changed_dir = this.handleAttraction(thing)
+      if (changed_dir) return
+    }
+
     const dest_pos = thing.pos.clone().add(thing.dir)
     const dest = this.grid.at(dest_pos)
 
@@ -126,6 +132,9 @@ export default class Runtime extends EventBus {
     }
 
     const prev = dest.rm()
+    if (prev && prev.attributes.has('collectible')) {
+      this.remove(prev)
+    }
     src.rm()
     dest.put(thing)
 
@@ -134,6 +143,51 @@ export default class Runtime extends EventBus {
       thing.win = true
       this.halt()
       return
+    }
+
+  }
+
+  // - build a list of 4 lists of cells
+  // - first is all cells i'm facing, then to my right, behind, and left
+  // - iterate over each list
+  // - if i encounter something blocking, drop the list
+  // - if i encounter something attractive, fixate on it
+  // - if i'm facing it, continue
+  // - if not, face it, and stop the turn
+  handleAttraction (thing: Thing) {
+    let lines = this.grid.list_orthogonal_cells(thing.pos, thing.dir)
+    let done = false
+    let target
+
+    console.log('HANDLING ATTRACTION')
+
+    while (!done) {
+      for (let line of lines) {
+        const cell = line.shift()
+        if (!cell || cell.has_attribute('blocks')) {
+          line.length = 0
+          continue
+        }
+        if (cell.has_attribute('attracts')) {
+          done = true
+          target = cell
+          break          
+        }
+      }
+      lines = lines.filter(line => line.length)
+      if (!lines.length) {
+        done = true
+      }
+    }
+
+    if (target) {
+      const distance_vector = target.pos.clone().sub(thing.pos)
+      const dir = distance_vector.div(distance_vector.clone().absolute())
+      if (dir.equals(thing.dir)) return false
+      thing.dir.copy(dir)
+      return true
+    } else {
+      return false
     }
   }
 }

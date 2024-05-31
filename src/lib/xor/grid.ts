@@ -1,4 +1,5 @@
 import Cell from "./cell"
+import Axis, { South } from "./axis"
 import Thing from "./thing"
 import Vector from "./vector"
 
@@ -77,5 +78,33 @@ export default class Grid {
 
   clear() {
     this.each(cell => cell.clear())
+  }
+
+  list_linear_cells(v: Vector, dir: Vector): Cell[] {
+    if (this.out_of_bounds(v)) return []
+    const origin = this.at(v)
+    if (!origin) return []
+    const result: Cell[] = []
+    const next_pos = origin.pos.clone().add(dir)
+    while (!this.out_of_bounds(next_pos)) {
+      const next_cell = this.at(next_pos)
+      if (!next_cell) break
+      result.push(next_cell)
+      next_pos.add(dir)
+    }
+    return result
+  }
+
+  list_orthogonal_cells(v: Vector, dir: Vector = South): Cell[][] {
+    if (this.out_of_bounds(v)) return [[]]
+    const axis = new Axis()
+    axis.rotate_to(dir)
+
+    return [
+      this.list_linear_cells(v, dir),
+      this.list_linear_cells(v, axis.rotate_right().value),
+      this.list_linear_cells(v, axis.rotate_right().value),
+      this.list_linear_cells(v, axis.rotate_right().value)
+    ]
   }
 }

@@ -120,7 +120,7 @@ registerComponent('amw', ()  => ({
     y: 0
   },
   border_style: '',
-  thing_types: [{ name: 'tree', icon: '🌲' }, { name: 'mountain', 'icon': '⛰️'}],
+  thing_types: [{ name: 'tree', icon: '🌲' }, { name: 'mountain', 'icon': '⛰️'}, { name: 'book', 'icon': '📕' }],
   play_pause_btn_label: 'Play',
   get won() {
     return this.halted && this.win
@@ -186,11 +186,13 @@ registerComponent('amw', ()  => ({
 }))
 
 function load(runtime: Runtime) {
-  const wizard = createThing('wizard')
+  const wizard = createThing('wizard', 3, 2)
   const flag = createThing('flag', 6, 4)
   const mtn = createThing('mountain', 1, 4)
+  const book = createThing('book', 5, 5)
+  const book2 = createThing('book', 0, 5)
 
-  const things = [wizard, flag, mtn]
+  const things = [wizard, flag, mtn, book, book2]
   
   things.forEach(thing => {
     thing.fixed = true

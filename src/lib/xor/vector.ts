@@ -114,6 +114,25 @@ export default class Vector {
     return this;
   }
 
+  mul(v: Vector): this {
+    this.x *= v.x;
+    this.y *= v.y;
+    return this;
+  }
+
+  div(v: Vector): this {
+    console.log('dividing', this.x, this.y, v.x, v.y)
+    this.x = (this.x / v.x);
+    this.y = (this.y / v.y);
+
+    if (Number.isNaN(this.x)) this.x = 0
+    if (Number.isNaN(this.y)) this.y = 0
+
+    console.log('divided', this)
+
+    return this;
+  }
+
   /* returns true if both vectors have matching x and y values */
   equals(v: Vector): boolean {
     return this.x === v.x && this.y === v.y;
@@ -124,9 +143,15 @@ export default class Vector {
       || (this.y !== 0 && v.y !== 0 && (Math.sign(this.y) !== Math.sign(v.y)));
   }
 
-  absolute(): this {
+  sign(): this {
     this.x = Math.sign(this.x);
     this.y = Math.sign(this.y);
+    return this;
+  }
+
+  absolute(): this {
+    this.x = Math.abs(this.x);
+    this.y = Math.abs(this.y);
     return this;
   }
 

@@ -64,11 +64,12 @@ export default class Cell {
   }
 }
 
-function renderFg (thing: Thing | null) {
+function renderFg (thing: Thing | null): string {
   if (!thing) return 'text-neutral-400'
+  return ''
 }
 
-function renderBg (thing: Thing | null) {
+function renderBg (thing: Thing | null): string {
   if (!thing) return 'bg-neutral-900'
   if (thing.win) return 'bg-green-500'
   if (thing.error) return 'bg-red-500'
@@ -81,13 +82,14 @@ function renderBg (thing: Thing | null) {
 }
 
 
-function renderBorder (thing: Thing | null) {
+function renderBorder (thing: Thing | null): string {
   if (!thing) return 'border-neutral-700'
   if (thing.fixed) return 'border-neutral-100'
   return 'border-neutral-700'
 }
 
-function renderCursor (thing: Thing | null) {
+function renderCursor (thing: Thing | null): string {
   if (!thing) return ''
   if (!thing.fixed) return 'cursor-grab'
+  return ''
 }

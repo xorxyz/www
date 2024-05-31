@@ -1,17 +1,16 @@
 import Vector from "./vector"
 import { Attribute } from './attribute'
-
-const directions = [[0, 1], [-1, 0], [0, -1], [1, 0]].map(([x,y]) => new Vector(x, y))
+import Axis from "./axis"
 
 export default class Thing {
-  name: string
-  icon: string
-  pos = new Vector(0, 0)
-  dir = new Vector(0, 1)
   win = false
   error = false
   fixed = false
-  attributes = new Set<Attribute>
+  readonly name: string
+  readonly icon: string
+  readonly pos = new Vector(0, 0)
+  readonly dir = new Vector(0, 1)
+  readonly attributes = new Set<Attribute>
   constructor (name: string, icon: string, attributes: Attribute[]) {
     this.name = name
     this.icon = icon
@@ -21,16 +20,12 @@ export default class Thing {
     return this.icon
   }
   rotate_left() {
-    const index = directions.findIndex(d => this.dir.equals(d)) - 1
-    const nextIndex = index < 0 ? 3 : index
-    const nextDir = directions[nextIndex]
-    this.dir.copy(nextDir)
+    const axis = new Axis(this.dir)
+    this.dir.copy(axis.rotate_left().value)
   }
   rotate_right() {
-    const index = directions.findIndex(d => this.dir.equals(d)) + 1
-    const nextIndex = index > 3 ? 0 : index
-    const nextDir = directions[nextIndex]
-    this.dir.copy(nextDir)
+    const axis = new Axis(this.dir)
+    this.dir.copy(axis.rotate_right().value)
   }
   clone() {
     const copy = new Thing(this.name, this.icon, [...this.attributes])
@@ -55,6 +50,9 @@ export function createThing(type: string, x = 0, y = 0) {
       break
     case 'mountain':
       thing = new Thing('mountain', '⛰️', ['blocks', 'halts'])
+      break
+    case 'book':
+      thing = new Thing('book', '📕', ['attracts', 'collectible'])
       break
     default:
       throw new Error(`Couldn't create thing of type '${type}'`)
