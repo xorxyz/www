@@ -121,14 +121,11 @@ export default class Vector {
   }
 
   div(v: Vector): this {
-    console.log('dividing', this.x, this.y, v.x, v.y)
     this.x = (this.x / v.x);
     this.y = (this.y / v.y);
 
     if (Number.isNaN(this.x)) this.x = 0
     if (Number.isNaN(this.y)) this.y = 0
-
-    console.log('divided', this)
 
     return this;
   }

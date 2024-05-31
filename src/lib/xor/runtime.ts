@@ -133,7 +133,7 @@ export default class Runtime extends EventBus {
 
     const prev = dest.rm()
     if (prev && prev.attributes.has('collectible')) {
-      this.remove(prev)
+      // this.remove(prev)  
     }
     src.rm()
     dest.put(thing)
@@ -158,8 +158,6 @@ export default class Runtime extends EventBus {
     let lines = this.grid.list_orthogonal_cells(thing.pos, thing.dir)
     let done = false
     let target
-
-    console.log('HANDLING ATTRACTION')
 
     while (!done) {
       for (let line of lines) {
