@@ -16,6 +16,7 @@ export default class Cell {
   readonly label: string
   private thing: Thing | null = null
   output: string = '..'
+  handlers = new Set<Thing>
   constructor (x: number, y: number) {
     this.pos = new Vector(x, y)
     this.label = `[${this.pos.x},${this.pos.y}]`
@@ -43,10 +44,10 @@ export default class Cell {
   }
   render(): Output {
     const styles = [
-      renderFg(this.thing),
-      renderBg(this.thing),
-      renderBorder(this.thing),
-      renderCursor(this.thing),
+      this.renderFg(),
+      this.renderBg(),
+      this.renderBorder(),
+      this.renderCursor(),
     ]
 
     return ({
@@ -61,35 +62,38 @@ export default class Cell {
   clear() {
     this.thing = null
     this.output = '..'
+    this.handlers.clear()
   }
-}
 
-function renderFg (thing: Thing | null): string {
-  if (!thing) return 'text-neutral-400'
-  return ''
-}
-
-function renderBg (thing: Thing | null): string {
-  if (!thing) return 'bg-neutral-900'
-  if (thing.win) return 'bg-green-500'
-  if (thing.error) return 'bg-red-500'
-  if (thing.name === 'wizard') return 'bg-purple-900'
-  // if (thing.fixed) return 'bg-neutral-700'
-  if (thing.name === 'mountain') return 'bg-amber-900'
-  if (thing.name === 'tree') return 'bg-green-700'
-  if (thing.name === 'flag') return 'bg-yellow-500'
-  return 'bg-neutral-900'
-}
-
-
-function renderBorder (thing: Thing | null): string {
-  if (!thing) return 'border-neutral-700'
-  if (thing.fixed) return 'border-neutral-100'
-  return 'border-neutral-700'
-}
-
-function renderCursor (thing: Thing | null): string {
-  if (!thing) return ''
-  if (!thing.fixed) return 'cursor-grab'
-  return ''
+  renderFg (): string {
+    if (this.handlers.size > 0) return 'text-cyan-900'
+    if (!this.thing) return 'text-neutral-400'
+    return ''
+  }
+  
+  renderBg (): string {
+    if (this.handlers.size > 0) return 'bg-cyan-400'
+    if (!this.thing) return 'bg-neutral-900'
+    if (this.thing.win) return 'bg-green-500'
+    if (this.thing.error) return 'bg-red-500'
+    if (this.thing.name === 'wizard') return 'bg-purple-900'
+    if (this.thing.name === 'mountain') return 'bg-amber-900'
+    if (this.thing.name === 'tree') return 'bg-green-700'
+    if (this.thing.name === 'flag') return 'bg-yellow-500'
+    return 'bg-neutral-900'
+  }
+  
+  
+  renderBorder (): string {
+    if (!this.thing) return 'border-neutral-700'
+    if (this.thing.fixed) return 'border-neutral-100'
+    return 'border-neutral-700'
+  }
+  
+  renderCursor (): string {
+    if (!this.thing) return ''
+    if (!this.thing.fixed) return 'cursor-grab'
+    return ''
+  }
+  
 }

@@ -16,7 +16,7 @@ export default class Thing {
     this.icon = icon
     attributes.forEach(attr => this.attributes.add(attr))
   }
-  render() {
+  render(): string {
     return this.icon
   }
   rotate_left() {
@@ -27,12 +27,15 @@ export default class Thing {
     const axis = new Axis(this.dir)
     this.dir.copy(axis.rotate_right().value)
   }
-  clone() {
+  clone(): Thing {
     const copy = new Thing(this.name, this.icon, [...this.attributes])
     copy.pos.copy(this.pos)
     copy.dir.copy(this.dir)
     copy.fixed = this.fixed
     return copy
+  }
+  facing (): Vector {
+    return this.pos.clone().add(this.dir)
   }
 }
 

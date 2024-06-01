@@ -29,9 +29,11 @@ export default class Grid {
 
     // Move the thing to an empty cell
     if (tcell.is_empty) {
+      console.log('move to empty')
       const thing = scell.rm()
       if (!thing) return false
       tcell.put(thing)
+      this.update_handlers(thing, tcell, scell)
     // Swap the contents of two cells
     } else {
       const pthing = tcell.rm()
@@ -40,9 +42,24 @@ export default class Grid {
       if (!thing) return false
       scell.put(pthing)
       tcell.put(thing)
+      this.update_handlers(pthing, scell, tcell)
+      this.update_handlers(thing, tcell, scell)
     }
 
     return true
+  }
+
+  update_handlers(thing: Thing, dest_cell: Cell, src_cell?: Cell, prev_dir?: Vector) {
+    if (!thing.attributes.has('walks')) return
+
+    const next_handle = this.at(dest_cell.pos.clone().add(thing.dir))
+    if (next_handle) next_handle.handlers.add(thing)
+    
+    if (src_cell) {
+      const previous_handle = this.at(src_cell.pos.clone().add(prev_dir || thing.dir))
+      console.log('previous_handle', previous_handle)
+      if (previous_handle) previous_handle.handlers.delete(thing)
+    }
   }
 
   remove(v: Vector): Thing | null {
@@ -65,6 +82,8 @@ export default class Grid {
     const cell = this.at(v)
     if (!cell) return false
     cell.put(thing)
+
+    this.update_handlers(thing, cell)
     return true
   }
 

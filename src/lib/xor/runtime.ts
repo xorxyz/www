@@ -1,9 +1,9 @@
+import Cell from "./cell"
 import Clock from "./clock"
 import EventBus from './event_bus'
 import Grid from "./grid"
 import Thing from './thing'
 import Vector from "./vector"
-import Axis from './axis'
 
 const MS_PER_CYCLE = 400
 
@@ -104,12 +104,15 @@ export default class Runtime extends EventBus {
   }
 
   handleWalking (thing: Thing) {
+    console.log('handleWalking')
     const src = this.grid.at(thing.pos)
     if (!src) return
 
     if ([...this.things.values()].some(thing => thing.attributes.has('attracts'))) {
       const changed_dir = this.handleAttraction(thing)
-      if (changed_dir) return
+      if (changed_dir) {
+        return
+      }
     }
 
     const dest_pos = thing.pos.clone().add(thing.dir)
@@ -127,7 +130,9 @@ export default class Runtime extends EventBus {
         this.halt()
         return
       }
+      const prev_dir = thing.dir.clone()
       thing.rotate_left()
+      this.grid.update_handlers(thing, dest, src, prev_dir)
       return
     }
 
@@ -135,8 +140,10 @@ export default class Runtime extends EventBus {
     if (prev && prev.attributes.has('collectible')) {
       // this.remove(prev)  
     }
-    src.rm()
-    dest.put(thing)
+
+    this.move(thing.pos, dest_pos)
+    // src.rm()
+    // dest.put(thing)
 
     if (prev && prev.attributes.has('win')) {
       this.win = true
@@ -179,10 +186,14 @@ export default class Runtime extends EventBus {
     }
 
     if (target) {
+      const prev_dir = thing.dir.clone()
       const distance_vector = target.pos.clone().sub(thing.pos)
-      const dir = distance_vector.div(distance_vector.clone().absolute())
-      if (dir.equals(thing.dir)) return false
-      thing.dir.copy(dir)
+      const next_dir = distance_vector.div(distance_vector.clone().absolute())
+      if (next_dir.equals(prev_dir)) return false
+      // face the new direction
+      thing.dir.copy(next_dir)
+      const cell = this.grid.at(thing.pos) as Cell
+      this.grid.update_handlers(thing, cell, cell, prev_dir)
       return true
     } else {
       return false
