@@ -132,7 +132,7 @@ export default class Runtime extends EventBus {
       }
       const prev_dir = thing.dir.clone()
       thing.rotate_left()
-      this.grid.update_handlers(thing, dest, src, prev_dir)
+      this.grid.update_handlers(thing, src, src, prev_dir)
       return
     }
 
