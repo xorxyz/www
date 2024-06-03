@@ -2,19 +2,41 @@ import Vector from "./vector"
 import { Attribute } from './attribute'
 import Axis from "./axis"
 
+interface DelayedEffect {
+  name: string
+  delay: number
+  cb: () => void
+}
+
 export default class Thing {
   win = false
   error = false
   fixed = false
+  delayed_effects = new Set<DelayedEffect>
   readonly name: string
-  readonly icon: string
+  icon: string
+  readonly starting_icon: string
+  readonly starting_pos = new Vector(0,0)
   readonly pos = new Vector(0, 0)
   readonly dir = new Vector(0, 1)
   readonly attributes = new Set<Attribute>
+  readonly starting_attributes = new Set<Attribute>
   constructor (name: string, icon: string, attributes: Attribute[]) {
     this.name = name
     this.icon = icon
-    attributes.forEach(attr => this.attributes.add(attr))
+    this.starting_icon = icon
+    attributes.forEach(attr => this.starting_attributes.add(attr))
+    this.starting_attributes.forEach(attr => this.attributes.add(attr))
+  }
+  update() {
+    if (!this.delayed_effects.size) return
+    this.delayed_effects.forEach((effect) => {
+      effect.delay--
+      if (effect.delay <= 0) {
+        effect.cb()
+        this.delayed_effects.delete(effect)
+      }
+    })
   }
   render(): string {
     return this.icon
@@ -37,13 +59,25 @@ export default class Thing {
   facing (): Vector {
     return this.pos.clone().add(this.dir)
   }
+  schedule_delayed_effect (name: string, delay: number, cb: () => void) {
+    this.delayed_effects.add({ name, delay, cb })
+  }
+  reset() {
+    this.error = false
+    this.pos.copy(this.starting_pos)
+    this.icon = this.starting_icon
+    this.attributes.clear()
+    this.starting_attributes.forEach(attr => this.attributes.add(attr))
+    this.delayed_effects.clear()
+    return this
+  }
 }
 
 export function createThing(type: string, x = 0, y = 0) {
   let thing
   switch (type) {
     case 'wizard':
-      thing = new Thing('wizard', '🧙‍♂️', ['walks'])
+      thing = new Thing('wizard', '🧙‍♂️', ['walks', 'blocks'])
       break
     case 'flag':
       thing = new Thing('flag', '🚩', ['win'])
@@ -55,7 +89,13 @@ export function createThing(type: string, x = 0, y = 0) {
       thing = new Thing('mountain', '⛰️', ['blocks', 'halts'])
       break
     case 'book':
-      thing = new Thing('book', '📕', ['attracts', 'collectible'])
+      thing = new Thing('book', '📕', ['attracts', 'attracts:wizard', 'collectible'])
+      break
+    case 'sheep':
+      thing = new Thing('sheep', '🐑', ['walks', 'blocks', 'eats'])
+      break
+    case 'grass':
+      thing = new Thing('grass', ',,', ['attracts', 'attracts:sheep', 'edible'])
       break
     default:
       throw new Error(`Couldn't create thing of type '${type}'`)

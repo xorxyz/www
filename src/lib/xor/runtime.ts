@@ -30,13 +30,14 @@ export default class Runtime extends EventBus {
   }
 
   add(thing: Thing) {
+    if (!this.grid.at(thing.pos)?.is_empty) return
     this.things.add(thing)
-    this.grid.put(thing, thing.pos)
+    this.grid.put(thing, thing.pos, !this.is_running)
     this.update()
   }
 
   move(from: Vector, to: Vector) {
-    this.grid.move(from, to)
+    this.grid.move(from, to, !this.is_running)
     this.update()
   }
 
@@ -66,7 +67,7 @@ export default class Runtime extends EventBus {
     this.clock.stop()
     this.grid.clear()
     this.things = new Set()
-    old_state.forEach(thing => this.add(thing))
+    old_state.forEach(thing => this.add(thing.reset()))
     this.ticks = 0
     this.halted = false
     this.win = false
@@ -84,7 +85,7 @@ export default class Runtime extends EventBus {
   }
 
   update() {
-    this.grid.each((cell) => cell.update())
+    this.grid.each((cell) => cell.updateOutput())
     this.emit('update')
   }
 
@@ -93,9 +94,10 @@ export default class Runtime extends EventBus {
     this.emit('update')
     this.things.forEach(thing => {
       if (this.halted) return false
-      if (thing.attributes.has('walks')) this.handleWalking(thing)
+      if (thing.attributes.has('walks') && !thing.error) this.handleWalking(thing)
     })
 
+    this.grid.each((cell) => cell.updateThing())
     this.update()
 
     this.ticks += 1
@@ -104,9 +106,34 @@ export default class Runtime extends EventBus {
   }
 
   handleWalking (thing: Thing) {
-    console.log('handleWalking')
     const src = this.grid.at(thing.pos)
     if (!src) return
+
+    const facing = this.grid.at(thing.facing())
+    if (facing && thing.attributes.has('eats') && facing.handlers.has(thing) && facing.has_attribute('edible')) {
+      if (thing.attributes.has('eating')) return
+      const edible = facing.rm()
+      if (!edible) return
+      const icon = edible.icon
+      thing.attributes.add('eating')
+
+      const EATING_DURATION = 2
+      const GROWTH_DELAY = 5
+
+      edible.schedule_delayed_effect('eat', EATING_DURATION, () => {
+        thing.attributes.delete('eating')
+        edible.attributes.delete('edible')
+        edible.attributes.delete('attracts')
+        edible.icon = '--'
+      })
+      edible.schedule_delayed_effect('grow', EATING_DURATION + GROWTH_DELAY, () => {
+        edible.icon = icon
+        edible.attributes.add('edible')
+        edible.attributes.add('attracts')
+      })
+      facing.put(edible, false)
+      return
+    }
 
     if ([...this.things.values()].some(thing => thing.attributes.has('attracts'))) {
       const changed_dir = this.handleAttraction(thing)
@@ -120,14 +147,18 @@ export default class Runtime extends EventBus {
 
     if (!dest) {
       thing.error = true
-      this.halt()
+      if (thing.name === 'wizard') {
+        this.halt()
+      }
       return
     }
 
     if (dest.has_attribute('blocks')) {
       if (dest.has_attribute('halts')) {
         thing.error = true
-        this.halt()
+        if (thing.name === 'wizard') {
+          this.halt()
+        }
         return
       }
       const prev_dir = thing.dir.clone()
@@ -139,11 +170,11 @@ export default class Runtime extends EventBus {
     const prev = dest.rm()
     if (prev && prev.attributes.has('collectible')) {
       // this.remove(prev)  
+    } else {
+      dest.buffer = prev
     }
 
     this.move(thing.pos, dest_pos)
-    // src.rm()
-    // dest.put(thing)
 
     if (prev && prev.attributes.has('win')) {
       this.win = true
@@ -174,6 +205,8 @@ export default class Runtime extends EventBus {
           continue
         }
         if (cell.has_attribute('attracts')) {
+          if (thing.name === 'wizard' && !cell.has_attribute('attracts:wizard')) continue
+          if (thing.name === 'sheep' && !cell.has_attribute('attracts:sheep')) continue
           done = true
           target = cell
           break          

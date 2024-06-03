@@ -1,4 +1,5 @@
 import { Attribute } from "./attribute"
+import { East, North, South, West } from "./axis"
 import Thing from "./thing"
 import Vector from "./vector"
 
@@ -17,6 +18,7 @@ export default class Cell {
   private thing: Thing | null = null
   output: string = '..'
   handlers = new Set<Thing>
+  buffer: Thing | null = null
   constructor (x: number, y: number) {
     this.pos = new Vector(x, y)
     this.label = `[${this.pos.x},${this.pos.y}]`
@@ -28,8 +30,10 @@ export default class Cell {
     if (!this.thing) return false
     return this.thing.attributes.has(attr)
   }
-  put(thing: Thing) {
+  put(thing: Thing, permanent: boolean) {
     thing.pos.copy(this.pos)
+    console.log('permanent', permanent)
+    if (permanent) thing.starting_pos.copy(thing.pos)
     this.thing = thing
   }
   rm(): Thing | null {
@@ -37,11 +41,17 @@ export default class Cell {
     this.thing = null
     return thing
   }
-  update() {
-    this.output = this.thing
-      ? this.thing.render()
-      : '..'
+
+  updateOutput() {
+    this.output = this.thing ? this.thing.render() : '..'
   }
+
+  updateThing() {
+    if (this.thing) {
+      this.thing.update()
+    }
+  }
+  
   render(): Output {
     const styles = [
       this.renderFg(),
@@ -68,6 +78,7 @@ export default class Cell {
   renderFg (): string {
     if (this.handlers.size > 0) return 'text-cyan-900'
     if (!this.thing) return 'text-neutral-400'
+    if (this.thing.name === 'grass') return 'text-green-400'
     return ''
   }
   
@@ -80,13 +91,15 @@ export default class Cell {
     if (this.thing.name === 'mountain') return 'bg-amber-900'
     if (this.thing.name === 'tree') return 'bg-green-700'
     if (this.thing.name === 'flag') return 'bg-yellow-500'
+    if (this.thing.name === 'grass') return 'bg-green-900'
     return 'bg-neutral-900'
   }
   
   
   renderBorder (): string {
+    if (this.handlers.size > 0) return 'border-2 border-neutral-600'
     if (!this.thing) return 'border-neutral-700'
-    if (this.thing.fixed) return 'border-neutral-100'
+    if (this.thing.fixed) return 'border-4 border-violet-500'
     return 'border-neutral-700'
   }
   

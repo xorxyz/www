@@ -4,7 +4,12 @@ const attributes = [
   'win',
   'halts',
   'attracts',
-  'collectible'
+  'attracts:wizard',
+  'attracts:sheep',
+  'collectible',
+  'eats',
+  'edible',
+  'eating'
 ] as const
 
 export type Attribute = typeof attributes[number]
