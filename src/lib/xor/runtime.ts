@@ -168,10 +168,15 @@ export default class Runtime extends EventBus {
     }
 
     const prev = dest.rm()
-    if (prev && prev.attributes.has('collectible')) {
-      // this.remove(prev)  
-    } else {
-      dest.buffer = prev
+    if (prev) {
+      if (prev.attributes.has('collectible')) {
+        console.log('collectible')
+        if (!thing.attributes.has('player')) {
+          dest.buffer = prev
+        }
+      } else {
+        dest.buffer = prev
+      }
     }
 
     this.move(thing.pos, dest_pos)

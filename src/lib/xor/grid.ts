@@ -37,7 +37,6 @@ export default class Grid {
       }
       tcell.put(thing, permanent)
       this.update_handlers(thing, tcell, scell)
-      console.log('permanent', permanent)
     // Swap the contents of two cells
     } else {
       const pthing = tcell.rm()
@@ -71,6 +70,12 @@ export default class Grid {
     if (!cell) return null
 
     const thing = cell.rm()
+    if (thing) {
+      const target = this.at(thing.facing())
+      if (target) {
+        target.handlers.delete(thing)
+      }
+    }
 
     return thing
   }

@@ -9,7 +9,8 @@ const attributes = [
   'collectible',
   'eats',
   'edible',
-  'eating'
+  'eating',
+  'player'
 ] as const
 
 export type Attribute = typeof attributes[number]

@@ -77,7 +77,7 @@ export function createThing(type: string, x = 0, y = 0) {
   let thing
   switch (type) {
     case 'wizard':
-      thing = new Thing('wizard', '🧙‍♂️', ['walks', 'blocks'])
+      thing = new Thing('wizard', '🧙‍♂️', ['walks', 'blocks', 'player'])
       break
     case 'flag':
       thing = new Thing('flag', '🚩', ['win'])
