@@ -20,7 +20,7 @@ export default class Grid {
     return (v.x < 0 || v.x >= this.size.x || v.y < 0 || v.y >= this.size.y)
   }
 
-  move(from: Vector, to: Vector) {
+  move(from: Vector, to: Vector, permanent: boolean) {
     if (this.out_of_bounds(from) || this.out_of_bounds(to)) return false
     const scell = this.at(from)
     const tcell = this.at(to)
@@ -29,10 +29,13 @@ export default class Grid {
 
     // Move the thing to an empty cell
     if (tcell.is_empty) {
-      console.log('move to empty')
       const thing = scell.rm()
       if (!thing) return false
-      tcell.put(thing)
+      if (scell.buffer) {
+        scell.put(scell.buffer, permanent)
+        scell.buffer = null
+      }
+      tcell.put(thing, permanent)
       this.update_handlers(thing, tcell, scell)
     // Swap the contents of two cells
     } else {
@@ -40,8 +43,8 @@ export default class Grid {
       if (!pthing) return false
       const thing = scell.rm()
       if (!thing) return false
-      scell.put(pthing)
-      tcell.put(thing)
+      scell.put(pthing, permanent)
+      tcell.put(thing, permanent)
       this.update_handlers(pthing, scell, tcell)
       this.update_handlers(thing, tcell, scell)
     }
@@ -57,7 +60,6 @@ export default class Grid {
     
     if (src_cell) {
       const previous_handle = this.at(src_cell.pos.clone().add(prev_dir || thing.dir))
-      console.log('previous_handle', previous_handle)
       if (previous_handle) previous_handle.handlers.delete(thing)
     }
   }
@@ -68,6 +70,12 @@ export default class Grid {
     if (!cell) return null
 
     const thing = cell.rm()
+    if (thing) {
+      const target = this.at(thing.facing())
+      if (target) {
+        target.handlers.delete(thing)
+      }
+    }
 
     return thing
   }
@@ -78,10 +86,10 @@ export default class Grid {
     return cell || null
   }
 
-  put(thing: Thing, v: Vector): boolean {
+  put(thing: Thing, v: Vector, permanent: boolean): boolean {
     const cell = this.at(v)
     if (!cell) return false
-    cell.put(thing)
+    cell.put(thing, permanent)
 
     this.update_handlers(thing, cell)
     return true

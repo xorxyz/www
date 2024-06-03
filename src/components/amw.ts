@@ -120,7 +120,13 @@ registerComponent('amw', ()  => ({
     y: 0
   },
   border_style: '',
-  thing_types: [{ name: 'tree', icon: '🌲' }, { name: 'mountain', 'icon': '⛰️'}, { name: 'book', 'icon': '📕' }],
+  thing_types: [
+    { name: 'tree', icon: '🌲' }, 
+    { name: 'mountain', 'icon': '⛰️'}, 
+    { name: 'book', 'icon': '📕' },
+    { name: 'sheep', 'icon': '🐑' },
+    { name: 'grass', icon: ',,' }
+  ],
   play_pause_btn_label: 'Play',
   get won() {
     return this.halted && this.win
@@ -132,7 +138,7 @@ registerComponent('amw', ()  => ({
     return !(this.ticks !== 0 || this.running)
   },
   select(e) {
-    console.log(e)
+    // console.log(e)
   },
   init() {
     this.runtime.on('tick', ({ ticks }) => { 
@@ -191,8 +197,10 @@ function load(runtime: Runtime) {
   const mtn = createThing('mountain', 1, 4)
   const book = createThing('book', 5, 5)
   const book2 = createThing('book', 0, 5)
+  const grass = createThing('grass', 3, 0)
+  const sheep = createThing('sheep', 7, 0)
 
-  const things = [wizard, flag, mtn, book, book2]
+  const things = [wizard, flag, mtn, book, book2, grass, sheep]
   
   things.forEach(thing => {
     thing.fixed = true
