@@ -65,6 +65,7 @@ export default class Thing {
   reset() {
     this.error = false
     this.pos.copy(this.starting_pos)
+    this.dir.setXY(0, 1)
     this.icon = this.starting_icon
     this.attributes.clear()
     this.starting_attributes.forEach(attr => this.attributes.add(attr))
@@ -96,6 +97,39 @@ export function createThing(type: string, x = 0, y = 0) {
       break
     case 'grass':
       thing = new Thing('grass', ',,', ['attracts', 'attracts:sheep', 'edible'])
+      break
+    case 'water':
+      thing = new Thing('water', '~~', ['blocks'])
+      break
+    case 'value':
+      thing = new Thing('value', '01', [])
+      break
+    case 'scroll':
+      thing = new Thing('scroll', '📜', [])
+      break
+    case 'candle':
+      thing = new Thing('candle', '🕯️', [])
+      break
+    case 'castle':
+      thing = new Thing('castle', '🏰', [])
+      break
+    case 'bug':
+      thing = new Thing('bug', '🐛', [])
+      break
+    case 'lock':
+      thing = new Thing('lock', '🔒', [])
+      break
+    case 'key':
+      thing = new Thing('key', '🗝️', [])
+      break
+    case 'crown':
+      thing = new Thing('lock', '👑', [])
+      break
+    case 'ghost':
+      thing = new Thing('ghost', '👻', [])
+      break
+    case 'snake':
+      thing = new Thing('ghost', '🐍', [])
       break
     default:
       throw new Error(`Couldn't create thing of type '${type}'`)

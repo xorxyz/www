@@ -167,27 +167,25 @@ export default class Runtime extends EventBus {
       return
     }
 
-    const prev = dest.rm()
-    if (prev) {
-      if (prev.attributes.has('collectible')) {
-        console.log('collectible')
+    const existing_thing = dest.rm()
+    if (existing_thing) {
+      if (existing_thing.attributes.has('collectible')) {
         if (!thing.attributes.has('player')) {
-          dest.buffer = prev
+          dest.buffer = existing_thing
         }
       } else {
-        dest.buffer = prev
+        dest.buffer = existing_thing
       }
     }
 
     this.move(thing.pos, dest_pos)
 
-    if (prev && prev.attributes.has('win')) {
+    if (thing.attributes.has('player') && existing_thing && existing_thing.attributes.has('win')) {
       this.win = true
       thing.win = true
       this.halt()
       return
     }
-
   }
 
   // - build a list of 4 lists of cells

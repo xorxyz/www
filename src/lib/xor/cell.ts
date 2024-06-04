@@ -32,7 +32,6 @@ export default class Cell {
   }
   put(thing: Thing, permanent: boolean) {
     thing.pos.copy(this.pos)
-    console.log('permanent', permanent)
     if (permanent) thing.starting_pos.copy(thing.pos)
     this.thing = thing
   }
@@ -79,6 +78,7 @@ export default class Cell {
     if (this.handlers.size > 0) return 'text-cyan-900'
     if (!this.thing) return 'text-neutral-400'
     if (this.thing.name === 'grass') return 'text-green-400'
+    if (this.thing.name === 'water') return 'text-blue-100'
     return ''
   }
   
@@ -92,6 +92,7 @@ export default class Cell {
     if (this.thing.name === 'tree') return 'bg-green-700'
     if (this.thing.name === 'flag') return 'bg-yellow-500'
     if (this.thing.name === 'grass') return 'bg-green-900'
+    if (this.thing.name === 'water') return 'bg-blue-500'
     return 'bg-neutral-900'
   }
   
