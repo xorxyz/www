@@ -41,8 +41,10 @@ export default class Grid {
     } else {
       const pthing = tcell.rm()
       if (!pthing) return false
+      if (pthing.fixed) { tcell.put(pthing, false); return false }
       const thing = scell.rm()
       if (!thing) return false
+      if (thing.fixed) { scell.put(thing, false); return false }
       scell.put(pthing, permanent)
       tcell.put(thing, permanent)
       this.update_handlers(pthing, scell, tcell)

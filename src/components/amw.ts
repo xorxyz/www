@@ -195,8 +195,8 @@ registerComponent('amw', ()  => ({
 function load(runtime: Runtime) {
 
   const things = [
-    createThing('wizard', 3, 2),
-    createThing('flag', 6, 4),
+    createThing('wizard', 2, 2),
+    createThing('flag', 6, 6),
     createThing('mountain', 1, 4),
     createThing('book', 5, 5),
     createThing('book', 0, 5),
