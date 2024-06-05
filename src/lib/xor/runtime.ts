@@ -2,10 +2,36 @@ import Cell from "./cell"
 import Clock from "./clock"
 import EventBus from './event_bus'
 import Grid from "./grid"
+import { Level } from "./levels"
 import Thing from './thing'
 import Vector from "./vector"
 
 const MS_PER_CYCLE = 400
+
+class Rect {
+  readonly size: Vector
+  get width () { return this.size.x }
+  get height () { return this.size.y }
+  get area () { return this.width * this.height }
+  constructor (size: Vector) {
+    this.size = size.clone()
+  }
+}
+
+function get_bounding_rect(vectors: Vector[]): Rect {
+  if (!vectors.length) return new Rect(new Vector())
+  console.log(vectors)
+  const top_left = vectors[0].clone()
+  const bottom_right = vectors[0].clone()
+  vectors.forEach(v => {
+    top_left.setXY(Math.min(top_left.x, v.x), Math.min(top_left.y, v.y))
+    bottom_right.setXY(Math.max(bottom_right.x, v.x), Math.max(bottom_right.y, v.y))
+  })
+  console.log(top_left, bottom_right)
+  const size = bottom_right.clone().addXY(1, 1).sub(top_left)
+  const rect = new Rect(size)
+  return rect
+}
 
 export default class Runtime extends EventBus {
   private win = false
@@ -15,11 +41,23 @@ export default class Runtime extends EventBus {
   private clock: Clock
   private grid: Grid
   private things = new Set<Thing>
+  private _size = 0
 
   get is_halted () { return this.halted; }
   get is_running () { return this.clock.isRunning || this.executing; }
   get get_ticks () { return this.ticks; }
   get has_won () { return this.win; }
+  get cost () { return [...this.things].filter(t => !t.fixed).length; }
+
+  get size () { 
+    if (this.is_running || this.ticks > 0) return this._size
+
+    const things = [...this.things].filter(t => !t.fixed || t.attributes.has('player') || t.attributes.has('win'))
+    const rect = get_bounding_rect(things.map(t => t.pos))
+
+    this._size = rect.area
+    return this._size
+  }
 
   constructor (grid: Grid) {
     super()
@@ -27,6 +65,14 @@ export default class Runtime extends EventBus {
     this.clock = new Clock(MS_PER_CYCLE, this.tick.bind(this))
 
     this.update()
+  }
+
+  load(level: Level) {
+    level.things.forEach(thing => {
+      const instance = thing.clone()
+      instance.fixed = true
+      this.add(instance)
+    })
   }
 
   add(thing: Thing) {
@@ -62,15 +108,22 @@ export default class Runtime extends EventBus {
     this.clock.stop()
   }
 
-  reset() {
-    const old_state = [...this.things.values()].filter(thing => !thing.fixed)
+  clear() {
+    this.things = new Set()
     this.clock.stop()
     this.grid.clear()
-    this.things = new Set()
-    old_state.forEach(thing => this.add(thing.reset()))
     this.ticks = 0
     this.halted = false
     this.win = false
+  }
+
+  reset() {
+    const old_state = [...this.things].filter(thing => !thing.fixed)
+    this.clear()
+    old_state.forEach(thing => {
+      const instance = thing.reset() 
+      this.add(instance)
+    })
     this.emit('reset')
   }
 
@@ -94,7 +147,7 @@ export default class Runtime extends EventBus {
     this.emit('update')
     this.things.forEach(thing => {
       if (this.halted) return false
-      if (thing.attributes.has('walks') && !thing.error) this.handleWalking(thing)
+      if (thing.attributes.has('walks') && !thing.error) this.handle_walking(thing)
     })
 
     this.grid.each((cell) => cell.updateThing())
@@ -105,7 +158,7 @@ export default class Runtime extends EventBus {
     this.emit('tick', { ticks: this.ticks })
   }
 
-  handleWalking (thing: Thing) {
+  handle_walking (thing: Thing) {
     const src = this.grid.at(thing.pos)
     if (!src) return
 
@@ -135,8 +188,8 @@ export default class Runtime extends EventBus {
       return
     }
 
-    if ([...this.things.values()].some(thing => thing.attributes.has('attracts'))) {
-      const changed_dir = this.handleAttraction(thing)
+    if ([...this.things].some(thing => thing.attributes.has('attracts'))) {
+      const changed_dir = this.handle_attraction(thing)
       if (changed_dir) {
         return
       }
@@ -195,7 +248,7 @@ export default class Runtime extends EventBus {
   // - if i encounter something attractive, fixate on it
   // - if i'm facing it, continue
   // - if not, face it, and stop the turn
-  handleAttraction (thing: Thing) {
+  handle_attraction (thing: Thing) {
     let lines = this.grid.list_orthogonal_cells(thing.pos, thing.dir)
     let done = false
     let target

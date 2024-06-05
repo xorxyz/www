@@ -5,8 +5,26 @@
 <div
   @drop.prevent="drop_final"
   @dragover.prevent="dragover_final">
-  <p>ticks: <code x-text="ticks" class=""></code></p>
-  <p>state: <code x-text="state" class=""></code></p>
+
+  <div>
+    <div class="flex flex-row flex-wrap">
+      <template x-for="(level, index) in levels">
+        <div class="flex my-2">
+          <button 
+            class="w-12 h-12 border-neutral-100 border-2 flex items-center justify-center mono transition"
+            :class="active_level == index ? 'bg-violet-600' : 'bg-neutral-900 hover:bg-neutral-700 cursor-pointer'"
+            x-text="index + 1"
+            :disabled="active_level == index"
+            @click="load_level(index)"></button>
+          <div class="text-xs w-4 h-12 flex items-center justify-center font-black" x-show="index < (levels.length - 1)">&gt;</div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <template x-for="message in messages">
+    <p x-text="message"></p>
+  </template>
 
   <div id="cols" class="text-3xl inline-flex flex-row border border-2" :class="border_style">
     <template x-for="column in columns">
@@ -55,11 +73,19 @@
     </template>
   </div>
 
-  <div class="my-2">
-    <button class="btn w-20" @click="play_pause" x-text="play_pause_btn_label" :disabled="halted"></button>
-    <button class="btn w-20" @click="step" :disabled="halted || running">Step</button>
-    <button class="btn w-20" @click="reset">Reset</button>
+  <div class="flex my-2">
+    <div>steps: <code x-text="ticks" class=""></code></div>
+    <div class="mx-2">cost: <code x-text="cost" class=""></code></div>
+    <div class="mx-2">area: <code x-text="size" class=""></code></div>
+    <div class="mx-2">state: <code x-text="state" class=""></code></div>
   </div>
+
+  <div class="my-2">
+    <button class="btn w-20 h-10" @click="play_pause" x-text="play_pause_btn_label" :disabled="halted"></button>
+    <button class="btn w-20 h-10" @click="step" :disabled="halted || running">Step</button>
+    <button class="btn w-20 h-10" @click="reset">Reset</button>
+  </div>
+
 
   <!-- <pre><code x-text="JSON.stringify(columns, null, 2)"></code></pre> -->
 </div>

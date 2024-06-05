@@ -3,10 +3,21 @@ import Grid from "../lib/xor/grid";
 import Runtime from "../lib/xor/runtime";
 import { createThing } from "../lib/xor/thing";
 import Vector from "../lib/xor/vector";
+import { level1, level2, level3, level4, level5 } from "../lib/xor/levels";
+
+const STARTING_LEVEL = 0
 
 const grid = new Grid(8, 8)
 const runtime = new Runtime(grid)
 const autoplay = false
+const thing_types = [
+  { name: 'tree', icon: '🌲' }, 
+  { name: 'mountain', 'icon': '⛰️'}, 
+  { name: 'book', 'icon': '📕' },
+  { name: 'sheep', 'icon': '🐑' },
+  { name: 'grass', icon: ',,' },
+  { name: 'water', icon: '~~' }
+]
 
 const dnd = {
   remove_thing(x: number, y: number) {
@@ -109,6 +120,8 @@ registerComponent('amw', ()  => ({
   ...dnd,
   autoplay: autoplay,
   ticks: 0,
+  cost: 0,
+  size: 0,
   columns: grid.render(),
   runtime: runtime,
   halted: false,
@@ -120,15 +133,39 @@ registerComponent('amw', ()  => ({
     y: 0
   },
   border_style: '',
-  thing_types: [
-    { name: 'tree', icon: '🌲' }, 
-    { name: 'mountain', 'icon': '⛰️'}, 
-    { name: 'book', 'icon': '📕' },
-    { name: 'sheep', 'icon': '🐑' },
-    { name: 'grass', icon: ',,' },
-    { name: 'water', icon: '~~' }
-  ],
+  thing_types: thing_types,
   play_pause_btn_label: 'Play',
+  active_level: -1,
+  messages: [],
+  levels: [
+    level1,
+    level2,
+    level3,
+    level4,
+    level5
+  ],
+  load_level(index) {
+    index = Number(index)
+    if (this.active_level === index) return
+
+    this.set_active_level(index)
+
+    const level = this.get_active_level()
+
+    runtime.clear()
+    runtime.load(level)
+    runtime.update()
+
+    this.thing_types = thing_types.filter(x => level.components.includes(x.name))
+    this.messages = level.messages
+  },
+  set_active_level(index: number) {
+    this.active_level = index
+  },
+  get_active_level() {
+    const level = this.levels[this.active_level]
+    return level
+  },
   get won() {
     return this.halted && this.win
   },
@@ -142,24 +179,27 @@ registerComponent('amw', ()  => ({
     // console.log(e)
   },
   init() {
+    this.load_level(STARTING_LEVEL)
     this.runtime.on('tick', ({ ticks }) => { 
       this.ticks = ticks
       this.render()
     })
     this.runtime.on('reset', () => {
-      load(runtime)
+      runtime.load(this.get_active_level())
       this.render()
     })
     this.runtime.on('update', () => {
       this.render()
     })
-    load(this.runtime)
+    runtime.load(this.get_active_level())
     this.render()
     if (this.autoplay) {
       this.runtime.start()
     }
   },
   render() {
+    this.cost = runtime.cost
+    this.size = runtime.size
     this.halted = runtime.is_halted
     this.running = runtime.is_running
     this.win = runtime.has_won
@@ -191,25 +231,3 @@ registerComponent('amw', ()  => ({
     this.render()
   }
 }))
-
-function load(runtime: Runtime) {
-
-  const things = [
-    createThing('wizard', 2, 2),
-    createThing('flag', 6, 6),
-    createThing('mountain', 1, 4),
-    createThing('book', 5, 5),
-    createThing('book', 0, 5),
-    // createThing('grass', 3, 0),
-    // createThing('sheep', 7, 0),
-    // createThing('value', 1, 1),
-    // createThing('value', 2, 2),
-    // createThing('scroll', 4, 2),
-    // createThing('candle', 5, 3)
-  ]
-  
-  things.forEach(thing => {
-    thing.fixed = true
-    runtime.add(thing)
-  })
-}
