@@ -70,6 +70,7 @@ export default class Cell {
   }
   clear() {
     this.thing = null
+    this.buffer = null
     this.output = '..'
     this.handlers.clear()
   }
