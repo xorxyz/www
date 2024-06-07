@@ -10,11 +10,15 @@
 <div class="card">
   <h1>Rankings</h1>
 
+  <p>
+    Send me a DM when you solve a level so I can add you to the leaderboard!
+  </p>
+
   <div class="flex flex-row my-6">
     {% for ranking in rankings limit:3 %}
-      <div class="w-1/3 text-center py-1">
-        {{ forloop.index }}
-        <div class="">{{ ranking.username }} ({{ ranking.score }})</div>
+      <div class="w-1/3 text-center py-1 flex flex-col items-center">
+        <div class="bg-yellow-500 text-yellow-900 w-10 h-10 flex items-center justify-center rounded">{{ forloop.index }}</div>
+        <div class="my-2">{{ ranking.username }}</div>
       </div>
     {% endfor %}
   </div>
