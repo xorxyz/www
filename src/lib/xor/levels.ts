@@ -6,6 +6,12 @@ export interface Level {
   messages: string[]
 }
 
+const default_message = [
+  `Balthazar wants to reach his goal. Help him by changing the environment. `,
+  `Drag and drop trees to place them on the map. You can add as many as you want.`,
+  `Hit play to run the simulation. Refresh the page if you need to start over.`
+]
+
 export const level1: Level = {
   components: ['tree'],
   things: [
@@ -16,8 +22,7 @@ export const level1: Level = {
     ...new Array(6).fill(0).map((_, y) => createThing('mountain', 0, y + 1)),
     ...new Array(6).fill(0).map((_, y) => createThing('mountain', 7, y + 1))
   ],
-  messages: [
-  ]
+  messages: default_message
 }
 
 export const level2: Level = {
@@ -34,8 +39,7 @@ export const level2: Level = {
     ...new Array(6).fill(0).map((_, y) => createThing('mountain', 0, y + 3)),
     ...new Array(6).fill(0).map((_, y) => createThing('mountain', 7, y + 1))
   ],
-  messages: [
-  ]
+  messages: default_message
 }
 
 export const level3: Level = {
@@ -51,8 +55,7 @@ export const level3: Level = {
     ...new Array(6).fill(0).map((_, y) => createThing('mountain', 0, y + 3)),
     ...new Array(6).fill(0).map((_, y) => createThing('mountain', 7, y + 1))
   ],
-  messages: [
-  ],
+  messages: default_message
 }
 
 export const level4: Level = {
@@ -69,8 +72,7 @@ export const level4: Level = {
     ...new Array(6).fill(0).map((_, y) => createThing('mountain', 0, y + 3)),
     ...new Array(6).fill(0).map((_, y) => createThing('mountain', 7, y + 1))
   ],
-  messages: [
-  ],
+  messages: default_message
 }
 
 export const level5: Level = {
@@ -88,8 +90,7 @@ export const level5: Level = {
     ...new Array(3).fill(0).map((_, x) => createThing('tree', x+3, 0)),
     ...new Array(4).fill(0).map((_, y) => createThing('tree', 7, y + 2))
   ],
-  messages: [
-  ],
+  messages: default_message
 }
 
 export const level6: Level = {
