@@ -210,7 +210,7 @@ registerComponent('amw', ()  => ({
     this.border_style = [
       this.can_edit ? '' : 'cursor-not-allowed',
       this.lost ? 'border-red-500' : '',
-      this.won ? 'border-green-500' : ''
+      this.won ? 'border-green-500' : 'border-neutral-500'
     ].filter(x => x).join(' ')
   },
   play_pause() {
