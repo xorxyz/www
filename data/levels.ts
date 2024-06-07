@@ -12,6 +12,12 @@ const levels: Level[] = [{
   task_count: 6,
   solves: ['kavehcpa', 'cdupre'],
   clues: ['bitwise-operations', 'tobaud-encoding', 'snake-cipher']
+},{
+  id: '2024/2', 
+  title: 'A modest wizard',
+  task_count: 1,
+  solves: [],
+  clues: []
 }]
 
 export default levels

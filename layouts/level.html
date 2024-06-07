@@ -19,6 +19,7 @@
       </div>
     </div>
 
+    {% if level.clues.length > 0 %}
     <div class="card">
       <h2>Clues</h2>
       <div class="my-3">
@@ -33,6 +34,7 @@
         {% endblock %}
       </div>
     </div>
+    {% endif %}
 
     {% block tasks %}
     {% endblock %}

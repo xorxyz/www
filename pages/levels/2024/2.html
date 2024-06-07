@@ -1,10 +1,11 @@
-{% layout "tool.html", slug: "amw" %}
+{% layout "level.html", id: "2024/2" %}
 
-{% block component %}
-
+{% block story %}
 <div
   @drop.prevent="drop_final"
-  @dragover.prevent="dragover_final">
+  @dragover.prevent="dragover_final"
+  x-data="amw"
+  >
   <div>
     <div class="flex flex-row flex-wrap">
       <template x-for="(level, index) in levels">

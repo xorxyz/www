@@ -5,7 +5,7 @@ import { createThing } from "../lib/xor/thing";
 import Vector from "../lib/xor/vector";
 import { level1, level2, level3, level4, level5 } from "../lib/xor/levels";
 
-const STARTING_LEVEL = 5
+const STARTING_LEVEL = 1
 
 const grid = new Grid(8, 8)
 const runtime = new Runtime(grid)
