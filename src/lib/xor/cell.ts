@@ -99,9 +99,9 @@ export default class Cell {
   
   
   renderBorder (): string {
-    if (this.handlers.size > 0) return 'border-2 border-neutral-600'
+    if (this.handlers.size > 0) return 'border-neutral-600'
     if (!this.thing) return 'border-neutral-700'
-    if (this.thing.fixed) return 'border-4 border-violet-500'
+    if (this.thing.fixed) return 'border-violet-100'
     return 'border-neutral-700'
   }
   
