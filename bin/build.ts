@@ -261,6 +261,7 @@ export async function buildRss() {
 export async function recreateDist() {
   await rimraf(getDirPath('dist'));
   await mkdirp(getDirPath('dist'));
+  await mkdirp(path.join(getDirPath('dist'),'js'));
 }
 
 export async function copyAssets() {
@@ -271,7 +272,10 @@ export async function buildTs() {
   await esbuild.build({
     entryPoints: ['src/index.ts'],
     bundle: true,
-    // minify: true,
+    minify: true,
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
     outfile: path.join(getDirPath('dist'), 'js/script.js'),
   })
 }

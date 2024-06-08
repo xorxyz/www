@@ -1,4 +1,3 @@
-import { registerComponent } from "../register";
 import Grid from "../lib/xor/grid";
 import Runtime from "../lib/xor/runtime";
 import { createThing } from "../lib/xor/thing";
@@ -116,7 +115,7 @@ const dnd = {
   },
 }
 
-registerComponent('amw', ()  => ({
+export default ()  => ({
   ...dnd,
   autoplay: autoplay,
   ticks: 0,
@@ -230,4 +229,4 @@ registerComponent('amw', ()  => ({
     this.runtime.reset()
     this.render()
   }
-}))
+})
