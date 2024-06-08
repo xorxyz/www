@@ -1,11 +1,9 @@
 {% layout "level.html", id: "2024/2" %}
 
 {% block story %}
-<script src="/js/amw1.js"></script>
 <div
   @drop.prevent="drop_final"
   @dragover.prevent="dragover_final"
-  x-data="amw"
   >
   <div>
     <div class="flex flex-row flex-wrap">
