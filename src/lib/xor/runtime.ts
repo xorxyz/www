@@ -3,11 +3,13 @@ import Clock from "./clock"
 import EventBus from './event_bus'
 import Grid from "./grid"
 import { Level } from "./levels"
-import Thing from './thing'
+import Thing, { createThing } from './thing'
 import Vector from "./vector"
 import { get_bounding_rect } from "./rectangle"
 
 const MS_PER_CYCLE = 400
+const DEFAULT_LEVEL_WIDTH = 8
+const DEFAULT_LEVEL_HEIGHT = 8
 
 export default class Runtime extends EventBus {
   private win = false
@@ -18,6 +20,7 @@ export default class Runtime extends EventBus {
   private grid: Grid
   private things = new Set<Thing>
   private _size = 0
+  private active_level: Level
 
   get is_halted () { return this.halted; }
   get is_running () { return this.clock.isRunning || this.executing; }
@@ -35,20 +38,12 @@ export default class Runtime extends EventBus {
     return this._size
   }
 
-  constructor (grid: Grid) {
+  constructor () {
     super()
-    this.grid = grid
+    this.grid = new Grid(8, 8)
     this.clock = new Clock(MS_PER_CYCLE, this.tick.bind(this))
 
     this.update()
-  }
-
-  load(level: Level) {
-    level.things.forEach(thing => {
-      const instance = thing.clone()
-      instance.fixed = true
-      this.add(instance)
-    })
   }
 
   add(thing: Thing) {
@@ -84,23 +79,33 @@ export default class Runtime extends EventBus {
     this.clock.stop()
   }
 
-  clear() {
-    this.things = new Set()
-    this.clock.stop()
-    this.grid.clear()
-    this.ticks = 0
-    this.halted = false
-    this.win = false
+  load_level(level: Level) {
+    this.active_level = level
+    this.reset_level()
   }
 
-  reset() {
-    const old_state = [...this.things].filter(thing => !thing.fixed)
-    this.clear()
-    old_state.forEach(thing => {
-      const instance = thing.reset() 
+  reset_level() {
+    this.clock.stop()
+    this.ticks = 0
+    this.things = new Set()
+    this.grid = new Grid(this.active_level.width || DEFAULT_LEVEL_WIDTH, this.active_level.height || DEFAULT_LEVEL_HEIGHT)
+    this.halted = false
+    this.win = false
+    this.active_level.things.forEach(([thing, x, y]) => {
+      const instance = createThing(thing, x, y)
+      instance.fixed = true
       this.add(instance)
     })
-    this.emit('reset')
+  }
+
+  restart() {
+    const old_state = [...this.things].filter(thing => !thing.fixed)
+    this.reset_level()
+    old_state.forEach(thing => {
+      const instance = thing.reset()
+      this.add(instance)
+    })
+    this.emit('restart')
   }
 
   step() {
@@ -116,6 +121,10 @@ export default class Runtime extends EventBus {
   update() {
     this.grid.each((cell) => cell.updateOutput())
     this.emit('update')
+  }
+
+  render() {
+    return this.grid.render()
   }
 
   tick () {

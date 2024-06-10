@@ -1,3 +1,7 @@
+import { registerComponent } from '../register'
+
 export * from './circuit_builder'
 export * from './program_editor'
-// export * from './amw'
+import amw from './amw'
+
+registerComponent('amw', amw)

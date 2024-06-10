@@ -1,13 +1,12 @@
-import Grid from "../lib/xor/grid";
 import Runtime from "../lib/xor/runtime";
 import { createThing } from "../lib/xor/thing";
 import Vector from "../lib/xor/vector";
-import { level1, level2, level3, level4, level5 } from "../lib/xor/levels";
+import { level1, level10, level2, level3, level4, level5, level6, level7, level8, level9 } from "../lib/xor/levels";
 
-const STARTING_LEVEL = 1
+const STARTING_WORLD = 1
+const STARTING_LEVEL = 6
 
-const grid = new Grid(8, 8)
-const runtime = new Runtime(grid)
+const runtime = new Runtime()
 const autoplay = false
 const thing_types = [
   { name: 'tree', icon: '🌲' }, 
@@ -121,7 +120,7 @@ export default ()  => ({
   ticks: 0,
   cost: 0,
   size: 0,
-  columns: grid.render(),
+  columns: [[]],
   runtime: runtime,
   halted: false,
   running: false,
@@ -136,13 +135,38 @@ export default ()  => ({
   play_pause_btn_label: 'Play',
   active_level: -1,
   messages: [],
-  levels: [
-    level1,
-    level2,
-    level3,
-    level4,
-    level5
+  worlds: [
+    [
+      level1,
+      level2,
+      level3,
+      level4,
+      level5,
+      level6,
+      level7,
+      level8
+    ],
+    [
+      level9,
+      level10
+    ],
+    [
+    ],
+    [
+    ],
+    [
+    ]
   ],
+  active_world: -1,
+  levels: [],
+  load_world(index) {
+    index = Number(index)
+    if (this.active_world === index) return
+    this.active_world = index
+    
+    this.levels = this.worlds[index]
+    this.load_level(0)
+  },
   load_level(index) {
     index = Number(index)
     if (this.active_level === index) return
@@ -151,9 +175,10 @@ export default ()  => ({
 
     const level = this.get_active_level()
 
-    runtime.clear()
-    runtime.load(level)
-    runtime.update()
+    // runtime.clear()
+    // runtime.load(level)
+    // runtime.update()
+    runtime.load_level(level)
 
     this.thing_types = thing_types.filter(x => level.components.includes(x.name))
     this.messages = level.messages
@@ -178,19 +203,19 @@ export default ()  => ({
     // console.log(e)
   },
   init() {
+    this.load_world(STARTING_WORLD - 1)
     this.load_level(STARTING_LEVEL - 1)
     this.runtime.on('tick', ({ ticks }) => { 
       this.ticks = ticks
       this.render()
     })
-    this.runtime.on('reset', () => {
-      runtime.load(this.get_active_level())
+    this.runtime.on('restart', () => {
       this.render()
     })
     this.runtime.on('update', () => {
       this.render()
     })
-    runtime.load(this.get_active_level())
+    runtime.load_level(this.get_active_level())
     this.render()
     if (this.autoplay) {
       this.runtime.start()
@@ -204,7 +229,7 @@ export default ()  => ({
     this.win = runtime.has_won
     this.ticks = runtime.get_ticks
     this.state = this.win ? 'Victory' : this.lost ? 'Loss' : this.running ? 'Running' : 'Paused'
-    this.columns = grid.render()
+    this.columns = runtime.render()
     this.play_pause_btn_label = this.runtime.is_running ? 'Pause' : 'Play'
     this.border_style = [
       this.can_edit ? '' : 'cursor-not-allowed',
@@ -226,7 +251,6 @@ export default ()  => ({
     this.runtime.step()
   },
   reset() {
-    this.runtime.reset()
-    this.render()
+    this.runtime.restart()
   }
 })

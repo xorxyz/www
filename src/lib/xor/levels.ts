@@ -1,10 +1,16 @@
-import Thing, { createThing } from "./thing"
+export type LevelThing = [string, number, number]
 
 export interface Level {
   components: string[],
-  things: Thing[],
-  messages: string[]
+  things: LevelThing[],
+  messages: string[],
+  width?: number
+  height?: number
 }
+
+const Arr = (x: number): number[] => new Array(x).fill(0)
+const h_line = (t: string, y: number, x1: number, x2: number) => Arr(x2+ 1 - x1).map((_, x): LevelThing => [t, x + x1, y])
+const v_line = (t: string, x: number, y1: number, y2: number) => Arr(y2+ 1 - y1).map((_, y): LevelThing => [t, x, y + y1])
 
 const default_message = [
   `Balthazar wants to reach his goal. Help him by changing the environment. `,
@@ -12,15 +18,20 @@ const default_message = [
   `Hit play to run the simulation. Refresh the page if you need to start over.`
 ]
 
+/*
+ *  -- WORLD 1 -- 
+ *  =============
+ */
+
 export const level1: Level = {
   components: ['tree'],
   things: [
-    createThing('wizard', 2, 4),
-    createThing('flag', 5, 2),
-    ...new Array(8).fill(0).map((_, x) => createThing('mountain', x, 0)),
-    ...new Array(8).fill(0).map((_, x) => createThing('mountain', x, 7)),
-    ...new Array(6).fill(0).map((_, y) => createThing('mountain', 0, y + 1)),
-    ...new Array(6).fill(0).map((_, y) => createThing('mountain', 7, y + 1))
+    ['wizard', 2, 4],
+    ['flag', 5, 2],
+    ...h_line('mountain', 0, 0, 7),
+    ...h_line('mountain', 7, 0, 7),
+    ...v_line('mountain', 0, 1, 6),
+    ...v_line('mountain', 7, 1, 6)
   ],
   messages: default_message
 }
@@ -28,16 +39,16 @@ export const level1: Level = {
 export const level2: Level = {
   components: ['tree'],
   things: [
-    createThing('wizard', 2, 4),
-    createThing('flag', 5, 2),
-    createThing('mountain', 2, 6),
-    createThing('mountain', 6, 4),
-    ...new Array(4).fill(0).map((_, x) => createThing('mountain', x, 0)),
-    ...new Array(3).fill(0).map((_, x) => createThing('mountain', x+5, 0)),
-    ...new Array(8).fill(0).map((_, x) => createThing('mountain', x, 7)),
-    createThing('mountain', 0, 1),
-    ...new Array(6).fill(0).map((_, y) => createThing('mountain', 0, y + 3)),
-    ...new Array(6).fill(0).map((_, y) => createThing('mountain', 7, y + 1))
+    ['wizard', 2, 4],
+    ['flag', 5, 2],
+    ['mountain', 0, 1],
+    ['mountain', 2, 6],
+    ['mountain', 6, 4],
+    ...h_line('mountain', 0, 0, 3),
+    ...h_line('mountain', 0, 5, 7),
+    ...h_line('mountain', 7, 0, 7),
+    ...v_line('mountain', 0, 3, 7),
+    ...v_line('mountain', 7, 1, 6)
   ],
   messages: default_message
 }
@@ -45,15 +56,17 @@ export const level2: Level = {
 export const level3: Level = {
   components: ['tree'],
   things: [
-    createThing('wizard', 5, 3),
-    createThing('flag', 1, 4),
-    createThing('mountain', 5, 1),
-    createThing('mountain', 6, 3),
-    createThing('mountain', 6, 4),
-    ...new Array(8).fill(0).map((_, x) => createThing('mountain', x, 0)),
-    ...new Array(8).fill(0).map((_, x) => createThing('mountain', x, 7)),
-    ...new Array(6).fill(0).map((_, y) => createThing('mountain', 0, y + 3)),
-    ...new Array(6).fill(0).map((_, y) => createThing('mountain', 7, y + 1))
+    ['wizard', 5, 3],
+    ['mountain', 1, 3],
+    ['flag', 2, 4],
+    ['mountain', 1, 2],
+    ['tree', 7, 3],
+    ['tree', 7, 4],
+    ...h_line('mountain', 0, 0, 7),
+    ...h_line('mountain', 7, 0, 7),
+    ...v_line('mountain', 0, 3, 6),
+    ...v_line('mountain', 7, 1, 2),
+    ...v_line('mountain', 7, 5, 6),
   ],
   messages: default_message
 }
@@ -61,16 +74,19 @@ export const level3: Level = {
 export const level4: Level = {
   components: ['tree'],
   things: [
-    createThing('wizard', 5, 3),
-    createThing('mountain', 1, 3),
-    createThing('flag', 2, 4),
-    createThing('mountain', 1, 2),
-    createThing('tree', 7, 3),
-    createThing('tree', 7, 4),
-    ...new Array(8).fill(0).map((_, x) => createThing('mountain', x, 0)),
-    ...new Array(8).fill(0).map((_, x) => createThing('mountain', x, 7)),
-    ...new Array(6).fill(0).map((_, y) => createThing('mountain', 0, y + 3)),
-    ...new Array(6).fill(0).map((_, y) => createThing('mountain', 7, y + 1))
+    ['wizard', 4, 2],
+    ['flag', 0, 4],
+    ['mountain', 2, 2],
+    ['mountain', 5, 3],
+    ['mountain', 5, 4],
+    ['mountain', 7, 5],
+    ['mountain', 2, 5],
+    ['mountain', 7, 2],
+    ['mountain', 5, 0],
+    ['tree', 0, 7],
+    ...h_line('mountain', 0, 0, 2),
+    ...h_line('tree', 0, 3, 4),
+    ...v_line('tree', 7, 3, 4)
   ],
   messages: default_message
 }
@@ -78,44 +94,65 @@ export const level4: Level = {
 export const level5: Level = {
   components: ['tree'],
   things: [
-    createThing('wizard', 4, 2),
-    createThing('flag', 0, 4),
-    createThing('mountain', 2, 2),
-    createThing('mountain', 5, 3),
-    createThing('mountain', 5, 4),
-    createThing('mountain', 7, 5),
-    createThing('mountain', 2, 5),
-    createThing('mountain', 0, 0),
-    createThing('tree', 0, 7),
-    ...new Array(3).fill(0).map((_, x) => createThing('tree', x+3, 0)),
-    ...new Array(4).fill(0).map((_, y) => createThing('tree', 7, y + 2))
+    ['wizard', 5, 3],
+    ['flag', 1, 4],
+    ['mountain', 5, 1],
+    ['mountain', 6, 3],
+    ['mountain', 6, 4],
+    ...h_line('mountain', 0, 0, 7),
+    ...h_line('mountain', 7, 0, 7),
+    ...v_line('mountain', 0, 3, 6),
+    ...v_line('mountain', 7, 1, 6),
   ],
   messages: default_message
 }
 
+
 export const level6: Level = {
-  components: [],
-  messages: [],
+  width: 16,
+  height: 9,
+  components: ['tree', 'mountain'],
   things: [
-    // createThing('wizard', 0, 0),
-    // createThing('flag', 7, 7)
-  ]
+    ['wizard', 5, 2],
+    ['flag', 6, 5],
+    ['mountain', 5, 6],
+    ...h_line('mountain', 0, 1, 4),
+    ...v_line('mountain', 0, 1, 4)
+  ],
+  messages: default_message
 }
 
 export const level7: Level = {
-  components: [],
-  messages: [],
+  components: ['tree'],
   things: [
-    // createThing('wizard', 0, 0),
-    // createThing('flag', 7, 7)
-  ]
+    ['wizard', 5, 3],
+    ['flag', 1, 4],
+  ],
+  messages: default_message
 }
+
+/*
+ *  -- WORLD 2 -- 
+ *  =============
+ */
 
 export const level8: Level = {
   components: [],
-  messages: [],
   things: [
-    // createThing('wizard', 0, 0),
-    // createThing('flag', 7, 7)
-  ]
+  ],
+  messages: default_message,
+}
+
+export const level9: Level = {
+  components: [],
+  things: [
+  ],
+  messages: default_message,
+}
+
+export const level10: Level = {
+  components: [],
+  things: [
+  ],
+  messages: default_message,
 }

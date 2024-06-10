@@ -7,6 +7,21 @@
   @dragover.prevent="dragover_final">
   <div>
     <div class="flex flex-row flex-wrap">
+      <template x-for="(world, index) in worlds">
+        <div class="flex my-2">
+          <button 
+            class="w-12 h-12 border-neutral-100 border-2 flex items-center justify-center mono transition"
+            :class="active_world == index ? 'bg-violet-600' : 'bg-neutral-900 hover:bg-neutral-700 cursor-pointer'"
+            x-text="index + 1"
+            :disabled="active_world == index"
+            @click="load_world(index)"></button>
+          <div class="text-xs w-4 h-12 flex items-center justify-center font-black" x-show="index < (worlds.length - 1)">&gt;</div>
+        </div>
+      </template>
+    </div>
+  </div>
+  <div>
+    <div class="flex flex-row flex-wrap">
       <template x-for="(level, index) in levels">
         <div class="flex my-2">
           <button 

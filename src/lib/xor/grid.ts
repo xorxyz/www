@@ -11,7 +11,7 @@ export default class Grid {
 
   constructor (w: number, h: number) {
     this.size = new Vector(w, h)
-    this.columns = new Array(h).fill(0).map((_, x) => new Array(w).fill(0).map((__, y) => new Cell(x, y)))
+    this.columns = new Array(w).fill(0).map((_, x) => new Array(h).fill(0).map((__, y) => new Cell(x, y)))
     this.cells = this.columns.reduce((prev, curr) => ([...prev, ...curr]), [])
     this.origin = this.columns[0][0]
   }
