@@ -16,7 +16,7 @@ const levels: Level[] = [{
   id: '2024/2', 
   title: 'A modest wizard',
   task_count: 1,
-  solves: [],
+  solves: ['mayday2000'],
   clues: []
 }]
 
