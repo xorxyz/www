@@ -113,11 +113,16 @@ export const level6: Level = {
   height: 9,
   components: ['tree', 'mountain'],
   things: [
-    ['wizard', 5, 2],
-    ['flag', 6, 5],
-    ['mountain', 5, 6],
-    ...h_line('mountain', 0, 1, 4),
-    ...v_line('mountain', 0, 1, 4)
+    ['wizard', 0, 0],
+    ['flag', 14, 7],
+    // ...h_line('mountain', 0, 1, 4),
+    // ...v_line('mountain', 0, 1, 4)
+    ["mountain",0,5],
+    ["mountain",4,7],
+    ["mountain",5,3],
+    ["mountain",1,1],
+    ["mountain",1,4],
+    ["mountain",7,4]
   ],
   messages: default_message
 }

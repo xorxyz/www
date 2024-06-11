@@ -35,6 +35,12 @@
       </template>
     </div>
   </div>
+  
+  <div >
+    <p x-text="selected_cell.id || 'xx'"></p>
+    <button class="btn w-30 h-10" @click="save_level">Save level</button>
+    <button class="btn w-30 h-10" @click="export_level">Export level</button>
+  </div>
 
   <template x-for="message in messages">
     <p x-text="message"></p>
@@ -46,15 +52,15 @@
         <template x-for="cell in column">
           <div 
             x-data="{ dragging: false }"
-            :draggable="can_edit && !cell.fixed"
+            :draggable="can_edit && (dev_mode || !cell.fixed)"
             class="cell h-10 md:h-12 border flex items-center justify-center mono select-none"
             :id="cell.id" 
             :data-cell="true"
             :data-x="cell.x"
             :data-y="cell.y"
-            :data-fixed="cell.fixed"
-            :class="cell.style"
-            @mousedown="select"
+            :data-fixed="(dev_mode || cell.fixed)"
+            :class="cell.style + (selected_cell.id === cell.id ? ' border-2 border-amber-500' : '')"
+            @mousedown="select(cell)"
             @drop.prevent.stop="dest.drop"
             @dragover.prevent="dest.dragover"
             @dragleave.prevent="dest.dragleave"

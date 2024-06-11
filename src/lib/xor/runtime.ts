@@ -127,6 +127,10 @@ export default class Runtime extends EventBus {
     return this.grid.render()
   }
 
+  export_things() {
+    return [...this.things].map(thing => thing.clone())
+  }
+
   tick () {
     this.executing = true
     this.emit('update')

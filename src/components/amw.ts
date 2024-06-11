@@ -116,6 +116,8 @@ const dnd = {
 
 export default ()  => ({
   ...dnd,
+  dev_mode: true,
+  selected_cell: 'aaa',
   autoplay: autoplay,
   ticks: 0,
   cost: 0,
@@ -159,6 +161,18 @@ export default ()  => ({
   ],
   active_world: -1,
   levels: [],
+  save_level() {
+    const level = this.get_active_level()
+
+    const things = runtime.export_things()
+
+    level.things = things.map(thing => [thing.name, thing.pos.x, thing.pos.y])
+  },
+  export_level() {
+    const level = this.get_active_level()
+
+    console.log(JSON.stringify(level.things).replace(/],/g, "],\n"))
+  },
   load_world(index) {
     index = Number(index)
     if (this.active_world === index) return
@@ -199,8 +213,8 @@ export default ()  => ({
   get can_edit() {
     return !(this.ticks !== 0 || this.running)
   },
-  select(e) {
-    // console.log(e)
+  select(cell) {
+    this.selected_cell = cell
   },
   init() {
     this.load_world(STARTING_WORLD - 1)
